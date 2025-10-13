@@ -1,0 +1,225 @@
+\documentclass[12pt,a4paper,oneside]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{left=3cm,right=2.5cm,top=3cm,bottom=3cm}
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{physics}
+\usepackage{nicefrac}
+\usepackage{enumitem}
+\setlist[itemize]{topsep=0pt, itemsep=2pt}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{etoolbox}
+
+% Theorem
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+
+\newenvironment{lemmabox}[1][]{
+	\refstepcounter{lemma}
+	\begin{tcolorbox}[colback=blue!5!white,
+		colframe=blue!60!black,
+		fonttitle=\bfseries,
+		boxrule=0.8pt,
+		arc=3pt,
+		left=8pt,right=8pt,top=6pt,bottom=6pt,
+		title={Lemma \thelemma},
+		#1]
+		}{
+	\end{tcolorbox}
+}
+
+\newenvironment{definitionbox}[1][]{
+\refstepcounter{definition}
+\begin{tcolorbox}[colback=blue!5!white,
+	colframe=blue!60!black,
+	fonttitle=\bfseries,
+	boxrule=0.8pt,
+	arc=3pt,
+	left=8pt,right=8pt,top=6pt,bottom=6pt,
+	title={Definition \thedefinition},
+	#1]
+}{
+\end{tcolorbox}
+}
+
+% Kopf- und Fußzeile
+\usepackage{scrlayer-scrpage}
+\clearpairofpagestyles
+\ihead{Optimal Control}
+\ohead{WS 2025/26}
+\cfoot{\pagemark}
+\pagestyle{scrheadings}
+\setcounter{section}{-1}
+
+\begin{document}
+	
+	% Titelseite
+	\begin{titlepage}
+		\centering
+		\vspace*{3cm}
+		{\Huge\bfseries Optimal Control}\par
+		\vspace{1.5cm}
+		{\Large Wintersemester 2025/26}\par
+		\vspace{0.5cm}
+		{\Large Dozent: Prof. Dr. Andrea Iannelli}\par
+		\vfill
+		{\today}
+	\end{titlepage}
+	
+	\pagenumbering{roman}
+	\tableofcontents
+	\clearpage
+	\pagenumbering{arabic}
+	
+	\section{Introduction}
+	\[
+	\dot{x} = f(t,x,u), \quad x(t_0)=x_0, \quad t \in [t_0,t_f]
+	\]
+	\[
+	f : [t_0,t_f]\times\mathbb{R}^{n_x}\times\mathbb{R}^{n_u} \to \mathbb{R}^{n_x}
+	\]
+	\[
+	x = \text{state}, \quad u = \text{input}
+	\]
+	
+	Initial Value Problem (IVP)
+	
+	Given $x_0, u(\cdot)$ we can compute $x(\cdot)$ \\
+	\hspace*{23.5mm}$\rotatebox[origin=c]{90}{$\Rsh$}$ functions of time $\rotatebox[origin=c]{270}{$\Lsh$}$
+	
+	When is this possible? It depends on $f$.
+	
+	
+	\begin{lemmabox}
+		\textbf{(Sufficient conditions)}\\
+		Existence \& Uniqueness of solutions of ODEs.\\
+		Assume that
+		\begin{itemize}[]
+			\item $f$ is piecewise continuous in $t$ and $u$
+			\item $f$ is globally Lipschitz in $x$
+			\[
+			\exists\, k(t,u)\, \text{ s.t. } \|f(t,x_1,u)-f(t,x_2,u)\|\le k(t,u)\|x_1-x_2\|,\ \forall x_1,x_2 \in \mathbb{R}^{n_x}
+			\]
+		\end{itemize}
+		Then $x(\cdot)$ exists for all $t$ and is unique.
+	\end{lemmabox}
+	
+	\subsection*{Remarks}
+	\begin{itemize}[noitemsep]
+		\item Lipschitz continuous $\Rightarrow$ continuous, but not the converse
+		\item $\sqrt{x}$ is continuous but not Lipschitz, $\dot x = \sqrt{x}$ does not have a unique solution
+		\item Continously differentiable $(\mathcal{C}^1)$ $\Rightarrow$ locally Lipschitz continous $\forall x_1,x_2 \in \mathcal{X} \subset \mathbb{R}^{n_x}$
+		\item Locally Lipschitz continuous x guarantees existence \& uniqueness for small enough times
+	\end{itemize}
+	
+	In this course we will assume $f \in\mathcal{C}^1$ and implicitely assume that $t_f$ is chosen such that $x(\cdot)$ exists in $[t_0,t_f]$. \\\\
+	We do not need to worry about existence \& uniqueness!
+	
+	\subsection*{Goal in Optimal Control:}
+	Design $u$ such that
+	\begin{enumerate}
+		\item $u(t) \in \underset{\uparrow}{\mathcal{U}(t)}$, $x(t) \in \underset{\uparrow}{\mathcal{X}(t)} \quad \forall t \in [t_0,t_f], \quad \mathcal{X}\subset\mathbb{R}^{n_x}, \ \mathcal{U}\subset\mathbb{R}^{n_u}$\\
+			sets defining constraints on $u \& x$ \\
+			\hspace*{10mm}$\Rightarrow$ Admissible input/state trajectories
+		\item
+			The system behaves optimally according to
+			\[
+			\underset{\uparrow}{J}(u) = \int_{t_0}^{t_f} \underset{\uparrow}{l}(t,x(t),u(t))\,dt + \underset{\uparrow}{\varphi}(t_f,x(t_f))
+			\]
+			\hspace*{18mm}Cost function\hspace*{10mm}running cost\hspace*{10mm}terminal cost\\
+			\hspace*{10mm}$\Rightarrow$ optimal behaviour
+	\end{enumerate}
+	
+	Formally, we can state the goal as follows: \\
+	Find an admissible input $u^\star$ which causes the dynamics to follow an admissible trajectory $x\star$ which minimizes $J$, that is
+	\[
+	\int_{t_0}^{t_f} l(t,x^\star(t),u^\star(t))\,dt + \varphi(t_f,x^\star(t_f)) \leq \int_{t_0}^{t_f} l(t,x(t),u(t))\,dt + \varphi(t_f,x(t_f))
+	\]
+	\hspace*{100mm}$\forall \text{ admissible } x,u$
+	
+	\subsection*{Examples of cost functions}
+	\begin{enumerate}[label=\arabic*)]
+		\item Minimum-time problem\\
+		Goal: transfer the system from $x_0$ to a set $\mathcal{S}$ in the minimum time
+		\[
+		J = t_f-t_0 = \int_{t_0}^{t_f}dt \qquad (l=1, \varphi=0)
+		\]
+		\[
+		x(t_f) \in \mathcal{S}
+		\]
+		Note: $t_f$ is also a decision variable! The unknowns are $(u,t_f)$.
+		
+		\item Minimum control-effort problem
+		\[
+		J = \int_{t_0}^{t_f} \|u(t)\|^2 \, dt
+		\]
+		\[
+		x(t_f) \in \mathcal{S}
+		\]
+		
+		\item Tracking problem
+		\[
+		J = \int_{t_0}^{t_f} (x(t)-r(t))^T Q (x(t)-r(t))dt
+		\]
+		$Q > 0$ (positive definit matrix: symmetric \& all eigenvalues positive) \\
+		$r(t)$ given signal
+	\end{enumerate}
+	
+	\section{Nonlinear Programming}
+	
+	Nonlinear Programs (NLP) are general \underline{finite-dimensional} optimization problems:
+	\[
+	\underset{x}{\min} f(x)
+	\]
+	\[
+	\text{s.t. } g(x)\leq0, \quad h(x)=0
+	\]
+	$f: \mathbb{R}^n \rightarrow \mathbb{R}$, objective function\\
+	$g: \mathbb{R}^n \rightarrow \mathbb{R}^{n_g}$, inequality constraints\\
+	$h: \mathbb{R}^n \rightarrow \mathbb{R}^{n_h}$, equality constraints\\
+	Feasible set:
+	\[
+	D = \{x\in\mathbb{R}^n \mid g(x)\leq0,\ h(x)=0\}
+	\]
+	$\overline{x}\in D$ feasible point
+	
+	\begin{definitionbox}
+		\textbf{Global, local Minimizers}\\
+			$x^\star\in \mathcal{D}$ \underline{Global Minimizer} of the NLP if
+			\[
+			f(x^\star)\le f(x)\quad \forall x\in \mathcal{D}
+			\]
+			$f(x^\star)$ is the \underline{Global Minimum} (or Minimum)\\
+			Nomenclature: $x^\star$ is also called (optimal) solution, $F(x^\star)$ is optimal value\\
+			$x^\star$ is a strict global minimizer if $f(x^\star)<f(x)\quad \forall x \in\mathcal{D}$\\
+			$x^\star\in \mathcal{D}$ \underline{Local Minimizer} if
+			\[
+			\exists \varepsilon>0,\text{ s.t.}\ f(x^\star)\le f(x)\quad \forall x\in B_\varepsilon(x^\star)\cap \mathcal{D}
+			\]
+			\[
+			B_\varepsilon(x) := \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\rightarrow\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
+			\]
+			Strict local Minimizer if inequality holds strictly\\
+			Global min $\underset{\not\leftarrow}{\overset{\rightarrow}{}}$ local min
+	\end{definitionbox}
+	
+	Solving an NLP boils down to finding global or local minimizers. \\
+	Does a solution always exist? No.
+	
+\end{document}
