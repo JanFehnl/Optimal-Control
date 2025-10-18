@@ -25,21 +25,28 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{wrapfig}
+
+\KOMAoptions{parskip=half}
+
+\definecolor{indigo}{RGB}{75,0,130}
 
 % Theorem
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
 
 \newenvironment{lemmabox}[1][]{
 	\refstepcounter{lemma}
-	\begin{tcolorbox}[colback=blue!5!white,
-		colframe=blue!60!black,
+	\begin{tcolorbox}[colback=teal!5!white,
+		colframe=teal!60!black,
 		fonttitle=\bfseries,
 		boxrule=0.8pt,
 		arc=3pt,
 		left=8pt,right=8pt,top=6pt,bottom=6pt,
-		title={Lemma \thelemma},
-		#1]
+		title={Lemma \thelemma\if\relax\detokenize{#1}\relax\else\ (#1)\fi}]
 		}{
 	\end{tcolorbox}
 }
@@ -52,8 +59,20 @@
 	boxrule=0.8pt,
 	arc=3pt,
 	left=8pt,right=8pt,top=6pt,bottom=6pt,
-	title={Definition \thedefinition},
-	#1]
+	title={Definition \thedefinition\if\relax\detokenize{#1}\relax\else\ (#1)\fi}]
+	}{
+\end{tcolorbox}
+}
+
+\newenvironment{theorembox}[1][]{
+\refstepcounter{theorem}
+\begin{tcolorbox}[colback=indigo!5!white,
+	colframe=indigo!70!black,
+	fonttitle=\bfseries,
+	boxrule=0.8pt,
+	arc=3pt,
+	left=8pt,right=8pt,top=6pt,bottom=6pt,
+	title={Theorem \thetheorem\if\relax\detokenize{#1}\relax\else\ (#1)\fi}]
 }{
 \end{tcolorbox}
 }
@@ -106,8 +125,7 @@
 	When is this possible? It depends on $f$.
 	
 	
-	\begin{lemmabox}
-		\textbf{(Sufficient conditions)}\\
+	\begin{lemmabox}[Sufficient conditions]
 		Existence \& Uniqueness of solutions of ODEs.\\
 		Assume that
 		\begin{itemize}[]
@@ -120,7 +138,7 @@
 		Then $x(\cdot)$ exists for all $t$ and is unique.
 	\end{lemmabox}
 	
-	\subsection*{Remarks}
+	\paragraph{Remarks}
 	\begin{itemize}[noitemsep]
 		\item Lipschitz continuous $\Rightarrow$ continuous, but not the converse
 		\item $\sqrt{x}$ is continuous but not Lipschitz, $\dot x = \sqrt{x}$ does not have a unique solution
@@ -131,10 +149,10 @@
 	In this course we will assume $f \in\mathcal{C}^1$ and implicitely assume that $t_f$ is chosen such that $x(\cdot)$ exists in $[t_0,t_f]$. \\\\
 	We do not need to worry about existence \& uniqueness!
 	
-	\subsection*{Goal in Optimal Control:}
+	\paragraph{Goal in Optimal Control:}
 	Design $u$ such that
 	\begin{enumerate}
-		\item $u(t) \in \underset{\uparrow}{\mathcal{U}(t)}$, $x(t) \in \underset{\uparrow}{\mathcal{X}(t)} \quad \forall t \in [t_0,t_f], \quad \mathcal{X}\subset\mathbb{R}^{n_x}, \ \mathcal{U}\subset\mathbb{R}^{n_u}$\\
+		\item $u(t) \in \underset{\uparrow}{\mathcal{U}(t)}$, $x(t) \in \underset{\uparrow}{\mathcal{X}(t)} \quad \forall t \in [t_0,t_f], \quad \mathcal{X}\subseteq\mathbb{R}^{n_x}, \ \mathcal{U}\subseteq\mathbb{R}^{n_u}$\\
 			sets defining constraints on $u \& x$ \\
 			\hspace*{10mm}$\Rightarrow$ Admissible input/state trajectories
 		\item
@@ -153,7 +171,7 @@
 	\]
 	\hspace*{100mm}$\forall \text{ admissible } x,u$
 	
-	\subsection*{Examples of cost functions}
+	\paragraph{Examples of cost functions}
 	\begin{enumerate}[label=\arabic*)]
 		\item Minimum-time problem\\
 		Goal: transfer the system from $x_0$ to a set $\mathcal{S}$ in the minimum time
@@ -197,10 +215,9 @@
 	\[
 	D = \{x\in\mathbb{R}^n \mid g(x)\leq0,\ h(x)=0\}
 	\]
-	$\overline{x}\in D$ feasible point
+	$\bar{x}\in D$ feasible point
 	
-	\begin{definitionbox}
-		\textbf{Global, local Minimizers}\\
+	\begin{definitionbox}[Global, local Minimizers]
 			$x^\star\in \mathcal{D}$ \underline{Global Minimizer} of the NLP if
 			\[
 			f(x^\star)\le f(x)\quad \forall x\in \mathcal{D}
@@ -216,10 +233,311 @@
 			B_\varepsilon(x) := \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\rightarrow\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
 			\]
 			Strict local Minimizer if inequality holds strictly\\
-			Global min $\underset{\not\leftarrow}{\overset{\rightarrow}{}}$ local min
+			Global min $\begin{tikzpicture}[baseline={(0,-0.25ex)}]
+				% oberer Pfeil: nach rechts
+				\draw[->] (0,0.2) -- (0.5,0.2);
+				% unterer Pfeil: nach links
+				\draw[<-] (0,0.0) -- (0.5,0.0);
+				% Durchstreichung des unteren Pfeils
+				\draw[line width=0.4pt] (0.1,-0.1) -- (0.4, 0.1);
+			\end{tikzpicture}$ local min
 	\end{definitionbox}
 	
 	Solving an NLP boils down to finding global or local minimizers. \\
 	Does a solution always exist? No.
+	
+	
+	
+	
+	\begin{definitionbox}[infimum]
+		Given $\mathcal{S} \subseteq \mathbb{R}$, $\inf(\mathcal{S})$ is the greatest lower bound of $\mathcal{S}$:
+		\begin{itemize}
+			\item $z \geq \inf(\mathcal{S}), \quad \forall z \in \mathcal{S}\quad$ (lower bound)
+			\item $\forall \bar{\alpha} > \inf(\mathcal{S}) \quad \exists z \in \mathcal{S}$ s. t. $ \bar{\alpha} > z\quad$ (greatest bound)
+		\end{itemize}
+	\end{definitionbox}
+	
+	\paragraph{Example}
+		$\mathcal{S} = [-1,1], \, -50 = \inf(\mathcal{S})?\quad\rightarrow\quad$ No, $\inf(\mathcal{S}) = -1$	
+	\begin{itemize}
+		\item Analogous: $\sup(\mathcal{S})$ is smallest upper bound.  
+		\item $\inf$ and $\sup$ always exist if $\mathcal{S} \neq \emptyset$
+		\item $\inf(\mathcal{S})$ does not have to be an element of $\mathcal{S}$
+		\item If $\mathcal{S}$ unbounded from below $\rightarrow$ $\inf(\mathcal{S})=-\infty$
+		\item $\inf([a,b]) = \inf((a,b]) = a$
+	\end{itemize}
+	
+	Connections with NLP?
+	\[
+	f: \mathcal{D} \to \mathbb{R}
+	\]
+	\[
+	\inf(\underset{\mathcal{S}}{\underbrace{f(x)\,|\,x\in\mathcal{D}}}):=\bar{f}=\underset{x\in\mathcal{D}}{\inf}f(x) \quad\text{(similar to NLP)}
+	\]
+	
+	Whenever NLP has solution, then NLP ist equivalent to this, but $\nexists x^\star \in \mathcal{D}$ s. t. $f(x^\star) = \bar{f}\quad\rightarrow\quad$ infimum exists, but not minimum
+	
+	\paragraph{Examples}
+		$f(x) = e^{-x}, \quad \mathcal{D} = [0,\infty), \quad \inf(\mathcal{S}) = 0$ \\
+		$f(x) = x, \quad \mathcal{D} =\mathbb{R}, \quad \inf(\mathcal{S}) = - \infty$, min doesn't exist! 
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.4\textwidth]{images/1.0-1.jpg}
+		\end{center}
+	\end{figure}
+		
+	When does the infimum coincide with its optimal value?
+	
+	\begin{theorembox}[Extreme value problem) (Weierstrass Theorem]
+		$f: D \to \mathbb{R},\,\mathcal{D} \subseteq \mathbb{R}^n$\\
+		If:
+		\begin{itemize}
+			\item $f \in \mathcal{C}$ on $\mathcal{D}$
+			\item $\mathcal{D}$ is compact
+			\item $\mathcal{D} \neq \emptyset$
+		\end{itemize}
+		Then $f$ attains a minimum on $\mathcal{D}$.
+	\end{theorembox}
+	
+	\begin{definitionbox}[Continuous function]
+		$f: \mathcal{D} \to \mathbb{R}$ is continuous at $x\in\mathcal{D}$ if
+		\[
+			\forall \epsilon > 0 \exists \delta > 0 \text{ s. t. } \norm{x-x'} < \delta \quad \Rightarrow \quad \norm{f(x)-f(x')} < \epsilon
+		\]
+		If $f$ is continuous $\forall x \in \mathcal{D}$ then $f$ is continuous on $\mathcal{D}$ $\rightarrow$ $f \in \mathcal{C}$
+	\end{definitionbox}
+	
+	Implication for NLP: If $f$ is $\mathcal{C}$ on $\mathcal{D}$ and $\mathcal{D}$ is compact and non-empty then [NLP] has a solution!
+	
+	\begin{itemize}
+		\item $\mathcal{D} \subseteq \mathbb{R}^n$: in finite-dimensional spaces: compact = closed and bounded\\
+		Not compact:
+		\begin{itemize}
+			\item $(a,b]\quad$ (not closed)
+			\item $(-\infty,b]\quad$ (unbounded)
+		\end{itemize}
+		Compact set:
+		\begin{itemize}
+			\item $[a,b]\quad-\infty<a<b<\infty$
+		\end{itemize}
+	
+	\paragraph{Warning:}
+	$\mathcal{D}$ infinite dimensional (e.\,g. function space) then\\
+	\hspace*{10mm}compact $\begin{tikzpicture}[baseline={(0,-0.25ex)}]
+		% oberer Pfeil: nach rechts
+		\draw[->] (0,0.2) -- (0.5,0.2);
+		% unterer Pfeil: nach links
+		\draw[<-] (0,0.0) -- (0.5,0.0);
+		% Durchstreichung des unteren Pfeils
+		\draw[line width=0.4pt] (0.1,-0.1) -- (0.4, 0.1);
+	\end{tikzpicture}$ bounded and closed
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\textwidth]{images/1.0-2.jpg}
+	\end{figure}	
+	Theorem 1.1 is restrictive e.\,g. $f(x) = x^2, \mathcal{D} = (-\infty,\infty)$ has unique minimum
+	\item Notation convention: Technically it is 'wrong' to write
+	\[
+		\min\underset{x\in\mathcal{D}}{f(x)}
+	\]
+	more compact is:
+	\[
+		\text{minimize}\,\underset{x\in\mathcal{D}}{f(x)} \quad \text{or} \quad \underset{x\in\mathcal{D}}{\inf}f(x)
+	\]
+	\end{itemize}
+	
+	Goal of the Chapter: characterize necessary and sufficient conditions for $x^\star$ to be global minimizer of NLP.
+	
+	\subsubsection*{Convexity}
+	
+	\begin{definitionbox}[Convex sets \& functions]
+		\begin{itemize}
+			\item A set $C \subseteq \mathbb{R}^n$ is \underline{convex} (cvx) if $\forall x, y \in C$
+			\[
+			\{ z \mid z = \lambda x + (1-\lambda)\lambda, \, \lambda \in [0,1]\}\subseteq C
+			\]
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[width=0.23\textwidth]{images/1.0-3.png}
+				\end{center}
+			\end{figure}
+			\item Given a cvx set $C$, a function $f: C \to \mathbb{R}$ is cvx if
+			\[
+			f(\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda) f(y), \quad\forall x,y \in C, \quad\lambda \in (0,1)
+			\]
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[width=0.3\textwidth]{images/1.0-4.png}
+				\end{center}
+			\end{figure}
+			\item f is strictly cvx if the inequality holds strictly.
+		\end{itemize}
+		
+	\end{definitionbox}
+	
+	\paragraph{Remarks}
+	\begin{itemize}
+		\item The definition extends to vector functions $f:C\to\mathbb{R}^n$ for convex $f_i$
+		\item $f: C_1 \cross C_2 \to \mathbb{R}$\\
+		$f(x,y)$ is jointly cvx, in $x,y$ if $z:=\begin{bmatrix}x\\y\end{bmatrix},\,f(z)$ is in cvx in $z$.
+	\end{itemize}
+		
+	
+	
+	\paragraph{Example}
+		$f(x,y) = x^2+y^2,\,z=\begin{bmatrix}x\\y\end{bmatrix}\to f(z) = z_1^2+z_2^2$
+	
+	\begin{definitionbox}
+		An NLP is a \underline{convex program} if
+		\begin{itemize}
+			\item $f$ is convex function,
+			\item $\mathcal{D}$ is convex set.
+		\end{itemize}
+	\end{definitionbox}
+	
+	\begin{lemmabox}
+		Let $x^\star$ be a local minimizer of cvx program.  
+		Then $x^\star$ is also global minimizer.
+	\end{lemmabox}
+	
+	\textbf{Proof}: try as an erxercise\\
+	
+	Minimizers of convex NLP form a convex set.\\
+	This set might be empty (Convex NLPs not guaranteed to have solution).\\
+	\underline{However}: Unique solution for \underline{strictly} convex NLPs, if a solution exists.
+	
+	\begin{lemmabox}[First/Second order conditions for convexity]
+		\begin{enumerate}
+			\item $f:C\to\mathbb{R}$ continuously differentiable on $C$. Then $f$ is cvx iff
+			\[
+				f(y)\geq f(x)+\nabla f(x)^T(y-x), \quad\forall x,y\in C
+			\]
+			\[
+				(\nabla f)_i = \frac{\partial f}{\partial x_i} \text{ is gradient (sometimes $f_{x_i}$)}
+			\]
+			\item $f$ twice differentiable on $C$, then $f$ convex iff
+			\[
+				\nabla_{xx}^2 f(x) \geq 0 \quad \forall x \in C
+			\]
+			\[
+				(\nabla_{xx}^2)_{i,j} = \frac{\partial^2 f}{\partial x_i \partial x_j} \quad \text{(Hessian)}
+			\]
+		\end{enumerate}
+	\end{lemmabox}
+	
+	\begin{itemize}
+		\item $A\geq0$ means that: $A=A^T$ and pos semi-definite, i.\,e. all eigenvalues non-negative
+		\item $f$ strictly cvx if $\nabla_{xx}^2 f(x) > 0 \quad \forall x \in C$ with $A>0$ meaning pos definite and symmetric
+		\item Interpretation: Curvature of function should be non-negative/positive
+		\item For exercises to check convexity, the second condition is generelly useful. First condition is useful for proofs.
+	\end{itemize}
+	
+	For $\mathcal{D} = \{ x \mid g(x) \leq 0, \, h(x) = 0 \}$ the following holds: If
+	
+	\begin{minipage}{0.65\textwidth}
+		\begin{itemize}
+			\item $g$ are convex functions,
+			\item $h$ are affine functions (i.e. $h(x) = 0 \Leftrightarrow Ax=b$),
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{0.15\textwidth}
+		$\left.\vphantom{\begin{array}{l}g\\h\end{array}}\right\}$ sufficient
+	\end{minipage}
+	
+	
+	then $\mathcal{D}$ is a convex set.
+	
+	\paragraph{Example} $a,b\in\mathbb{R}$
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c c c}
+			$\underset{x}{\min}f$ & & $\underset{x}{\min}f$\\
+			s.t. $x^3-1\leq0$ & $\qquad\leftrightarrow\qquad$ & s.t. $x-1\leq0$\\
+			$(ax+b)^2=0$ & & $ax+b=0$\\
+			non-convex & & convex\\
+			non-affine & & affine
+		\end{tabular}
+	\end{table}
+	
+	\underline{Moral to recognize convexity of NLP:}
+	\begin{enumerate}
+		\item Use definition of cvx NLP, cvx $f$, convex $\mathcal{D}$
+		\item If $\mathcal{D}$ written as equality/inequality-constraints, check $g$ convex/$h$ affine.\\
+		If not, check further whether the feasible set is cvx or not (e.g. can be written equivalently with cvx $g$/affine $h$).
+	\end{enumerate}
+	
+	\subsection{Unconstrained Problems}
+	\[
+		\mathcal{D} = \mathbb{R}^n
+	\]
+	Assume throughout that $f \in \mathcal{C}^1$ (continuously differentiable).
+	
+	\begin{definitionbox}[Descent Direction]
+		$d \in \mathbb{R}^n$ is a \underline{descent direction} for $f$ at $\bar{x} \in \mathbb{R}^n$ if
+		\[
+		\exists \delta > 0 \quad \text{s.t.} \quad f(\bar{x} + \lambda d) < f(\bar{x}) \quad \forall \lambda \in (0, \delta).
+		\]
+		$F(\bar{x})$: \underline{Cone of decent directions}\\
+		Set of all descent directions of $f$ at $\bar{x}$
+	\end{definitionbox}
+	
+	A set $K \subseteq \mathbb{R}^n$ is a cone if it contains the full ray through any point in the set.
+	
+	\[
+		K \text{ cone if }\forall x\in K \text{ and } \rho \geq 0, \quad \rho x \in K
+	\]
+	
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.4\textwidth]{images/1.1-1.jpg}
+		\end{center}
+	\end{figure}
+	
+	This is a geometric characterization of descent direction. It gives us a geometric condition for $x^\star$ to be a local minimizer.
+	
+	\begin{lemmabox}[Geometric Condition for local minimum]
+		$x^\star$ is a local minimizer iff
+		\[
+		\mathcal{F}(\bar{x}) = \emptyset.
+		\]
+	\end{lemmabox}
+	
+	We want an algebraic condition to be able to compute or look for $x^\star$.
+	
+	\begin{lemmabox}[Algebraic first-order characterization of $\mathcal{F}$]
+		If $\nabla f(\bar{x}) \neq 0$, then
+		\[
+		\mathcal{F}_0(\bar{x}) = \{ d \mid \nabla f(\bar{x})^T d < 0 \} = \mathcal{\mathcal{F}}(\bar{x}).
+		\]
+		Otherwise
+		\[
+		\mathcal{F}_0(\bar{x}) \subseteq \mathcal{F}(\bar{x}).
+		\]
+	\end{lemmabox}
+	
+	\textbf{Proof}: try Taylor-series expansion of $f$ at $\bar{x}$
+	
+	Graphical interpretation:
+	
+	
+	
+	$\nabla f$ forms angles greater or equal than $90^\circ$ with \underline{all} descent directions.
+	
+	\begin{lemmabox}[First-order necessary condition for local minimum]
+		If $x^\star$ is a local minimizer, then
+		\[
+		\underset{\text{'stationary point'}}{\underbrace{\nabla f(x^\star) = 0}}.
+		\]
+	\end{lemmabox}
+	
+	\textbf{Proof}: Contradiction\\
+	If $\nabla f(x^\star) \neq 0$, then $d = -\nabla f(x^*) \neq 0$. Therefore there exists a descent direction $d\in\mathcal{F}(x^\star)$ by Lemma 1.4. Thus $\exists \delta > 0$ s.t. $f(x^\star+\lambda d)<f(x^\star) \quad \forall\lambda\in (0,\delta).$\\
+	This is a contradiction with the fact, that $x^\star$ is a minimizer.\hfill\qedsymbol{}
+	
+	Why only necessary?\\
+	It can't be a sufficient condition because in case where $\nabla f(x^\star) = 0$ we cannot use Lemma 1.4, e.g. $f_1(x) = -x^2,\,f_2(x) = x^3,\,\nabla f_1(0) = \nabla f_2(0) = 0.$
+	
 	
 \end{document}
