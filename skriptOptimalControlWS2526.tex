@@ -19,6 +19,7 @@
 \setlist[itemize]{topsep=0pt, itemsep=2pt}
 
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17}
 \usepackage{graphicx}
@@ -208,9 +209,9 @@
 	\[
 	\text{s.t. } g(x)\leq0, \quad h(x)=0
 	\]
-	$f: \mathbb{R}^n \rightarrow \mathbb{R}$, objective function\\
-	$g: \mathbb{R}^n \rightarrow \mathbb{R}^{n_g}$, inequality constraints\\
-	$h: \mathbb{R}^n \rightarrow \mathbb{R}^{n_h}$, equality constraints\\
+	$f: \mathbb{R}^n \to \mathbb{R}$, objective function\\
+	$g: \mathbb{R}^n \to \mathbb{R}^{n_g}$, inequality constraints\\
+	$h: \mathbb{R}^n \to \mathbb{R}^{n_h}$, equality constraints\\
 	Feasible set:
 	\[
 	D = \{x\in\mathbb{R}^n \mid g(x)\leq0,\ h(x)=0\}
@@ -230,7 +231,7 @@
 			\exists \varepsilon>0,\text{ s.t.}\ f(x^\star)\le f(x)\quad \forall x\in B_\varepsilon(x^\star)\cap \mathcal{D}
 			\]
 			\[
-			B_\varepsilon(x) := \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\rightarrow\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
+			B_\varepsilon(x) := \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\to\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
 			\]
 			Strict local Minimizer if inequality holds strictly\\
 			Global min $\begin{tikzpicture}[baseline={(0,-0.25ex)}]
@@ -258,12 +259,12 @@
 	\end{definitionbox}
 	
 	\paragraph{Example}
-		$\mathcal{S} = [-1,1], \, -50 = \inf(\mathcal{S})?\quad\rightarrow\quad$ No, $\inf(\mathcal{S}) = -1$	
+		$\mathcal{S} = [-1,1], \, -50 = \inf(\mathcal{S})?\quad\to\quad$ No, $\inf(\mathcal{S}) = -1$	
 	\begin{itemize}
 		\item Analogous: $\sup(\mathcal{S})$ is smallest upper bound.  
 		\item $\inf$ and $\sup$ always exist if $\mathcal{S} \neq \emptyset$
 		\item $\inf(\mathcal{S})$ does not have to be an element of $\mathcal{S}$
-		\item If $\mathcal{S}$ unbounded from below $\rightarrow$ $\inf(\mathcal{S})=-\infty$
+		\item If $\mathcal{S}$ unbounded from below $\to$ $\inf(\mathcal{S})=-\infty$
 		\item $\inf([a,b]) = \inf((a,b]) = a$
 	\end{itemize}
 	
@@ -275,7 +276,7 @@
 	\inf(\underset{\mathcal{S}}{\underbrace{f(x)\,|\,x\in\mathcal{D}}}):=\bar{f}=\underset{x\in\mathcal{D}}{\inf}f(x) \quad\text{(similar to NLP)}
 	\]
 	
-	Whenever NLP has solution, then NLP ist equivalent to this, but $\nexists x^\star \in \mathcal{D}$ s. t. $f(x^\star) = \bar{f}\quad\rightarrow\quad$ infimum exists, but not minimum
+	Whenever NLP has solution, then NLP ist equivalent to this, but $\nexists x^\star \in \mathcal{D}$ s. t. $f(x^\star) = \bar{f}\quad\to\quad$ infimum exists, but not minimum
 	
 	\paragraph{Examples}
 		$f(x) = e^{-x}, \quad \mathcal{D} = [0,\infty), \quad \inf(\mathcal{S}) = 0$ \\
@@ -304,7 +305,7 @@
 		\[
 			\forall \epsilon > 0 \exists \delta > 0 \text{ s. t. } \norm{x-x'} < \delta \quad \Rightarrow \quad \norm{f(x)-f(x')} < \epsilon
 		\]
-		If $f$ is continuous $\forall x \in \mathcal{D}$ then $f$ is continuous on $\mathcal{D}$ $\rightarrow$ $f \in \mathcal{C}$
+		If $f$ is continuous $\forall x \in \mathcal{D}$ then $f$ is continuous on $\mathcal{D}$ $\to$ $f \in \mathcal{C}$
 	\end{definitionbox}
 	
 	Implication for NLP: If $f$ is $\mathcal{C}$ on $\mathcal{D}$ and $\mathcal{D}$ is compact and non-empty then [NLP] has a solution!
@@ -539,5 +540,204 @@
 	Why only necessary?\\
 	It can't be a sufficient condition because in case where $\nabla f(x^\star) = 0$ we cannot use Lemma 1.4, e.g. $f_1(x) = -x^2,\,f_2(x) = x^3,\,\nabla f_1(0) = \nabla f_2(0) = 0.$
 	
+	\begin{lemmabox}[second order necessary condition]
+		Assume f is twice continuously differentiable $f \in \mathcal{C}^2$
+		\[
+			x^\star\text{ local minimizer }\Rightarrow \nabla_{xx}^2 f(x^\star) \geq 0
+		\]
+	\end{lemmabox}
 	
+	\textbf{Note:} the condition on the Hessian of f can be interpreted as a local convexity property (around $x^\star)$.
+	
+	\textbf{Proof:} $2^{nd}$ order Taylor expansion around $x^\star$ in direction $d \in \mathbb{R}^n$:
+	\[
+		f(x^\star + \lambda d) = f(x^\star) + \lambda\nabla f(x^\star)^Td + \frac{\lambda^2}{2}d^T \nabla_{xx}^2 f(x^\star) d + \lambda^2\norm{d}^2\alpha (\lambda d)
+	\]
+	\[
+		(\to\alpha(\cdot)) \text{ is a function that is order $1$ or higher in $\lambda d$})
+	\]
+	\begin{enumerate}
+		\item If $x^\star$ is local minimzer $\Rightarrow\nabla f(x^\star) = 0$
+		\item Divide by $\lambda^2$:
+		\[
+			\frac{f(x^\star+\lambda d)-f(x^\star)}{\lambda^2} = \frac{1}{2} d^T \nabla_{xx}^2 f(x^\star) d + \norm{d}\alpha (\lambda d)
+		\]
+		\item $\lambda \to 0$ on the right-hand-side the first term dominates
+		\[
+			\frac{f(x^\star+\lambda d)-f(x^\star)}{\lambda^2} \approx \frac{1}{2} d^T \nabla_{xx}^2 f(x^\star) d
+		\]
+		\item For $x^\star$ is a local minimizer, the left-hand-side must be $\geq 0$ for any $d\in\mathbb{R}^n$\\$\hspace*{1cm}\Rightarrow\quad d^T \nabla_{xx}^2 f(x^\star) \geq 0 \quad\forall d\quad \Rightarrow\quad \nabla_{xx}^2 f(x^\star)\geq0$\hfill\qedsymbol{}
+	\end{enumerate}
+	
+	Only a necessary condition, because when $\nabla_{xx}^2 f(x^\star)$ is singular, we need to use higher-order information.
+	
+	Generally it is hard to get (global) sufficient conditions. $\to$ convexity to the rescue!
+	
+	\begin{lemmabox}[First order N\&S condition for global minimizers]
+		Assume f is convex.
+		\[
+			\exists x^\star \text{ s.t. } \nabla f(x^\star) = 0 \quad\Leftrightarrow\quad x^\star \text{ is a global minimizer}
+		\]
+		If $f$ is  strictly convex, then the minimizer is unique.
+	\end{lemmabox} 	
+	
+	\textbf{Proof}: $(\nabla f = 0\,\Rightarrow\,\text{global minimum})$
+	
+	First order condition for convexity:
+	\[
+		f(y) \geq f(x) + \nabla f(x)^T(y-x),\quad\forall x,y\in\mathbb{R}^n
+	\]
+	Pick $x = x^\star$:
+	\[
+		f(y) \geq f(x^\star),\quad\forall y\in\mathbb{R}^n
+	\]
+	(Other direction holds because of Lemma 1.5)
+	
+	What if we do not have global convexity?
+	
+	\begin{lemmabox}[Second order sufficient condition for local minimizer]
+		Assume $f \in\mathcal{C}^2$.\\
+		If $\nabla f(x^\star) = 0$ and $\nabla_{xx}^2 f(x^\star) > 0\quad\Rightarrow\quad x^\star$ is strict local minimizer.
+	\end{lemmabox}
+	
+	\textbf{Proof}: Taylor expansion (Similar to Lemma 1.6)
+	
+	\subsection{Constrained optimization}
+	
+	\[
+		\mathcal{D} \subseteq\mathbb{R}^n,\quad\mathcal{D} = \{x \mid g_i(x)\leq0,\,i=1,\dots,n_g\quad h_j(x)=0,\,j=1,\dots,n_h\}
+	\]
+	
+	We assume throughout $g_i,\,h_j$ are all $\mathcal{C}^1$ functions.
+	
+	\begin{definitionbox}[Tangent vector, tangent cone]
+		$p\in\mathbb{R}^n$ is a tangent vector to $\mathcal{D}$ at $\bar{x}\in\mathcal{D}$ if $\exists$ differential curve $\bar{x}(s):[0,\epsilon)\to\mathcal{D}$ with $\epsilon>0$ such that $\bar{x}(0)=\bar{x},\left.\frac{d\bar{x}}{ds}\right|_{s=0}=p$.\\\\
+		Tangent cone $\mathcal{T}_\mathcal{D}(\bar{x})$ to $\bar{x}$ is the set of all tangent vectors
+		\[
+			\mathcal{T}_\mathcal{D}(\bar{x}):=\{p\mid p \text{ tangent vector to $\mathcal{D}$ at $\bar{x}$}\}
+		\]
+	\end{definitionbox}
+	
+	Graphical representation:
+	
+	Set of directions that make us stay feasible (at least infinitesimally)
+	
+	When it comes to geometric conditions for optimality in constrained problems, we now have 2 sets/2 directions:
+	\begin{itemize}
+		\item $d\in\mathcal{F}(x)\to$ descent direction: objective improves
+		\item $d\in\mathcal{T}_D(\bar{x})\to$ tangent vector: we stay feasible
+	\end{itemize}
+	
+	\begin{lemmabox}[Geometric condition for local minimizer, $\mathcal{D}\subseteq\mathbb{R}^n$]
+		$x^\star$ is a local minimizer iff $\mathcal{F}(\bar{x})\cap\mathcal{T}_\mathcal{D}(\bar{x})=\emptyset$
+	\end{lemmabox}
+	
+	It is basically says that 'any improving direction can't be feasible'.
+	
+	
+	
+	As in the unconstrained case, we want to turn geometric conditions to algebraic ones.
+	
+	\begin{lemmabox}[$1$st order Nec. condition - semi-algebraic]
+		If $x^\star$ is a local minimizer. Then:
+		\begin{enumerate}
+			\item $x^\star\in\mathcal{D}$
+			\item $\underset{\text{geometric}}{\underline{\forall p\in\mathcal{T}_\mathcal{D}(x^\star)}}$, it holds $\underset{\text{algebraic}}{\underline{p^T\nabla f(x^\star)\geq 0}}$
+		\end{enumerate}
+	\end{lemmabox}
+	
+	\textbf{Proof}:
+	
+	Item 1 $\to$ feasibility
+	
+	Item 2: Assume there is a $p$ s.t. $p^T\nabla f(x^\star)<0$. Then 
+	\[
+		\exists\text{ curve }\bar{x}(s)\in\mathcal{D}\text{ s.t. }\left.\frac{df(\bar{x})}{ds}\right|_{s=0} \underset{\rotatebox[origin=c]{90}{$\Rsh$}\text{ chain rule }}{=p^T\nabla f(x^\star})<0
+	\]
+	which would mean that $p$ is descent direction. Contradicts $x^\star$ local minimizer.
+	
+	This is almost a translation of Lemma 1.9 because we replaced $\mathcal{F}(x^\star)$ with its \underline{algebraic} form '$d^T\nabla f(x^\star)<0'$.
+	
+	To obtain a fully algebraic test, we need a few more concepts.
+	
+	\begin{definitionbox}[Active constraints, active set, regular points]
+		$\bar{x}\in\mathcal{D}$
+		\begin{itemize}
+			\item $g_i$ is \underline{active} at $\bar{x}$ if $g_i(\bar{x})=0$
+			\item $A(\bar{x}) = \{i\mid g_i(\bar{x})=0\}$ \underline{set of active constraints} at $\bar{x}$
+			\item $\bar{x}\in\mathcal{D}$ is a \underline{regular point} if $\nabla g_i(\bar{x}),\,i\in\mathcal{A}(\bar{x})$ and $\nabla h_j(\bar{x}),\,j=1,\dots,n_h$ are linearly independent.
+		\end{itemize}
+	\end{definitionbox}
+	
+	\begin{lemmabox}[Algebraic first-order characterization of target set]
+		If $\bar{x}$ is regular point. Then
+		\[
+			\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\nabla h(\bar{x})^p=0,\,\nabla g_i(\bar{x})^p\leq0,\quad\forall i\in\mathcal{A}(\bar{x})\}\qquad\textcircled{1}
+		\]
+		where $\nabla h(\bar{x}):=[\nabla h_1(\bar{x}),\dots,\nabla h_{n_k}(\bar{x})]\in\mathbb{R}^{n\cross n_h}$.
+		
+		\textcircled{1} can be written equivalently as $\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\mathcal{A}(\bar{x})p\geq0\}$
+	\end{lemmabox}
+	
+	\[
+	A(\bar{x}):=\left[
+	\begin{array}{c}
+		\nabla h(\bar{x})^T \\[4pt]
+		-\nabla h(\bar{x})^T \\[4pt]
+		\vdots \\[4pt]
+		-\nabla g_i(\bar{x})^T \\[4pt]
+		\vdots
+	\end{array}
+	\right]
+	\begin{array}{l}
+		\in\mathbb{R}^{(2n_h+\abs{\mathcal{A}(\bar{x})})\cross n} \\[6pt]
+		\left.\rule{0pt}{3.0em}\right\} i\in\mathcal{A}(\bar{x})
+	\end{array}
+	\]
+	
+	In other words, item 2 of Lemma 1.10 can be written as follows:
+	\[
+		p\in\mathbb{R}^n:\, \mathcal{A}(x^\star)p\geq0,\,p^T\nabla f(x^\star)<0
+	\]
+	still not very tractable?
+	
+	Farkas Lemma to the rescue:
+	
+	\begin{lemmabox}[Farkas Lemma]
+		For any matrix $A\in\mathbb{R}^{m\cross n}$, vector $b\in\mathbb{R}^n$.
+		
+		Exactly one of the following holds:
+		\begin{enumerate}
+			\item $\exists y\in\mathbb{R}^m\,y\geq0$, such that $A^Ty=b$
+			\item $\exists p\in\mathbb{R}^m$, such that $A^Tp\geq0,\,p^Tb<0$
+		\end{enumerate}
+	\end{lemmabox}
+	
+	Take $A\equiv A(x^\star)$ and $b\equiv\nabla f(x^\star)$
+	
+	If we find $y$ satisfying 1., then 2. can't hold $\Rightarrow$ item 2 of Lemma 1.10 is verified $\Rightarrow$ $x^\star\in\mathcal{D}$ is a local minimizer.
+	
+	KTK-conditions just follow from imposing
+	
+	\hspace*{1cm}item 1 of Lemma 1.10 $\to$ $x^\star\in\mathcal{D}$
+	
+	\hspace*{1cm}item 2 of Lemma 1.10 $\to$ $\exists y\in\mathbb{R}^m,\,y\geq0$ s.t. $\mathcal{A}(x^\star)^Ty=\nabla f(x^\star)$
+	
+	\underline{\textbf{Conceptual summary}}\nopagebreak
+	
+	\begin{tikzpicture}[
+		node distance=2.5cm and 5cm,
+		box/.style={draw, rectangle, rounded corners, align=center, minimum width=4cm, minimum height=1.2cm},
+		arrow/.style={-{Latex[length=3mm]}, thick}
+		]
+		
+		% Nodes
+		\node[box] (lemma19) {Lemma 1.9\\ \textit{exact geometric}\\ \textit{characterization of $x^\star$}};
+		\node[box, right=of lemma19] (lemma110) {Lemma 1.10\\ \textit{semi-algebraic}\\ \textit{ necessary condition}};
+		\node[box, below=of lemma110] (kkt) {KKT conditions\\ \textit{(1$^{st}$ order necessary conditions)}};
+		
+		% Arrows
+		\draw[arrow] (lemma19) -- node[above, sloped, align=center] {algebraic expression\\ for $\mathcal{F}(x^\star)$} (lemma110);
+		\draw[arrow] (lemma110) -- node[left, align=left]{- algebraic expression of $\mathcal{T}_\mathcal{D}(x^\star)$\\ - Farkas Lemma} (kkt);
+	\end{tikzpicture}
 \end{document}
