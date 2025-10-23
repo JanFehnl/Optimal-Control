@@ -287,7 +287,7 @@
 		\end{center}
 	\end{figure}
 		
-	When does the infimum coincide with its optimal value?
+	When does the infimum coincide with the minimum?
 	
 	\begin{theorembox}[Extreme value problem) (Weierstrass Theorem]
 		$f: D \to \mathbb{R},\,\mathcal{D} \subseteq \mathbb{R}^n$\\
@@ -365,7 +365,7 @@
 			\end{figure}
 			\item Given a cvx set $C$, a function $f: C \to \mathbb{R}$ is cvx if
 			\[
-			f(\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda) f(y), \quad\forall x,y \in C, \quad\lambda \in (0,1)
+			\textcolor{green!50!black}{f(\lambda x + (1 - \lambda)y)} \leq \textcolor{purple!70!black}{\lambda f(x) + (1 - \lambda) f(y)}, \quad\forall x,y \in C, \quad\lambda \in (0,1)
 			\]
 			\begin{figure}[H]
 				\begin{center}
@@ -501,7 +501,7 @@
 	\begin{lemmabox}[Geometric Condition for local minimum]
 		$x^\star$ is a local minimizer iff
 		\[
-		\mathcal{F}(\bar{x}) = \emptyset.
+		\mathcal{F}(x^\star) = \emptyset.
 		\]
 	\end{lemmabox}
 	
@@ -602,7 +602,7 @@
 	
 	\textbf{Proof}: Taylor expansion (Similar to Lemma 1.6)
 	
-	\subsection{Constrained optimization}
+	\subsection{Constrained Problems}
 	
 	\[
 		\mathcal{D} \subseteq\mathbb{R}^n,\quad\mathcal{D} = \{x \mid g_i(x)\leq0,\,i=1,\dots,n_g\quad h_j(x)=0,\,j=1,\dots,n_h\}
