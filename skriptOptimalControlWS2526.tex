@@ -281,12 +281,26 @@
 	\paragraph{Examples}
 		$f(x) = e^{-x}, \quad \mathcal{D} = [0,\infty), \quad \inf(\mathcal{S}) = 0$ \\
 		$f(x) = x, \quad \mathcal{D} =\mathbb{R}, \quad \inf(\mathcal{S}) = - \infty$, min doesn't exist! 
-	\begin{figure}[H]
-		\begin{center}
-			\includegraphics[width=0.4\textwidth]{images/1.0-1.jpg}
-		\end{center}
-	\end{figure}
-		
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = left,
+				grid = both,
+				xlabel = $x$,
+				ylabel = $f(x)$,
+				xmin = 0, xmax = 5,
+				ymin = 0, ymax = 1.2,
+				width = 10cm,
+				height = 5cm,
+				every axis plot/.style={very thick, green!60!black},
+				]
+				
+				\addplot[domain=0:5, samples=200]{exp(-x)} node[pos=0.15, above right] {$f$};
+				\node at (axis cs:0,1) [anchor=east, green!50!black] {$f$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
 	When does the infimum coincide with the minimum?
 	
 	\begin{theorembox}[Extreme value problem) (Weierstrass Theorem]
@@ -332,13 +346,32 @@
 		% Durchstreichung des unteren Pfeils
 		\draw[line width=0.4pt] (0.1,-0.1) -- (0.4, 0.1);
 	\end{tikzpicture}$ bounded and closed
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.4\textwidth]{images/1.0-2.jpg}
-	\end{figure}	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel={$x$},
+				ylabel={$f(x)$},
+				xmin=-0.7, xmax=0.7,
+				ymin=-0.0, ymax=0.45,
+				width=6cm,
+				height=4cm,
+				grid=both,
+				every axis plot/.style={very thick, green!60!black},
+				]
+				
+				% Funktion
+				\addplot[domain=-0.7:0.7, samples=200]{x^2};
+				
+				% Minimum markieren
+				\addplot[only marks, mark=* , mark size=2.5pt, red] coordinates {(0,0)};
+				\node[red, above right] at (axis cs:0,0) {$x^\star$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
 	Theorem 1.1 is restrictive e.\,g. $f(x) = x^2, \mathcal{D} = (-\infty,\infty)$ has unique minimum
-	\item Notation convention: Technically it is 'wrong' to write
+	\item Notation convention: Technically it is ``wrong'' to write
 	\[
 		\min\underset{x\in\mathcal{D}}{f(x)}
 	\]
@@ -358,20 +391,70 @@
 			\[
 			\{ z \mid z = \lambda x + (1-\lambda)\lambda, \, \lambda \in [0,1]\}\subseteq C
 			\]
-			\begin{figure}[H]
-				\begin{center}
-					\includegraphics[width=0.23\textwidth]{images/1.0-3.png}
-				\end{center}
-			\end{figure}
+			\begin{center}
+				\begin{tikzpicture}[>=Latex]
+				
+				% Ellipse
+				\draw[blue, line width=1pt] (0,0) ellipse [x radius=3.2cm, y radius=1.6cm];
+				
+				% Punkte
+				\coordinate (X) at (-1.25,0.20);
+				\coordinate (Y) at ( 1.10,-0.10);
+				
+				% Verbindungssegment
+				\draw[gray!70, line width=0.8pt] (X) -- (Y);
+				
+				% Markierungen + Labels
+				\draw[red!75!black, fill=red!75!black] (X) circle (2.1pt)
+				node[above left=1pt, text=red!75!black] {$x$};
+				\draw[red!75!black, fill=red!75!black] (Y) circle (2.1pt)
+				node[below right=1pt, text=red!75!black] {$y$};
+				% Buchstabe C in der Ellipse
+				\node[blue] at (-0.25,-0.5) {$C$};
+				\end{tikzpicture}
+			\end{center}
+			
 			\item Given a cvx set $C$, a function $f: C \to \mathbb{R}$ is cvx if
 			\[
-			\textcolor{green!50!black}{f(\lambda x + (1 - \lambda)y)} \leq \textcolor{purple!70!black}{\lambda f(x) + (1 - \lambda) f(y)}, \quad\forall x,y \in C, \quad\lambda \in (0,1)
+			\textcolor{green!50!black}{f(\lambda x + (1 - \lambda)y)} \leq \textcolor{ purple!60!white}{\lambda f(x) + (1 - \lambda) f(y)}, \quad\forall x,y \in C, \quad\lambda \in (0,1)
 			\]
-			\begin{figure}[H]
-				\begin{center}
-					\includegraphics[width=0.3\textwidth]{images/1.0-4.png}
-				\end{center}
-			\end{figure}
+			\begin{center}
+				\begin{tikzpicture}[line cap=round, line join=round]
+					
+					% Parabel: y = a*x^2 + c  (nach oben geöffnet)
+					\pgfmathsetmacro\a{0.35}
+					\pgfmathsetmacro\c{-1.8}
+					
+					% Punkte auf der Parabel (x-Koordinaten, xA < xB)
+					\pgfmathsetmacro\xA{-2.0}
+					\pgfmathsetmacro\xB{ 2.4}
+					\pgfmathsetmacro\yA{\a*\xA*\xA + \c}
+					\pgfmathsetmacro\yB{\a*\xB*\xB + \c}
+					
+					% Gerade durch die beiden Punkte
+					\pgfmathsetmacro\m{(\yB-\yA)/(\xB-\xA)}
+					\pgfmathsetmacro\b{\yA - \m*\xA}
+					
+					% --- Parabel zuerst komplett SCHWARZ ---
+					\draw[very thick, black, domain=-3.0:3.0, samples=250]
+					plot ({\x},{\a*\x*\x + \c});
+					
+					% --- Dann den Abschnitt zwischen xA und xB in GRÜN überzeichnen ---
+					% (für nach oben geöffnete Parabel liegt dieser Abschnitt unterhalb der Geraden)
+					\draw[very thick, green!50!black, domain=\xA:\xB, samples=200]
+					plot ({\x},{\a*\x*\x + \c});
+					
+					% Lilafarbene Sehne
+					\draw[line width=2pt, purple!60!white] (\xA,\yA) -- (\xB,\yB);
+					
+					% Rote Punkte + Labels
+					\fill[red!70!black] (\xA,\yA) circle (2.2pt)
+					node[left=3pt, text=red!70!black] {$x$};
+					\fill[red!70!black] (\xB,\yB) circle (2.2pt)
+					node[right=3pt, text=red!70!black] {$y$};
+					
+				\end{tikzpicture}				
+			\end{center}
 			\item f is strictly cvx if the inequality holds strictly.
 		\end{itemize}
 		
@@ -402,7 +485,7 @@
 		Then $x^\star$ is also global minimizer.
 	\end{lemmabox}
 	
-	\textbf{Proof}: try as an erxercise\\
+	\textbf{Proof:} try as an erxercise\\
 	
 	Minimizers of convex NLP form a convex set.\\
 	This set might be empty (Convex NLPs not guaranteed to have solution).\\
@@ -489,13 +572,42 @@
 	\[
 		K \text{ cone if }\forall x\in K \text{ and } \rho \geq 0, \quad \rho x \in K
 	\]
-	
-	\begin{figure}[H]
-		\begin{center}
-			\includegraphics[width=0.4\textwidth]{images/1.1-1.jpg}
-		\end{center}
-	\end{figure}
-	
+	\begin{center}
+		\begin{tikzpicture}[line cap=round,line join=round,>=stealth,thick,scale=1]
+			
+			% Achsen
+			\draw[->] (-0.2,0) -- (5,0);
+			\draw[->] (0,-0.2) -- (0,4);
+			
+			% Parameter
+			\pgfmathsetmacro{\mA}{0.3}   % untere schwarze Linie
+			\pgfmathsetmacro{\mB}{0.8}   % obere schwarze Linie
+			\pgfmathsetmacro{\mR}{0.6}   % rote Mittellinie
+			\pgfmathsetmacro{\L}{4.5}    % Länge
+			
+			% Koordinaten
+			\coordinate (A) at (\L,\mA*\L);
+			\coordinate (B) at (\L,\mB*\L);
+			\coordinate (R) at (\L,\mR*\L);
+			
+			% Gelber Bereich zwischen den schwarzen Linien
+			\path[fill=yellow!50,opacity=0.6] (0,0) -- (A) -- (B) -- cycle;
+			
+			% Schwarze Begrenzungslinien
+			\draw[thick] (0,0) -- (A);
+			\draw[thick] (0,0) -- (B);
+			
+			% Rote Mittellinie
+			\draw[red,very thick] (0,0) -- (R);
+			
+			% Punkt x auf der roten Linie
+			\coordinate (P) at (2.5, {2.5*\mR});
+			\fill[black] (P) circle (2pt);
+			\node[below right,blue,scale=1.3] at (P) {$x$};
+			
+		\end{tikzpicture}
+		
+	\end{center}	
 	This is a geometric characterization of descent direction. It gives us a geometric condition for $x^\star$ to be a local minimizer.
 	
 	\begin{lemmabox}[Geometric Condition for local minimum]
@@ -518,7 +630,7 @@
 		\]
 	\end{lemmabox}
 	
-	\textbf{Proof}: try Taylor-series expansion of $f$ at $\bar{x}$
+	\textbf{Proof:} try Taylor-series expansion of $f$ at $\bar{x}$
 	
 	Graphical interpretation:
 	
@@ -529,11 +641,11 @@
 	\begin{lemmabox}[First-order necessary condition for local minimum]
 		If $x^\star$ is a local minimizer, then
 		\[
-		\underset{\text{'stationary point'}}{\underbrace{\nabla f(x^\star) = 0}}.
+		\underset{\text{``stationary point''}}{\underbrace{\nabla f(x^\star) = 0}}.
 		\]
 	\end{lemmabox}
 	
-	\textbf{Proof}: Contradiction\\
+	\textbf{Proof:} Contradiction\\
 	If $\nabla f(x^\star) \neq 0$, then $d = -\nabla f(x^*) \neq 0$. Therefore there exists a descent direction $d\in\mathcal{F}(x^\star)$ by Lemma 1.4. Thus $\exists \delta > 0$ s.t. $f(x^\star+\lambda d)<f(x^\star) \quad \forall\lambda\in (0,\delta).$\\
 	This is a contradiction with the fact, that $x^\star$ is a minimizer.\hfill\qedsymbol{}
 	
@@ -581,7 +693,7 @@
 		If $f$ is  strictly convex, then the minimizer is unique.
 	\end{lemmabox} 	
 	
-	\textbf{Proof}: $(\nabla f = 0\,\Rightarrow\,\text{global minimum})$
+	\textbf{Proof:} $(\nabla f = 0\,\Rightarrow\,\text{global minimum})$
 	
 	First order condition for convexity:
 	\[
@@ -600,7 +712,7 @@
 		If $\nabla f(x^\star) = 0$ and $\nabla_{xx}^2 f(x^\star) > 0\quad\Rightarrow\quad x^\star$ is strict local minimizer.
 	\end{lemmabox}
 	
-	\textbf{Proof}: Taylor expansion (Similar to Lemma 1.6)
+	\textbf{Proof:} Taylor expansion (Similar to Lemma 1.6)
 	
 	\subsection{Constrained Problems}
 	
@@ -632,7 +744,7 @@
 		$x^\star$ is a local minimizer iff $\mathcal{F}(\bar{x})\cap\mathcal{T}_\mathcal{D}(\bar{x})=\emptyset$
 	\end{lemmabox}
 	
-	It is basically says that 'any improving direction can't be feasible'.
+	It is basically says that ``any improving direction can't be feasible''.
 	
 	
 	
@@ -646,7 +758,7 @@
 		\end{enumerate}
 	\end{lemmabox}
 	
-	\textbf{Proof}:
+	\textbf{Proof:}
 	
 	Item 1 $\to$ feasibility
 	
@@ -656,7 +768,7 @@
 	\]
 	which would mean that $p$ is descent direction. Contradicts $x^\star$ local minimizer.
 	
-	This is almost a translation of Lemma 1.9 because we replaced $\mathcal{F}(x^\star)$ with its \underline{algebraic} form '$d^T\nabla f(x^\star)<0'$.
+	This is almost a translation of Lemma 1.9 because we replaced $\mathcal{F}(x^\star)$ with its \underline{algebraic} form ``$d^T\nabla f(x^\star)<0$''.
 	
 	To obtain a fully algebraic test, we need a few more concepts.
 	
@@ -723,7 +835,7 @@
 	
 	\hspace*{1cm}item 2 of Lemma 1.10 $\to$ $\exists y\in\mathbb{R}^m,\,y\geq0$ s.t. $\mathcal{A}(x^\star)^Ty=\nabla f(x^\star)$
 	
-	\underline{\textbf{Conceptual summary}}\nopagebreak
+	\textbf{\underline{Conceptual summary}:}\nopagebreak
 	
 	\begin{tikzpicture}[
 		node distance=2.5cm and 5cm,
@@ -740,4 +852,402 @@
 		\draw[arrow] (lemma19) -- node[above, sloped, align=center] {algebraic expression\\ for $\mathcal{F}(x^\star)$} (lemma110);
 		\draw[arrow] (lemma110) -- node[left, align=left]{- algebraic expression of $\mathcal{T}_\mathcal{D}(x^\star)$\\ - Farkas Lemma} (kkt);
 	\end{tikzpicture}
+	
+	\textbf{\underline{Informal recap}:}
+	
+	$x^\star$ local minimizer $\Rightarrow$ $x^\star\in\mathcal{D},\quad\forall p\in\mathcal{T}_D(x^\star),\quad p^\mathcal{T}\nabla f(x^\star)\geq0$
+	
+	\hspace*{8cm}$\Updownarrow$ (if $x^\star$ regular point)
+	
+	$\exists y=\left[
+	\begin{array}{c}
+		\hat{\lambda}_1 \\[4pt]
+		\hat{\lambda}_2 \\[4pt]
+		\vdots \\[4pt]
+		-\nu_i \\[4pt]
+		\vdots
+	\end{array}
+	\right]
+	\begin{array}{l}
+		\in\mathbb{R}^{2n_h+\abs{\mathcal{A}(x^\star)}} \\[15pt]
+		\left.\rule{0pt}{3.0em}\right\} i\in\mathcal{A}(\bar{x})
+	\end{array}\qquad y\geq0\quad\to A(x^\star)^Ty=\nabla f(x^\star)$
+	
+	\rule{\textwidth}{1pt}
+	
+	Let's write down $A^Ty=\nabla f$
+	\[
+		\nabla h(x^\star)(\hat{\lambda}_1-\hat{\lambda}_2)-\sum_{i\in\mathcal{A}(x^\star)}\nabla g_i(x^\star)\nu_i=\nabla f(x^\star),\quad\hat{\lambda}_1,\hat{\lambda}_2,\nu_i\geq0:\text{ But }(\hat{\lambda}_1-\hat{\lambda}_2)\gtreqless0
+	\]
+	Equivalently: $\lambda:=-(\hat{\lambda}_1-\hat{\lambda}_2)\in\mathbb{R}^{n_h}$, sign undefined
+	\[
+		\exists\lambda\in\mathbb{R}^{n_h},\quad\nu\in\mathbb{R}^{n_g},\quad\nu\geq0,\quad\nu_i=0,\quad i\notin\mathcal{A}(x^\star)
+	\]
+	\[
+		\text{s.t. }\nabla f(x^\star)+\nabla h(x^\star)\lambda+\nabla g(x^\star)\nu=0
+	\]
+	\[
+		\text{with }\nabla g(x^\star):=\begin{bmatrix}
+			\nabla g_1(x^\star)&\nabla g_2(x^\star)&\cdots&\nabla g_{n_g}(x^\star)
+		\end{bmatrix}
+	\]
+	\[
+	\text{and }\nabla h(x^\star):=\begin{bmatrix}
+		\nabla h_1(x^\star)&\nabla h_2(x^\star)&\cdots&\nabla h_{n_h}(x^\star)
+	\end{bmatrix}
+	\]
+	
+	We are now ready for a fully algebraic characterization.
+	
+	\begin{definitionbox}[Karash-Kuhn-Tucker (KKT) points]
+		A triplet of vectors $(\bar{x},\bar{\lambda},\bar{\nu})\in\mathbb{R}^n\cross\mathbb{R}^{n_h}\cross\mathbb{R}^{n_g}$
+		
+		\hspace*{2cm}$\bar{x}:\text{ opt. variable},\quad\bar{\lambda}:\text{ multiplier equality constraints},$
+		
+		\hspace*{2cm}$\bar{\nu}:\text{ multiplier inequality constraints}$
+		
+		is a KKT point if
+		\begin{enumerate}
+			\item $\nabla f(\bar{x})+\nabla h(\bar{x})\bar{\lambda}+\nabla g(\bar{x})\bar{\nu}=0$
+			\item $g(\bar{x})\leq0$
+			\item $h(\bar{x})=0$
+			\item $\bar{\nu}\geq0$
+			\item $\bar{\nu}^Tg(\bar{x})=0$
+		\end{enumerate}
+	\end{definitionbox}
+	
+	\begin{lemmabox}[KKT necessary condition for local minimizer]
+		If $x^\star$ is a local minimizer \textbf{and} a regular point.
+		
+		Then $\exists\lambda^\star,\nu^\star$ s.t. $(x^\star,\lambda^\star,\nu^\star$ is a KKT point)
+	\end{lemmabox}
+	
+	\textbf{Proof:} Corollary of previous discussion
+	\begin{enumerate}
+		\item $\Longleftrightarrow\exists\lambda\in\mathbb{R}^{n_h},\,\nu\in\mathbb{R}^{n_g}$ s.t. $\nabla f(x^\star)+\nabla h(x^\star)\lambda+\nabla g(x^\star)\nu=0$ It can be written
+		
+		\hspace*{2em} equivalently as
+		\[
+			\left.\nabla_x\mathcal{L}(x,\lambda,\nu)\right|_{x=x^\star,\lambda=\lambda^\star,\nu=\nu^\star}=0
+		\]
+		where $\mathcal{L}(x,\lambda,\nu):=f(x)+\lambda^Th(x)+\nu^Tg(x)$
+		\item $\Longleftrightarrow x^\star\in\mathcal{D}$
+		\item $\Longleftrightarrow x^\star\in\mathcal{D}$
+		\item $\Longleftrightarrow$ non-negativity of ``$y$'' from Farkas Lemma
+		\item $\Longleftrightarrow\nu_i=0,\,i\notin\mathcal{A}(x^\star)$
+		
+		
+		\hspace*{2em} $\nu^T g(x^\star) = \sum_i \nu_i g_i(x^\star) = 0\quad$ Complementary slackness
+		
+		\hspace*{2em} $g_i(x^\star) = 
+		\begin{cases}
+			=0, & i \in \mathcal{A}(x^\star) \\
+			<0, & i \notin \mathcal{A}(x^\star)
+		\end{cases}
+		\hspace*{0.5em} \text{because } x^* \in \mathcal{D}$
+		
+		\hspace*{2em} $\nu_i \ge 0, \; \forall i\quad$ because of Farkas' lemma.
+		
+		Then $\sum_i \nu_i g_i(x^\star)$ automatically sets 
+		$\nu_i = 0$ when $i \notin \mathcal{A}(x^\star)$ or $g_i(x^\star) < 0$.\hfill\qedsymbol{}
+	\end{enumerate}
+	
+	Intrestingly, if NLP is convex, KKT conditions are sufficient for global optimality:
+	
+	\begin{lemmabox}[KKT sufficient conditions fot global minimizer]
+		Suppose $f,g_i\quad(i=1,\dots,n_g)$ are convex functions and
+		
+		\hspace*{2cm}$h_j\quad(j=1,\dots,n_h)$ are affine functions.
+		
+		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point, then $x^\star$ is a local minimizer.
+	\end{lemmabox}
+	
+	\textbf{Proof:} For $(\lambda^\star,\nu^\star)$ KKT points:
+	
+	\[
+		b(x):=\mathcal{L}(x,\lambda^\star,\nu^\star)=f(x)+\sum_{i=1}^{n_g}\nu_i^\star g_i(x)+\sum_{j=1}^{n_h}\lambda_j^\star g_j(x)\hspace*{2cm} \textcircled{$\cross$}
+	\]
+	$f,g_i,h_j$ are convex functions
+	
+	Linear combination of cvx functions with non-negative coefficients is a convex function
+	
+	\hspace*{2cm}$\Rightarrow$ $b(x)$ convex
+	
+	\begin{enumerate}
+		\item $b(x)$ convex
+		\item $\nabla b(x^\star)=0$ because of $1.$, $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point $b(x)\geq b(x^\star)\quad\forall x\in\mathbb{R}^n$
+		
+		\hspace*{5cm}$\Updownarrow$ (if $x^\star$ regular point)
+		
+		\[
+			f(x)-f(x^\star)\geq-\underset{\leq0}{\underbracket{\sum_{i\in\mathcal{A}(x^\star)}\nu_i^\star g_i(x)}}-\underset{=0}{\underbracket{\sum_{j=1}^{n_h}\lambda_i^\star h_i(x)}}\geq0,\qquad x\in\mathcal{D}
+		\]
+		
+		\hspace*{2.8cm}because $g(x)\leq0,\,\nu^\star\geq0$\hspace*{0.8cm}because $h(x)=0$
+		
+		$\to$ $x^\star$ is a global minimizer.\hfill\qedsymbol{}
+	\end{enumerate}
+	
+	\underline{\textbf{Second-order conditions}}
+	
+	Similary to the unconstrained case, we can use the Hessian.
+	
+	\[
+		\nabla_{xx}^2\mathcal{L}
+	\]
+	
+	We need to check positive semi-definiteness of the Hessian only along feasible directions:
+	
+	Precisel, we are interestes in this property along
+	
+	\[
+		\text{Critical Directions}=\{p\mid \underset{\text{feasible directions}}{\underbrace{p\in\mathcal{T}_\mathcal{D}(x^\star)}},\quad\underset{\substack{\text{directions that cannot}\\\text{be excluded based on}\\\text{on first order arguments}}}{\underbrace{\nabla f(x^\star)^Tp=0}}\}
+	\]
+	
+	\[
+	\left\{
+	\begin{aligned}
+		\nabla f(x^*)^T p &< 0 \quad \to \quad p \text{ descent direction: }\substack{\text{already excluded by necessary}\\\text{condition of order 1}},\\[0.3em]
+		\nabla f(x^*)^T p &> 0 \quad \to \quad p \text{ ascent direction: ``not harmful''},\\[0.3em]
+		\nabla f(x^*)^T p &= 0 \quad \to \quad \text{this is what is ``new'' compared to first order.}
+	\end{aligned}
+	\right.
+	\]
+	
+	\begin{lemmabox}[Second order necessary condition]
+		\begin{itemize}
+			\item $f, g, h \in \mathcal{C}^2$ at $x^\star$
+			\item $x^\star$ local minimizer and regular point
+			\item $(x^\star, \lambda^\star, \nu^\star)$ KKT point (which exists by Lemma 1.13)
+		\end{itemize}		
+		
+		Then 
+		\[
+			p^T \nabla_{xx}^2 L(x^*, \lambda^*, \nu^*) p \ge 0\quad \text{(curvature non-negative along critical directions)}
+		\]
+
+		$\forall p \ne 0$ with
+		
+		\begin{itemize}
+			\item $\nabla h(x^\star)^T p = 0$
+			\item $\nabla g_i(x^\star)^T p \le 0 \quad\forall i\in\mathcal{A}(x^\star)$ with $\nu_i^\star = 0\mid p \in \mathcal{T}_\mathcal{D}(x^\star)$
+			\item $\nabla g_i(x^\star)^T p = 0 \quad\forall i\in\mathcal{A}(x^\star)$ with $\nu_i^* > 0\mid\nabla f(x^\star)^T p = 0$
+		\end{itemize}
+	\end{lemmabox}
+	
+	\begin{lemmabox}[Second order suffiecient conditions for local minimizer]
+		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point with
+		
+		\[
+			p^T\nabla_{xx}\mathcal{L}(^\star,\lambda^\star,\nu^\star)>0
+		\]
+		
+		for same $p$ as in Lemma 1.15.
+		
+		Then $x^\star$ is a strict local minimizer.
+	\end{lemmabox}
+	
+	\section{Calculus of Variations}
+	
+	Goal in OC: Find a function that maximizes a functional (function of function) subject \hspace*{2.3cm}to dynamic constraints
+	
+	In Chapter 1 we characterized solutions to optimization problems over vectors $(\mathbb{R}^n)$
+	
+	\[
+		\min f(x) \text{ s.t. }x\in\mathcal{D}\subseteq\mathbb{R}^n,\qquad\text{Static problem}
+	\]
+	
+	\begin{itemize}
+		\item We should introduce ``time'' or ``stages'' in the problem
+		\[
+			\min_{x_1,\dots,x_N}\;\sum_{k=1}^Nf(k,x_k,x_{k-1})\qquad\text{N coupled stages}
+		\]
+		\[
+			\text{s.t. }x_k\in\mathcal{D}_k\subseteq\mathbb{R}^n,\quad k=1,\dots,N,\quad x_0\text{ given}
+		\]
+		equivalent to: (loses structure)
+		\[
+			z=\begin{bmatrix}
+				x_1\\\vdots\\x_N
+			\end{bmatrix}\to\min_z\;p(z)\qquad z\in\mathcal{Z},\quad z\in\mathbb{R}^{n\cross N}
+		\]
+		\item Continuous-time description of dynamics
+		
+		From $N$ stages to continuous time by taking $\infty$ many stages:
+		
+		\begin{center}
+			\begin{tikzpicture}[scale=1.1, >=Latex]
+			
+			% --- Linkes Diagramm: diskrete Variablen ---
+			\begin{scope}
+				% Achsen
+				\draw[->] (0,0) -- (4.4,0) node[right] {$i$};
+				\draw[->] (0,-0.3) -- (0,3) node[left] {$x$};
+				
+				% Punkte und horizontale Linien
+				\foreach \x/\y in {1/1.3, 2/2.3, 3/2.0, 4/1.7}{
+					\draw[thick] (\x,0) -- (\x,\y);
+					\fill[blue] (\x,\y) circle (2pt);
+					\draw[blue, dashed] (0,\y) -- (\x,\y);
+				}
+				
+				% Achsenbeschriftungen
+				\node[below] at (1,0) {$1$};
+				\node[below] at (4,0) {$N$};
+				
+				% Blaue Labels
+				\node[blue] at (-0.3,1.3) {$x_1$};
+				\node[blue] at (-0.3,2.3) {$x_2$};
+				\node[blue] at (-0.3,1.7) {$x_N$};
+				
+				% Text oben
+				\node[red] at (2,3.4) {\small discrete variables};
+				
+				% Roter Intervalltext
+				\draw[red, thick, decorate, decoration={brace, amplitude=5pt, mirror}] (1,-0.4) -- (2,-0.4)
+				node[midway, below=4pt, red] {\scriptsize this interval must go to zero};
+			\end{scope}
+			
+			
+			% --- Pfeil zwischen den Diagrammen ---
+			\draw[->, very thick] (4.7,1.5) -- (5.7,1.5);
+			
+			
+			% --- Rechtes Diagramm: kontinuierliche Variable ---
+			\begin{scope}[xshift=6.8cm]
+				% Achsen
+				\draw[->] (0,0) -- (3.8,0) node[right] {$s$};
+				\draw[->] (0,-0.3) -- (0,3) node[left] {$x$};
+				
+				% Blaue Kurve (x(s))
+				\draw[blue, thick, smooth]
+				plot coordinates {(0.8,1.8) (1.8,2.6) (2.9,1.2) (3.3,1.4)};
+				
+				% Vertikale Linien bei s1 und s2
+				\draw[dashed, blue] (0.8,0) -- (0.8,1.8);
+				\draw[dashed, blue] (3.3,0) -- (3.3,1.4);
+				
+				% Horizontale Hilfslinien
+				\draw[dashed, blue] (0,1.8) -- (0.8,1.8);
+				\draw[dashed, blue] (0,1.4) -- (3.3,1.4);
+				
+				% Beschriftungen
+				\node[below] at (0.8,0) {$s_1$};
+				\node[below] at (3.3,0) {$s_2$};
+				\node[blue] at (-0.5,1.9) {$x(s_1)$};
+				\node[blue] at (-0.5,1.3) {$x(s_2)$};
+				\node[blue] at (2.6,2.8) {$x(s)$};
+				
+				% Text oben
+				\node[red] at (2,3.4) {\small continuous variables};
+			\end{scope}
+			
+		\end{tikzpicture}
+		\end{center}
+		
+		\[
+		\min_{x(\cdot)} \; \int_{s_1}^{s_2} f\big(s, x(s), \dot{x}(s)\big) \, ds
+		\]
+		\[
+		\text{s.t.} \quad
+		\begin{aligned}
+			&x(s) \in \mathcal{X} \subseteq \mathbb{R}^n, \quad s \in [s_1, s_2],\\
+			&x(s_1) = x_1,
+		\end{aligned}
+		\quad
+		\left\{
+		\begin{array}{l}
+			\text{prototypical CV problem}\\[4pt]
+			\bullet\; \text{no ODE yet}\\[4pt]
+			\bullet\; \text{opt. variable lives in a function space}
+		\end{array}
+		\right.
+		\]
+	\end{itemize}
+	
+	\subsection{Introduction to CV (Calculus of Variations)}
+	
+	Function CLASSES \& NORMS
+	
+	\[
+		(\underset{\text{vector space}}{V},\underset{\text{norm}}{\norm{\cdot}})\quad\text{normed vector space}
+	\]
+	
+	$V$ is the set of vector functions
+	\[
+		x(s),\quad s\in[s_1,s_2]\text{ taking values in }\mathbb{R}^n,\quad[s_1,s_2]\subseteq\mathbb{R}
+	\]
+	Two classes:
+	\begin{itemize}
+		\item $V = \mathcal{C}^1([s_1, s_2], \mathbb{R}^n)$: continuously differentiable functions $x: [s_1, s_2] \to \mathbb{R}^n$
+		\item $\hat{V} = \hat{\mathcal{C}}^1([s_1, s_2], \mathbb{R}^n)$: piecewise continuously differentiable functions
+		
+		\hspace*{3.6cm} $x: [s_1, s_2] \to \mathbb{R}^n$.
+	\end{itemize}
+	
+	\begin{definitionbox}[Piecewise continuously differentiable functions]
+			$x: [s_1, s_2] \to \mathbb{R}^n$ is piecewise continuously differentiable (PCD) if
+		\begin{itemize}
+			\item $x \in \mathcal{C}\text{ on }[s_1, s_2]$,
+			\item $\exists$ a finite partition $\{c_k\}_{k=0}^{N+1}$ with 
+			\[
+			s_1 = c_0 < c_1 < \dots < c_{N+1} = s_2,
+			\]
+			such that $x: [c_k, c_{k+1}] \to \mathbb{R}^n$ is $\mathcal{C}^1$.
+			
+			That is $x \in \mathcal{C}^1([c_k, c_{k+1}], \mathbb{R}^n), \quad \forall k = 0, 1, \dots, N$.
+		\end{itemize}
+	\end{definitionbox}
+	
+	\textbf{Example:}\nopagebreak\noindent
+	\begin{center}
+		\begin{tikzpicture}[scale=1.2, >=Latex]
+			
+			% Achsen
+			\draw[->] (0,0) -- (6,0) node[right] {$s$};
+			\draw[->] (0.5,-0.5) -- (0.5,2.8) node[left] {$x$};
+			
+			% Achsenbeschriftungen
+			\node[below] at (1,0) {$s_1$};
+			\node[below] at (2.3,0) {$c_1$};
+			\node[below] at (3.8,0) {$c_2$};
+			\node[below] at (5.2,0) {$s_2$};
+			
+			% Blaue Kurve: stückweise C^1 mit sichtbaren Knicken
+			\draw[blue, thick, smooth, tension=0.9]
+			plot coordinates {(1,0.0) (1.4,1.0) (1.9,0.8) (2.3,1.3)};
+			% Knick an c1
+			\draw[blue, thick, smooth, tension=0.8]
+			plot coordinates {(2.3,1.3) (2.8,0.7) (3.3,1.0) (3.8,0.6)};
+			% Knick an c2
+			\draw[blue, thick, smooth, tension=0.8]
+			plot coordinates {(3.8,0.6) (4.3,1.0) (4.7,1.4) (5.2,2.0)};
+			
+			% Eckenpunkte (rot)
+			\filldraw[red] (2.3,1.3) circle (2pt);
+			\filldraw[red] (3.8,0.6) circle (2pt);
+			
+			% Gelbe Markierungen um die Ecken
+			\foreach \x/\y in {2.3/1.3, 3.8/0.6} {
+				\draw[fill=yellow, opacity=0.3, draw=none] (\x,\y) circle (6pt);
+			}
+			
+			% Rotes Intervall [c2, s2]
+			\draw[line width=4pt, red!40, opacity=0.5] (3.8,0) -- (5.2,0);
+			
+			% Textbeschriftungen
+			\node[blue] at (2.7,2.2) {$x(s) \in \hat{\mathcal{C}}^1$};
+			
+			\node[purple, align=left] (text1) at (6.4,1.0)
+			{Inside the interval\\ it is a $\mathcal{C}^1$ function};
+			\draw[purple, ->, thick] (text1.west) -- (4.5,0.1);
+			
+			\node[purple, align=center] (text2) at (3.0,-1.2)
+			{2 corner points in this case};
+			\draw[purple, ->, thick] (text2.north) ++ (-0.5,0.0) -- (2.3,-0.5);
+			\draw[purple, ->, thick] (text2.north) ++ (0.5,0.0) -- (3.8,-0.5);
+			
+		\end{tikzpicture}
+	\end{center}
+	
 \end{document}
