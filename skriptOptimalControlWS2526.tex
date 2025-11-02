@@ -166,7 +166,7 @@
 	\end{enumerate}
 	
 	Formally, we can state the goal as follows: \\
-	Find an admissible input $u^\star$ which causes the dynamics to follow an admissible trajectory $x\star$ which minimizes $J$, that is
+	Find an admissible input $u^\star$ which causes the dynamics to follow an admissible trajectory $x^\star$ which minimizes $J$, that is
 	\[
 	\int_{t_0}^{t_f} l(t,x^\star(t),u^\star(t))\,dt + \varphi(t_f,x^\star(t_f)) \leq \int_{t_0}^{t_f} l(t,x(t),u(t))\,dt + \varphi(t_f,x(t_f))
 	\]
@@ -304,7 +304,7 @@
 	When does the infimum coincide with the minimum?
 	
 	\begin{theorembox}[Extreme value problem) (Weierstrass Theorem]
-		$f: D \to \mathbb{R},\,\mathcal{D} \subseteq \mathbb{R}^n$\\
+		$f: \mathcal{D} \to \mathbb{R},\,\mathcal{D} \subseteq \mathbb{R}^n$\\
 		If:
 		\begin{itemize}
 			\item $f \in \mathcal{C}$ on $\mathcal{D}$
@@ -317,7 +317,7 @@
 	\begin{definitionbox}[Continuous function]
 		$f: \mathcal{D} \to \mathbb{R}$ is continuous at $x\in\mathcal{D}$ if
 		\[
-			\forall \epsilon > 0 \exists \delta > 0 \text{ s. t. } \norm{x-x'} < \delta \quad \Rightarrow \quad \norm{f(x)-f(x')} < \epsilon
+			\forall \varepsilon > 0 \exists \delta > 0 \text{ s. t. } \norm{x-x'} < \delta \quad \Rightarrow \quad \norm{f(x)-f(x')} < \varepsilon
 		\]
 		If $f$ is continuous $\forall x \in \mathcal{D}$ then $f$ is continuous on $\mathcal{D}$ $\to$ $f \in \mathcal{C}$
 	\end{definitionbox}
@@ -373,11 +373,11 @@
 	Theorem 1.1 is restrictive e.\,g. $f(x) = x^2, \mathcal{D} = (-\infty,\infty)$ has unique minimum
 	\item Notation convention: Technically it is ``wrong'' to write
 	\[
-		\min\underset{x\in\mathcal{D}}{f(x)}
+		\underset{x\in\mathcal{D}}{\min}\;f(x)
 	\]
 	more compact is:
 	\[
-		\text{minimize}\,\underset{x\in\mathcal{D}}{f(x)} \quad \text{or} \quad \underset{x\in\mathcal{D}}{\inf}f(x)
+		\text{minimize}\;\underset{x\in\mathcal{D}}{f(x)} \quad \text{or} \quad \underset{x\in\mathcal{D}}{\inf}\;f(x)
 	\]
 	\end{itemize}
 	
@@ -502,7 +502,7 @@
 			\]
 			\item $f$ twice differentiable on $C$, then $f$ convex iff
 			\[
-				\nabla_{xx}^2 f(x) \geq 0 \quad \forall x \in C
+				\nabla_{xx}^2 f(x) \succeq 0 \quad \forall x \in C
 			\]
 			\[
 				(\nabla_{xx}^2)_{i,j} = \frac{\partial^2 f}{\partial x_i \partial x_j} \quad \text{(Hessian)}
@@ -511,8 +511,8 @@
 	\end{lemmabox}
 	
 	\begin{itemize}
-		\item $A\geq0$ means that: $A=A^T$ and pos semi-definite, i.\,e. all eigenvalues non-negative
-		\item $f$ strictly cvx if $\nabla_{xx}^2 f(x) > 0 \quad \forall x \in C$ with $A>0$ meaning pos definite and symmetric
+		\item $A\succeq0$ means that: $A=A^T$ and pos semi-definite, i.\,e. all eigenvalues non-negative
+		\item $f$ strictly cvx if $\nabla_{xx}^2 f(x) \succ 0 \quad \forall x \in C$ with $A\succ0$ meaning pos definite and symmetric
 		\item Interpretation: Curvature of function should be non-negative/positive
 		\item For exercises to check convexity, the second condition is generelly useful. First condition is useful for proofs.
 	\end{itemize}
@@ -563,7 +563,7 @@
 		\[
 		\exists \delta > 0 \quad \text{s.t.} \quad f(\bar{x} + \lambda d) < f(\bar{x}) \quad \forall \lambda \in (0, \delta).
 		\]
-		$F(\bar{x})$: \underline{Cone of decent directions}\\
+		$F(\bar{x})$: \underline{Cone of descent directions}\\
 		Set of all descent directions of $f$ at $\bar{x}$
 	\end{definitionbox}
 	
@@ -655,7 +655,7 @@
 	\begin{lemmabox}[second order necessary condition]
 		Assume f is twice continuously differentiable $f \in \mathcal{C}^2$
 		\[
-			x^\star\text{ local minimizer }\Rightarrow \nabla_{xx}^2 f(x^\star) \geq 0
+			x^\star\text{ local minimizer }\Rightarrow \nabla_{xx}^2 f(x^\star)\succeq0
 		\]
 	\end{lemmabox}
 	
@@ -678,7 +678,7 @@
 		\[
 			\frac{f(x^\star+\lambda d)-f(x^\star)}{\lambda^2} \approx \frac{1}{2} d^T \nabla_{xx}^2 f(x^\star) d
 		\]
-		\item For $x^\star$ is a local minimizer, the left-hand-side must be $\geq 0$ for any $d\in\mathbb{R}^n$\\$\hspace*{1cm}\Rightarrow\quad d^T \nabla_{xx}^2 f(x^\star) \geq 0 \quad\forall d\quad \Rightarrow\quad \nabla_{xx}^2 f(x^\star)\geq0$\hfill\qedsymbol{}
+		\item For $x^\star$ is a local minimizer, the left-hand-side must be $\geq 0$ for any $d\in\mathbb{R}^n$\\$\hspace*{1cm}\Rightarrow\quad d^T \nabla_{xx}^2 f(x^\star)d\geq0\quad\forall d\quad \Rightarrow\quad \nabla_{xx}^2 f(x^\star)\succeq0$\hfill\qedsymbol{}
 	\end{enumerate}
 	
 	Only a necessary condition, because when $\nabla_{xx}^2 f(x^\star)$ is singular, we need to use higher-order information.
@@ -709,7 +709,7 @@
 	
 	\begin{lemmabox}[Second order sufficient condition for local minimizer]
 		Assume $f \in\mathcal{C}^2$.\\
-		If $\nabla f(x^\star) = 0$ and $\nabla_{xx}^2 f(x^\star) > 0\quad\Rightarrow\quad x^\star$ is strict local minimizer.
+		If $\nabla f(x^\star) = 0$ and $\nabla_{xx}^2 f(x^\star)\succ0\quad\Rightarrow\quad x^\star$ is strict local minimizer.
 	\end{lemmabox}
 	
 	\textbf{Proof:} Taylor expansion (Similar to Lemma 1.6)
@@ -723,7 +723,7 @@
 	We assume throughout $g_i,\,h_j$ are all $\mathcal{C}^1$ functions.
 	
 	\begin{definitionbox}[Tangent vector, tangent cone]
-		$p\in\mathbb{R}^n$ is a tangent vector to $\mathcal{D}$ at $\bar{x}\in\mathcal{D}$ if $\exists$ differential curve $\bar{x}(s):[0,\epsilon)\to\mathcal{D}$ with $\epsilon>0$ such that $\bar{x}(0)=\bar{x},\left.\frac{d\bar{x}}{ds}\right|_{s=0}=p$.\\\\
+		$p\in\mathbb{R}^n$ is a tangent vector to $\mathcal{D}$ at $\bar{x}\in\mathcal{D}$ if $\exists$ differential curve $\bar{x}(s):[0,\varepsilon)\to\mathcal{D}$ with $\varepsilon>0$ such that $\bar{x}(0)=\bar{x},\left.\frac{d\bar{x}}{ds}\right|_{s=0}=p$.\\\\
 		Tangent cone $\mathcal{T}_\mathcal{D}(\bar{x})$ to $\bar{x}$ is the set of all tangent vectors
 		\[
 			\mathcal{T}_\mathcal{D}(\bar{x}):=\{p\mid p \text{ tangent vector to $\mathcal{D}$ at $\bar{x}$}\}
@@ -741,7 +741,7 @@
 	\end{itemize}
 	
 	\begin{lemmabox}[Geometric condition for local minimizer, $\mathcal{D}\subseteq\mathbb{R}^n$]
-		$x^\star$ is a local minimizer iff $\mathcal{F}(\bar{x})\cap\mathcal{T}_\mathcal{D}(\bar{x})=\emptyset$
+		$x^\star$ is a local minimizer iff $\mathcal{F}(x^\star)\cap\mathcal{T}_\mathcal{D}(x^\star)=\emptyset$
 	\end{lemmabox}
 	
 	It is basically says that ``any improving direction can't be feasible''.
@@ -1039,7 +1039,7 @@
 		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point with
 		
 		\[
-			p^T\nabla_{xx}\mathcal{L}(^\star,\lambda^\star,\nu^\star)>0
+			p^T\nabla_{xx}\mathcal{L}(^\star,\lambda^\star,\nu^\star)p>0
 		\]
 		
 		for same $p$ as in Lemma 1.15.
@@ -1250,4 +1250,376 @@
 		\end{tikzpicture}
 	\end{center}
 	
+	\subsubsection*{Norms}
+	
+	\begin{definitionbox}[Strong and weak norms]
+		\underline{Case $V=\mathcal{C}^1$:}
+		\begin{itemize}
+			\item Strong norm (or $\infty$-norm)
+			\[
+				\norm{x}_\infty:=\underset{s_1\leq s\leq s_2}{\max}\norm{x(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
+			\]
+			\item Weak norm (or $1$-norm)
+			\[
+				\norm{x}_1:=\norm{x}_\infty+\underset{s_1\leq s\leq s_2}{\max}\norm{\dot{x}(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
+			\]
+			\[
+				(\mathcal{C}^1([s_1,s_2]),\,\norm{\cdot})\text{ full notation}
+			\]
+		\end{itemize}
+		Note $\forall x\in V, \norm{x}_1\geq\norm{x}_\infty$
+		
+		\underline{Case $V=\hat{\mathcal{C}}^1$:}
+		\begin{itemize}
+			\item Strong norm $\to$ same as for $\mathcal{C}^1$
+			\item weak norm
+			\[
+				\norm{x}_1:=\norm{x}_\infty+\underset{s\in\bigcup\limits_{k=0}^N(c_k,c_{k+1})}{\sup}\norm{\dot{x}(s)}
+			\]
+		\end{itemize}
+	\end{definitionbox}
+	
+	\subsubsection*{CV problem}
+	
+	\[
+		\underset{x\in V}{\min}\;\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ functional }J:V\to\mathbb{R}}{\underline{J}(x)\hspace*{2.2cm}}
+	\]
+	\[
+		\text{s.t. }x\in\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ admissible set}}{\underline{\mathcal{D}}\hspace*{2.1cm}}
+	\]
+	
+	$\bar{x}\in\mathcal{D}$ admissible curve for trajectory.
+	
+	3 forms of $J$:
+	\begin{itemize}
+		\item Langrangian form
+		\[
+			J(x):=\int_{s_1}^{s_2}\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ running cost, }L:\mathbb{R}\cross\mathbb{R}^n\cross\mathbb{R}^n\to\mathbb{R}}{\underline{l}(s,x(s),\dot{x}(s))ds\hspace*{1.6cm}}
+		\]
+		\item Bolza form
+		\[
+			J(x):=\varphi(s_2,x(s_2))+\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\qquad\varphi:\mathbb{R}\cross\mathbb{R}^n\to\mathbb{R}
+		\]
+		\item Mayer form
+		\[
+			J(x):=\varphi(s_2,x(s_2))
+		\]
+	\end{itemize}
+	
+	These 3 forms are (gernerally) interchangeble, e.g. $L\Rightarrow B,\; B\Rightarrow L$.
+	
+	We will see them again in Chapter 3.
+	
+	Admissible sets:
+	
+	\begin{itemize}
+		\item Free problems $\to$ only endpoints are constrained. Example:
+		\[
+			\mathcal{D}=\{x\in V\mid x(s_1)=x_1,\; x(s_2)=x_2\},\qquad x_1,x_2\text{ fixed vectors}
+		\]
+		\item Isoperimetric constraints $\to$ level sets
+		\[
+			\mathcal{D}=\bigcap_{i=1}^{n_g}\Lambda_i(k_i)
+		\]
+		\[
+			\Lambda_i(k_i):=\{x\in V\mid\int_{s_1}^{s_2}g_i(s,x(s),\dot{x}(s))ds=k_i\}
+		\]
+	\end{itemize}
+	
+	\textbf{Example:}
+	\[
+		\underset{x}{\min}\; J(x)
+	\]
+	
+	\[
+	\begin{aligned}
+		&\text{s.t.}\quad
+		\left.
+		\begin{aligned}
+			&\displaystyle \int_{s_1}^{s_2} x^2(s)\,ds = 1\\[0.4em]
+			&\displaystyle \int_{s_1}^{s_2} x(s)\,ds = 0
+		\end{aligned}
+		\right\}
+		\quad
+		\begin{array}{l}
+			n_g = 2,\\[0.2em]
+			g_1(s)=x^2(s),\\[0.2em]
+			g_2(s)=x(s)
+		\end{array}
+	\end{aligned}
+	\]
+	
+	\subsubsection*{Minimizers for CV problems}
+	
+	\begin{definitionbox}[Global and local minimizers]
+		$x^\star\in\mathcal{D}$ is a global minimizer of [CV] if
+		\[
+			J(x)\geq J(x^\star),\qquad x\in\mathcal{D}
+		\]
+		
+		$x^\star\in\mathcal{D}$ is a strong local minimizer of [CV] if
+		
+		\[
+			\exists\varepsilon>0\;\text{s.t. } J(x)\geq J(x^\star),\quad\forall x\in B_\varepsilon^\infty(x^\star)\cap\mathcal{D}
+		\]
+		\[
+			B_\varepsilon^\infty:=\{y\in V\mid\norm{x-y}_\infty\leq\varepsilon\}\quad\text{(strong ball)}
+		\]
+		$x^\star\in\mathcal{D}$ is a weak local minimizer of [CV] if
+		\[
+			\exists\varepsilon>0\;\text{s.t. }J(x)\geq J(x^\star),\quad\forall x\in B_\varepsilon^1(x^\star)\cap\mathcal{D}
+		\]
+		\[
+			B_\varepsilon^1:=\{y\in V\mid\norm{x-y}_1\leq\varepsilon\}\quad\text{(weak ball)}
+		\]
+	\end{definitionbox}
+	
+	We will often call strong/weak minimizers (without local).
+	
+	\textbf{Note:} Every strong minimizer is a weak minimizer. In general, the converse is not true.
+	
+	Why?
+	
+	$\forall x\in V,\;\forall\varepsilon>0,\;B_\varepsilon^1(x)\subseteq_\varepsilon^\infty(x)$
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=1.4]
+			
+			% Farben
+			\definecolor{lightyellow}{RGB}{255, 255, 153}
+			
+			% Gelb schraffierte Ringfläche
+			\fill[lightyellow, opacity=0.5] (0,0) circle (2cm);
+			\fill[white] (0,0) circle (1cm);
+			
+			% Kreise
+			\draw[red, thick] (0,0) circle (2cm);
+			\draw[blue, thick] (0,0) circle (1cm);
+			
+			% Mittelpunkt
+			\filldraw (0,0) circle (1pt) node[below left] {$x$};
+			
+			% Pfeile für Radius
+			\draw[blue,->] (0,0) -- ({1/sqrt(2)},{1/sqrt(2)}) node[midway, above] {$\varepsilon$};
+			\draw[red,->] (0,0) -- ({2/sqrt(2)},{-2/sqrt(2)}) node[midway, below] {$\varepsilon$};
+			
+			% Labels positioniert
+			\node[blue] at (0,1.3) {$B_\varepsilon^1(x)$};
+			\node[red] at (2.5,0) {$B_\varepsilon^\infty(x)$};
+			
+		\end{tikzpicture}
+	\end{center}
+	\[
+	\|x\|_1 \ge \|x\|_\infty
+	\]
+	
+	Implication for CV is that a curve $x$ that is better than all elements in $B_\varepsilon^1(x)$ is not necessarily better than all elements in $B_\varepsilon^\infty(x)$.
+	
+	\textbf{Example:} $s_1=0,\;s_2=1$
+	
+	\[
+		J(x)=\int_{0}^{1}\dot{x}^2(s)-\dot{x}^4(s)ds
+	\]
+	\[
+		\mathcal{D}=\{x\in\hat{\mathcal{C}}^1([0,1])\mid x(0)=x(1)=0\}
+	\]
+	\[
+		\bar{x}(s)=0,\quad J(\bar{x})=0,\quad\bar{x}\text{ is a weak minimum but not strong}
+	\]
+	\underline{Weak minimum}\nopagebreak
+	
+	$B_\varepsilon^1(0)$, take 0<$\varepsilon\leq1$
+	\[
+		\forall x\in B_\varepsilon^1(0),\;\norm{\dot{x}(s)}\leq\varepsilon\qquad\forall s\in[0,1]
+	\]
+	because x is in the weak ball with radius $\varepsilon$.
+	\[
+		J(x)=\int_{0}^{1}\underset{\geq0}{\underbrace{\dot{x}^2(s)}}(\underset{\geq0\text{ see above, }\varepsilon\leq1}{\underbrace{1-\dot{x}^2(s)}})ds\geq0,\quad\forall x\in B_\varepsilon^1
+	\]
+	$J(\bar{x})=0\to\bar{x}$ is a weak minimum, but not strong. Try to see why? $\to$ Find counterexamples.
+	
+	\textbf{Existence of solutions for problems of CV:}
+	
+	Weierstrass theorem still holds but compactness $\neq$ closed and bounded in function vector spaces.
+	
+	A subspace $\mathcal{D}$ of a metric space $V$ is compact, if ``every sequence in $\mathcal{D}$ has a subsequence converging to some point in $\mathcal{D}$''.
+	
+	\textbf{Example:}
+	\[
+		B_1^\infty(0)=\{x\in\mathcal{C}([0,1])\mid\norm{x}_\infty\leq1\}
+	\]
+	closed and bounded, \underline{not} a compact set.
+	
+	Bottom line: checking Weierstrass in CV can be overly restrictive because our common sets in $\mathcal{D}$ are not compact.
+	
+	Existence of solutions difficult to guarantee a-priory.
+	
+	Convexity is a special case where this is possible.
+	
+	\text{Variations:} (extension of perturbations to the cost seen in NLP)
+	
+	\begin{definitionbox}[First-variation of a functional]
+		\underline{First variation} (Gateaux derivative) of $J$ at $x\in V$ in direction $\xi\in V$ is
+		\[
+			\delta J(x,\xi):=\underset{\eta\to0}{\lim}\frac{J(x+\eta\xi)-J(x)}{\eta}=\left.\frac{\partial J(x+\eta\xi)}{\partial\eta}\right|_{\eta=0}
+		\]
+		\[
+			J:V\to\mathbb{R}
+		\]
+	\end{definitionbox}
+	$\delta J$ can be interpreted as follows
+	\[
+		J(x+\eta\xi)=J(x)+\eta\delta J(x;\xi)+\underline{o(\eta)}_{\text{ second order term }\underset{\eta\to0}{\lim}\;\frac{0(\eta)}{\eta}=0}
+	\]
+	$\delta J$ is functional associated with J and a point $x$ mapping a perturbation $\xi$ into a scalar, representing the variation of $J$ in that direction $\approx$ ``directional derivative'' for CV.
+	
+	\textbf{Example:}
+	\[
+		J(x)=\int_{s_1}^{s_2}x^2(s)ds,\quad V=\mathcal{C}^1
+	\]
+	$\delta J$? Apply defintion:
+	\[
+		\frac{J(x+\eta\xi)-J(x)}{\eta}=\frac{1}{\eta}\left[\int_{s_1}^{s_2}(x(s)+\eta\xi(s))^2-x^2(s)ds\right]
+	\]
+	\[
+		=2\int_{s_1}^{s_2}x(s)\xi(s)ds+\eta\int_{s_1}^{s_2}\xi^2(s)ds
+	\]
+	\[
+		\underset{\eta\to0}{\lim}\quad\longrightarrow\quad\delta J(x;\xi)=2\int_{s_1}^{s_2}x(s)\xi(s)ds
+	\]
+	
+	From the defintion, we can see that $\delta J$ is a linear operator on V.
+	\[
+		\delta(J_1+J_2)(x;\xi)=\delta J_1(x;\xi)+\delta J_2(x;\xi).
+	\]
+	Moreover, it is a homogeneous operator: $\forall\alpha\in\mathbb{R}$ it holds 
+	\[
+		\delta J(x;\alpha\xi)=\alpha\delta J(x;\xi).
+	\]
+	
+	\begin{definitionbox}[Second variation of a functional]
+		\[
+			\delta^2 J(x;\xi):=\left.\frac{\partial^2}{\partial\eta^2}J(x+\eta\xi)\right|_{\eta=0}
+		\]
+	\end{definitionbox}
+	Interpretation $J(x+\eta\xi)=J(x)+\eta\delta J(x;\xi)+\eta^2\delta^2J(x;\xi)+o(\eta^2)$
+	
+	Fundamental Lemma in CV.
+	
+	\begin{definitionbox}[Descent direction in CV]
+		Given $V,\;J:V\to\mathbb{R}$ Gateaux-differentiable ($\delta J(x;\xi)$ exists) at $\bar{x}\in V$, we call $\xi\in V$ a descent direction for $J$ at $\bar{x}$ if
+		\[
+			\delta J(\bar{x};\xi)<0
+		\]
+	\end{definitionbox}
+	There is a close connection with ``descent direction'' from NLP.
+	
+	\begin{definitionbox}[$\mathcal{D}$-admissible direction]
+		Given $V,\;\mathcal{D}\subseteq V$ and $J:V\to\mathbb{R}$.
+		
+		$\xi\in V,\;\xi\neq0$ is $\mathcal{D}$-admissible for $J$ at $\bar{x}\in\mathcal{D}$ if
+		\begin{itemize}
+			\item $\delta J(\bar{x};\xi)$ exists
+			\item $\exists\beta>0$ s.t. $\bar{x}+\eta\xi\in\mathcal{D},\quad\forall\eta\in(-\beta,\beta)$
+		\end{itemize}
+	\end{definitionbox}
+	\textbf{Example:}
+	\begin{center}
+		\begin{minipage}{0.4\textwidth}
+			\begin{tikzpicture}[scale=1.4]
+				
+				% Achsen
+				\draw[->] (-0.5,0) -- (3,0) node[right] {$s$};
+				\draw[->] (0,-0.5) -- (0,2.5) node[above] {$x$};
+				
+				% Punkte s_1 und s_2
+				\filldraw[purple] (0.5,0) circle (2pt) node[below] {$s_1$};
+				\filldraw[purple] (2.5,0) circle (2pt) node[below] {$s_2$};
+				
+				% \bar{x}
+				\draw[thick] (0.5,0) .. controls (1.1,2.3) and (1.9,2.3) .. (2.5,0)
+				node[midway, above] {$\bar{x}$};
+				
+				% \xi
+				\draw[blue, thick]
+				(0.5,0) .. controls (0.9,-0.5) and (1.7,0.7) .. (2.5,0)
+				node[midway, above] {$\xi$};
+				
+			\end{tikzpicture}
+		\end{minipage}
+		\begin{minipage}{0.3\textwidth}
+			\[
+			\mathcal{D}:\;\bar{x}(s_1)=\bar{x}(s_2)=0
+			\]
+			\[
+			\xi \text{ is } D\text{-admissible}
+			\]
+		\end{minipage}
+	\end{center}
+	
+	\begin{lemmabox}[Negative result for minimizers in unconstrained CV]
+		$(V,\norm{\cdot}),\;J$.
+		
+		Suppose at $\bar{x}\exists$ descent direction $\bar{\xi}\in V$.
+		
+		Then $\bar{x}$ cannot be a local minimizer for J (neither strong or weak).
+	\end{lemmabox}
+	\textbf{Proos:} Use definition of 1$^{st}$ variation.
+	
+	If $\delta J(\bar{x}_i\bar{\xi})<0$ then
+	\[
+		J(\bar{x}+\eta\bar{\xi})<J(\bar{x})\quad\forall\eta\in(0,\beta)
+	\]
+	This comes from
+	\[
+		J(x+\eta\xi)=J(x)+\eta\xi J(x;\eta)+o(\eta)
+	\]
+	Thus $\bar{x}$ can't be a local minimizer.
+	
+	\begin{lemmabox}[Geometric necessary condition for a local minimum, Fundamental Lemma of CV]
+		$(V,\norm{\cdot}),\;\mathcal{D}\subseteq V,\;J\to\mathbb{R}$.
+		
+		Suppose $x^\star\in\mathcal{D}$ is a local minimizer for $J$ on $\mathcal{D}$, then
+		\[
+			\boxed{\delta J(x^\star;\xi)=0}\qquad \forall\mathcal{D}\text{-admissible directions at }x^\star
+		\]
+	\end{lemmabox}
+	\textbf{Proof:} By contradiction:
+	
+	Case 1: $\delta J(x^\star;\xi)<0$
+	
+	\hspace*{1cm}By Lemma 2.1 $x^\star$ can't be a local minimizer $\to$ contradiction
+	
+	Case 2: $\delta J(x^\star;\xi)>0$
+	
+	\hspace*{1cm}By definition of the $\mathcal{D}$-admissible direction, if $\xi$ is $\mathcal{D}$-admissible.
+	
+	\hspace*{1cm}Then $-\xi$ is also $\mathcal{D}$-admissible.
+	\[
+		\delta J(x^\star;-\xi)=-\delta J(x^\star;\xi)<0\quad\text{(because of linearity)}
+	\]
+	$\to x^\star$ cannot be a local minimizer (because $\delta J(x^\star;-\xi)<0$ and $-\xi$ is $\mathcal{D}$-admissible). Thus $\delta J(x^\star;\xi)=0$.
+	
+	All the results in the rest of this chapter are $\underset{\substack{\text{they turn such an abstract}\\\text{requirenment into algebraic tests}}}{\text{``merely corollaries''}}$ of this Lemma.
+	
+	\subsection{Free problems of CV}
+	
+	\subsubsection{$V=\mathcal{C}^1$}
+	\[
+		\underset{x(\cdot)}{\min}\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\hspace*{2cm}[CV-P_1]
+	\]
+	\[
+		\text{s.t. }x\in\{y\in\mathcal{C}^1([s_1,s_2])\mid \underset{\substack{\text{special case of ``free problems''}\\\text{we fix the endpoint to }x_2}}{\underbrace{y(s_1)=x_1,\;y(s_2)=x_2}}\}
+	\]
+	
+	\begin{lemmabox}
+		Suppose $x^\star\in\mathcal{C}^1([s_1,s_2])$ is a weak minimum of $[CV-P_1]$.
+		
+		Then
+		\[
+			\frac{d}{ds}l_{\dot{x}_i}(s,x^\star(s),\dot{x}^\star(s))=l_{x_i}(s,x^\star(s),\dot{x}^\star(s)),\quad\forall s\in[s_1,s_2],\;i=1,\dots n
+		\]
+		with $l_{\dot{x}_i}=\frac{\partial l}{\partial\dot{x}_i}$ and $l_{x_i}=\frac{\partial l}{\partial x_i}$ (Euler equations).
+	\end{lemmabox}
+	This is a set of nonlinear ordinary time-varying second-order differential equations. Their solutions are \underline{candidate} local minimizers of $[CV-P_1]$.
 \end{document}
