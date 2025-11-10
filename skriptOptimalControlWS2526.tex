@@ -231,7 +231,7 @@
 			\exists \varepsilon>0,\text{ s.t.}\ f(x^\star)\le f(x)\quad \forall x\in B_\varepsilon(x^\star)\cap \mathcal{D}
 			\]
 			\[
-			B_\varepsilon(x) := \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\to\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
+			B_\varepsilon(x) \coloneqq \{ y \mid \|x-y\|\le\varepsilon\} \qquad \|\cdot\|:\mathbb{R}^n\to\mathbb{R}_{\geq 0}\text{ any norm in }\mathbb{R}^n
 			\]
 			Strict local Minimizer if inequality holds strictly\\
 			Global min $\begin{tikzpicture}[baseline={(0,-0.25ex)}]
@@ -273,7 +273,7 @@
 	f: \mathcal{D} \to \mathbb{R}
 	\]
 	\[
-	\inf(\underset{\mathcal{S}}{\underbrace{f(x)\,|\,x\in\mathcal{D}}}):=\bar{f}=\underset{x\in\mathcal{D}}{\inf}f(x) \quad\text{(similar to NLP)}
+	\inf(\underset{\mathcal{S}}{\underbrace{f(x)\,|\,x\in\mathcal{D}}})\coloneqq\bar{f}=\underset{x\in\mathcal{D}}{\inf}f(x) \quad\text{(similar to NLP)}
 	\]
 	
 	Whenever NLP has solution, then NLP ist equivalent to this, but $\nexists x^\star \in \mathcal{D}$ s. t. $f(x^\star) = \bar{f}\quad\to\quad$ infimum exists, but not minimum
@@ -464,7 +464,7 @@
 	\begin{itemize}
 		\item The definition extends to vector functions $f:C\to\mathbb{R}^n$ for convex $f_i$
 		\item $f: C_1 \cross C_2 \to \mathbb{R}$\\
-		$f(x,y)$ is jointly cvx, in $x,y$ if $z:=\begin{bmatrix}x\\y\end{bmatrix},\,f(z)$ is in cvx in $z$.
+		$f(x,y)$ is jointly cvx, in $x,y$ if $z\coloneqq\begin{bmatrix}x\\y\end{bmatrix},\,f(z)$ is in cvx in $z$.
 	\end{itemize}
 		
 	
@@ -646,7 +646,7 @@
 	\end{lemmabox}
 	
 	\textbf{Proof:} Contradiction\\
-	If $\nabla f(x^\star) \neq 0$, then $d = -\nabla f(x^*) \neq 0$. Therefore there exists a descent direction $d\in\mathcal{F}(x^\star)$ by Lemma 1.4. Thus $\exists \delta > 0$ s.t. $f(x^\star+\lambda d)<f(x^\star) \quad \forall\lambda\in (0,\delta).$\\
+	If $\nabla f(x^\star) \neq 0$, then $d = -\nabla f(x^\star) \neq 0$. Therefore there exists a descent direction $d\in\mathcal{F}(x^\star)$ by Lemma 1.4. Thus $\exists \delta > 0$ s.t. $f(x^\star+\lambda d)<f(x^\star) \quad \forall\lambda\in (0,\delta).$\\
 	This is a contradiction with the fact, that $x^\star$ is a minimizer.\hfill\qedsymbol{}
 	
 	Why only necessary?\\
@@ -726,7 +726,7 @@
 		$p\in\mathbb{R}^n$ is a tangent vector to $\mathcal{D}$ at $\bar{x}\in\mathcal{D}$ if $\exists$ differential curve $\bar{x}(s):[0,\varepsilon)\to\mathcal{D}$ with $\varepsilon>0$ such that $\bar{x}(0)=\bar{x},\left.\frac{d\bar{x}}{ds}\right|_{s=0}=p$.\\\\
 		Tangent cone $\mathcal{T}_\mathcal{D}(\bar{x})$ to $\bar{x}$ is the set of all tangent vectors
 		\[
-			\mathcal{T}_\mathcal{D}(\bar{x}):=\{p\mid p \text{ tangent vector to $\mathcal{D}$ at $\bar{x}$}\}
+			\mathcal{T}_\mathcal{D}(\bar{x})\coloneqq\{p\mid p \text{ tangent vector to $\mathcal{D}$ at $\bar{x}$}\}
 		\]
 	\end{definitionbox}
 	
@@ -786,13 +786,13 @@
 		\[
 			\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\nabla h(\bar{x})^p=0,\,\nabla g_i(\bar{x})^p\leq0,\quad\forall i\in\mathcal{A}(\bar{x})\}\qquad\textcircled{1}
 		\]
-		where $\nabla h(\bar{x}):=[\nabla h_1(\bar{x}),\dots,\nabla h_{n_k}(\bar{x})]\in\mathbb{R}^{n\cross n_h}$.
+		where $\nabla h(\bar{x})\coloneqq[\nabla h_1(\bar{x}),\dots,\nabla h_{n_k}(\bar{x})]\in\mathbb{R}^{n\cross n_h}$.
 		
 		\textcircled{1} can be written equivalently as $\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\mathcal{A}(\bar{x})p\geq0\}$
 	\end{lemmabox}
 	
 	\[
-	A(\bar{x}):=\left[
+	A(\bar{x})\coloneqq\left[
 	\begin{array}{c}
 		\nabla h(\bar{x})^T \\[4pt]
 		-\nabla h(\bar{x})^T \\[4pt]
@@ -879,7 +879,7 @@
 	\[
 		\nabla h(x^\star)(\hat{\lambda}_1-\hat{\lambda}_2)-\sum_{i\in\mathcal{A}(x^\star)}\nabla g_i(x^\star)\nu_i=\nabla f(x^\star),\quad\hat{\lambda}_1,\hat{\lambda}_2,\nu_i\geq0:\text{ But }(\hat{\lambda}_1-\hat{\lambda}_2)\gtreqless0
 	\]
-	Equivalently: $\lambda:=-(\hat{\lambda}_1-\hat{\lambda}_2)\in\mathbb{R}^{n_h}$, sign undefined
+	Equivalently: $\lambda\coloneqq-(\hat{\lambda}_1-\hat{\lambda}_2)\in\mathbb{R}^{n_h}$, sign undefined
 	\[
 		\exists\lambda\in\mathbb{R}^{n_h},\quad\nu\in\mathbb{R}^{n_g},\quad\nu\geq0,\quad\nu_i=0,\quad i\notin\mathcal{A}(x^\star)
 	\]
@@ -887,12 +887,12 @@
 		\text{s.t. }\nabla f(x^\star)+\nabla h(x^\star)\lambda+\nabla g(x^\star)\nu=0
 	\]
 	\[
-		\text{with }\nabla g(x^\star):=\begin{bmatrix}
+		\text{with }\nabla g(x^\star)\coloneqq\begin{bmatrix}
 			\nabla g_1(x^\star)&\nabla g_2(x^\star)&\cdots&\nabla g_{n_g}(x^\star)
 		\end{bmatrix}
 	\]
 	\[
-	\text{and }\nabla h(x^\star):=\begin{bmatrix}
+	\text{and }\nabla h(x^\star)\coloneqq\begin{bmatrix}
 		\nabla h_1(x^\star)&\nabla h_2(x^\star)&\cdots&\nabla h_{n_h}(x^\star)
 	\end{bmatrix}
 	\]
@@ -930,7 +930,7 @@
 		\[
 			\left.\nabla_x\mathcal{L}(x,\lambda,\nu)\right|_{x=x^\star,\lambda=\lambda^\star,\nu=\nu^\star}=0
 		\]
-		where $\mathcal{L}(x,\lambda,\nu):=f(x)+\lambda^Th(x)+\nu^Tg(x)$
+		where $\mathcal{L}(x,\lambda,\nu)\coloneqq f(x)+\lambda^Th(x)+\nu^Tg(x)$
 		\item $\Longleftrightarrow x^\star\in\mathcal{D}$
 		\item $\Longleftrightarrow x^\star\in\mathcal{D}$
 		\item $\Longleftrightarrow$ non-negativity of ``$y$'' from Farkas Lemma
@@ -944,7 +944,7 @@
 			=0, & i \in \mathcal{A}(x^\star) \\
 			<0, & i \notin \mathcal{A}(x^\star)
 		\end{cases}
-		\hspace*{0.5em} \text{because } x^* \in \mathcal{D}$
+		\hspace*{0.5em} \text{because } x^\star \in \mathcal{D}$
 		
 		\hspace*{2em} $\nu_i \ge 0, \; \forall i\quad$ because of Farkas' lemma.
 		
@@ -965,7 +965,7 @@
 	\textbf{Proof:} For $(\lambda^\star,\nu^\star)$ KKT points:
 	
 	\[
-		b(x):=\mathcal{L}(x,\lambda^\star,\nu^\star)=f(x)+\sum_{i=1}^{n_g}\nu_i^\star g_i(x)+\sum_{j=1}^{n_h}\lambda_j^\star g_j(x)\hspace*{2cm} \textcircled{$\cross$}
+		b(x)\coloneqq\mathcal{L}(x,\lambda^\star,\nu^\star)=f(x)+\sum_{i=1}^{n_g}\nu_i^\star g_i(x)+\sum_{j=1}^{n_h}\lambda_j^\star g_j(x)\hspace*{2cm} \textcircled{$\cross$}
 	\]
 	$f,g_i,h_j$ are convex functions
 	
@@ -1007,9 +1007,9 @@
 	\[
 	\left\{
 	\begin{aligned}
-		\nabla f(x^*)^T p &< 0 \quad \to \quad p \text{ descent direction: }\substack{\text{already excluded by necessary}\\\text{condition of order 1}},\\[0.3em]
-		\nabla f(x^*)^T p &> 0 \quad \to \quad p \text{ ascent direction: ``not harmful''},\\[0.3em]
-		\nabla f(x^*)^T p &= 0 \quad \to \quad \text{this is what is ``new'' compared to first order.}
+		\nabla f(x^\star)^T p &< 0 \quad \to \quad p \text{ descent direction: }\substack{\text{already excluded by necessary}\\\text{condition of order 1}},\\[0.3em]
+		\nabla f(x^\star)^T p &> 0 \quad \to \quad p \text{ ascent direction: ``not harmful''},\\[0.3em]
+		\nabla f(x^\star)^T p &= 0 \quad \to \quad \text{this is what is ``new'' compared to first order.}
 	\end{aligned}
 	\right.
 	\]
@@ -1023,7 +1023,7 @@
 		
 		Then 
 		\[
-			p^T \nabla_{xx}^2 L(x^*, \lambda^*, \nu^*) p \ge 0\quad \text{(curvature non-negative along critical directions)}
+			p^T \nabla_{xx}^2 L(x^\star, \lambda^\star, \nu^\star) p \ge 0\quad \text{(curvature non-negative along critical directions)}
 		\]
 
 		$\forall p \ne 0$ with
@@ -1031,7 +1031,7 @@
 		\begin{itemize}
 			\item $\nabla h(x^\star)^T p = 0$
 			\item $\nabla g_i(x^\star)^T p \le 0 \quad\forall i\in\mathcal{A}(x^\star)$ with $\nu_i^\star = 0\mid p \in \mathcal{T}_\mathcal{D}(x^\star)$
-			\item $\nabla g_i(x^\star)^T p = 0 \quad\forall i\in\mathcal{A}(x^\star)$ with $\nu_i^* > 0\mid\nabla f(x^\star)^T p = 0$
+			\item $\nabla g_i(x^\star)^T p = 0 \quad\forall i\in\mathcal{A}(x^\star)$ with $\nu_i^\star > 0\mid\nabla f(x^\star)^T p = 0$
 		\end{itemize}
 	\end{lemmabox}
 	
@@ -1257,11 +1257,11 @@
 		\begin{itemize}
 			\item Strong norm (or $\infty$-norm)
 			\[
-				\norm{x}_\infty:=\underset{s_1\leq s\leq s_2}{\max}\norm{x(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
+				\norm{x}_\infty\coloneqq\underset{s_1\leq s\leq s_2}{\max}\norm{x(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
 			\]
 			\item Weak norm (or $1$-norm)
 			\[
-				\norm{x}_1:=\norm{x}_\infty+\underset{s_1\leq s\leq s_2}{\max}\norm{\dot{x}(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
+				\norm{x}_1\coloneqq\norm{x}_\infty+\underset{s_1\leq s\leq s_2}{\max}\norm{\dot{x}(s)}_\text{  $\leftarrow$ any norm in $\mathbb{R}^n$}
 			\]
 			\[
 				(\mathcal{C}^1([s_1,s_2]),\,\norm{\cdot})\text{ full notation}
@@ -1274,7 +1274,7 @@
 			\item Strong norm $\to$ same as for $\mathcal{C}^1$
 			\item weak norm
 			\[
-				\norm{x}_1:=\norm{x}_\infty+\underset{s\in\bigcup\limits_{k=0}^N(c_k,c_{k+1})}{\sup}\norm{\dot{x}(s)}
+				\norm{x}_1\coloneqq\norm{x}_\infty+\underset{s\in\bigcup\limits_{k=0}^N(c_k,c_{k+1})}{\sup}\norm{\dot{x}(s)}
 			\]
 		\end{itemize}
 	\end{definitionbox}
@@ -1294,15 +1294,15 @@
 	\begin{itemize}
 		\item Langrangian form
 		\[
-			J(x):=\int_{s_1}^{s_2}\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ running cost, }L:\mathbb{R}\cross\mathbb{R}^n\cross\mathbb{R}^n\to\mathbb{R}}{\underline{l}(s,x(s),\dot{x}(s))ds\hspace*{1.6cm}}
+			J(x)\coloneqq\int_{s_1}^{s_2}\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ running cost, }L:\mathbb{R}\cross\mathbb{R}^n\cross\mathbb{R}^n\to\mathbb{R}}{\underline{l}(s,x(s),\dot{x}(s))ds\hspace*{1.6cm}}
 		\]
 		\item Bolza form
 		\[
-			J(x):=\varphi(s_2,x(s_2))+\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\qquad\varphi:\mathbb{R}\cross\mathbb{R}^n\to\mathbb{R}
+			J(x)\coloneqq\varphi(s_2,x(s_2))+\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\qquad\varphi:\mathbb{R}\cross\mathbb{R}^n\to\mathbb{R}
 		\]
 		\item Mayer form
 		\[
-			J(x):=\varphi(s_2,x(s_2))
+			J(x)\coloneqq\varphi(s_2,x(s_2))
 		\]
 	\end{itemize}
 	
@@ -1322,7 +1322,7 @@
 			\mathcal{D}=\bigcap_{i=1}^{n_g}\Lambda_i(k_i)
 		\]
 		\[
-			\Lambda_i(k_i):=\{x\in V\mid\int_{s_1}^{s_2}g_i(s,x(s),\dot{x}(s))ds=k_i\}
+			\Lambda_i(k_i)\coloneqq\{x\in V\mid\int_{s_1}^{s_2}g_i(s,x(s),\dot{x}(s))ds=k_i\}
 		\]
 	\end{itemize}
 	
@@ -1363,14 +1363,14 @@
 			\exists\varepsilon>0\;\text{s.t. } J(x)\geq J(x^\star),\quad\forall x\in B_\varepsilon^\infty(x^\star)\cap\mathcal{D}
 		\]
 		\[
-			B_\varepsilon^\infty:=\{y\in V\mid\norm{x-y}_\infty\leq\varepsilon\}\quad\text{(strong ball)}
+			B_\varepsilon^\infty\coloneqq\{y\in V\mid\norm{x-y}_\infty\leq\varepsilon\}\quad\text{(strong ball)}
 		\]
 		$x^\star\in\mathcal{D}$ is a weak local minimizer of [CV] if
 		\[
 			\exists\varepsilon>0\;\text{s.t. }J(x)\geq J(x^\star),\quad\forall x\in B_\varepsilon^1(x^\star)\cap\mathcal{D}
 		\]
 		\[
-			B_\varepsilon^1:=\{y\in V\mid\norm{x-y}_1\leq\varepsilon\}\quad\text{(weak ball)}
+			B_\varepsilon^1\coloneqq\{y\in V\mid\norm{x-y}_1\leq\varepsilon\}\quad\text{(weak ball)}
 		\]
 	\end{definitionbox}
 	
@@ -1461,7 +1461,7 @@
 	\begin{definitionbox}[First-variation of a functional]
 		\underline{First variation} (Gateaux derivative) of $J$ at $x\in V$ in direction $\xi\in V$ is
 		\[
-			\delta J(x,\xi):=\underset{\eta\to0}{\lim}\frac{J(x+\eta\xi)-J(x)}{\eta}=\left.\frac{\partial J(x+\eta\xi)}{\partial\eta}\right|_{\eta=0}
+			\delta J(x,\xi)\coloneqq\underset{\eta\to0}{\lim}\frac{J(x+\eta\xi)-J(x)}{\eta}=\left.\frac{\partial J(x+\eta\xi)}{\partial\eta}\right|_{\eta=0}
 		\]
 		\[
 			J:V\to\mathbb{R}
@@ -1499,7 +1499,7 @@
 	
 	\begin{definitionbox}[Second variation of a functional]
 		\[
-			\delta^2 J(x;\xi):=\left.\frac{\partial^2}{\partial\eta^2}J(x+\eta\xi)\right|_{\eta=0}
+			\delta^2 J(x;\xi)\coloneqq\left.\frac{\partial^2}{\partial\eta^2}J(x+\eta\xi)\right|_{\eta=0}
 		\]
 	\end{definitionbox}
 	Interpretation $J(x+\eta\xi)=J(x)+\eta\delta J(x;\xi)+\eta^2\delta^2J(x;\xi)+o(\eta^2)$
@@ -1622,4 +1622,375 @@
 		with $l_{\dot{x}_i}=\frac{\partial l}{\partial\dot{x}_i}$ and $l_{x_i}=\frac{\partial l}{\partial x_i}$ (Euler equations).
 	\end{lemmabox}
 	This is a set of nonlinear ordinary time-varying second-order differential equations. Their solutions are \underline{candidate} local minimizers of $[CV-P_1]$.
+	
+	solution $x(s):\;s\in[s_1,s_2]$
+	
+	also called ``stationaty solutions'' of the corresponding CV problem. Why?
+	\[
+		\text{Because }\delta J(x^\star;\xi)=0\quad\forall\xi\;\mathcal{D}\text{-admissible}
+	\]
+	\textbf{Proof:} The idea is to derive algebraic conditions that are sufficient to guarantee $\delta J(x^\star; \xi) = 0$.
+	
+	First step is to write $\delta J:\;\eta\in\mathbb{R},\;\xi\in\mathcal{C}^1$
+	$$ \frac{\partial}{\partial\eta} J(x^\star + \eta\xi) \underset{\text{Leibniz rule}}{=} \int_{s_1}^{s_2} \frac{\partial}{\partial \eta} l(s, x^\star + \eta\xi, \dot{x}^\star + \eta \dot{\xi})\, ds $$
+	$$= \int_{s_1}^{s_2} l_x\left[x^\star+\eta\xi\right]^T\xi+ l_{\dot{x}}\left[x^\star+\eta\xi\right]^T\dot{\xi}\, ds$$
+	with $l_z[y]\coloneqq l_z(s,y,\dot{y})$.
+	
+	Take $\eta\to0\quad\delta J(x^\star;\xi)=\int_{s_1}^{s_2}\underbracket{l_x\left[x^\star\right]^T+l_x\left[x^\star\right]^T\dot{\xi}}\,ds$
+	
+	\hspace*{4cm}integrand is a continuous function
+	
+	\hspace*{5cm}$\to$ first-variation exists $\forall\xi$ $\to$ $J$ is Gateaux-differentiable
+	
+	We want to obtain conditions enforcing $\delta J=0\;\forall\mathcal{D}$-admissible $\xi$. This means $\xi(s_1)=\xi(s_2)=0$ and $\xi\in\mathcal{C}^1$.
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel={$s$},
+				ylabel={$x$},
+				xmin=0, xmax=10,
+				ymin=-3, ymax=6,
+				xtick={2,8},
+				xticklabels={$s_1$,$s_2$},
+				ytick=\empty,
+				width=12cm,
+				height=6cm,
+				axis line style={->},
+				]
+				
+				% x^star
+				\addplot[thick,blue,smooth]
+				coordinates {
+					(2,3) (3.5,4.5) (6,3.5) (8,5.5)
+				}node [midway,above,blue] {$x^\star$};
+				
+				% xi
+				\addplot[thick,blue,smooth]
+				coordinates {
+					(2,0) (3,2) (5,-2) (7,1.5) (8,0)
+				}node [midway,above,blue] {$\xi$};
+				
+				% Tiny airplane mark — you can replace with your own symbol
+				\node at (axis cs:9,4.8) {$\small$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	To do this, we select $n$ perturbations $\xi^{(i)}(i=1,\dots n)$ defined as follows
+	$$\xi^{(i)}=\begin{bmatrix}
+		\xi^{(i)}_1\\
+		\vdots\\
+		\xi^{(i)}_n
+	\end{bmatrix}$$
+	\begin{itemize}
+		\item $\xi^{(i)}_j=0,\quad j\neq i$
+		\item $\xi_i^{(i)}$ arbitrary but not identically zero with $\xi^{(i)}_i(s_1)=\xi^{(i)}_i(s_2)=0$.
+	\end{itemize}
+	
+	We replace those $n$ perturbations in the equation $\delta J=0$
+	$$
+	\forall i \in \{1, \dots, n\}, \quad 0 = \delta J(x^\star, \xi^{(i)}) = \int_{s_1}^{s_2} \left[ l_{x_i}[x^\star]\xi_i + l_{\dot{x}_i}[x^\star]\dot{\xi}_i \right] \, ds.
+	$$
+	$$
+	= \int_{s_1}^{s_2} l_{\dot{x}_i}[x^\star]\dot{\xi}_i \, ds + \int_{s_1}^{s_2} \underbrace{\frac{d}{ds} \left[ \left( \int_{s_1}^s l_{\dot{x}_i}[x^\star] d\sigma \right) \right]}_{v'} \underbrace{\dot{\xi}_i}_u \, ds
+	$$
+	integral by parts $\int_a^b u v' = [u v]_a^b - \int_a^b u' v$
+	$$
+	= \int_{s_1}^{s_2} l_{\dot{x}_i}[x^\star]\dot{\xi}_i \, ds + \underbrace{\left[ \xi_i \int_{s_1}^s l_{x_i}[x^\star] d\sigma \right]_{s_1}^{s_2}}_{=0 \text{ because } \mathcal{D}\text{-admissible}} - \int_{s_1}^{s_2} \left[ \int_{s_1}^s l_{x_i}[x^\star] d\sigma \right] \dot{\xi}_i \, ds
+	$$
+	$$
+	=\int_{s_1}^{s_2} \left[ l_{\dot{x}_i}[x^\star] - \int_{s_1}^{s_2} l_{x_i}[x^\star] d\sigma \right] \dot{\xi}_i \, ds
+	$$
+	
+	\textbf{DuBois-Reymond's Lemma}
+	if 
+	\begin{itemize}
+		\item $h(s)$ continuous in $[s_1,s_2]$
+		\item $\displaystyle \int_{s_1}^{s_2} h(s)\, \dot{y}(s)\, ds = 0$
+		\item $y(s_1) = y(s_2) = 0$
+	\end{itemize}
+	$\Rightarrow \quad h(s)$ constant in $[s_1,s_2]$
+	
+	\bigskip
+	
+	This applies to our problem \quad $y \equiv \dot{\xi}_i$
+	$$
+	h \equiv L_{\dot{x}_i}[x^\star] - \int_{s_1}^{s} C_{x_i}[x^\star]\, d\sigma
+	$$
+	$$
+	\Rightarrow \quad l_{\dot{x}_i}[x^\star] - \int_{s_1}^{s} l_{x_i}[x^\star]\, d\sigma = c_i,
+	\qquad \forall s \in [s_1,s_2],\; i=1,\ldots,n,\; c_i : \text{ constants}
+	$$
+	
+	Note that this shows $l_{\dot{x}_i} \in \mathcal{C}^1$ 
+	
+	What we obtain are the ``integral'' Euler equations (EE)
+	
+	If we take $\dfrac{d}{ds}$ we obtain the EE.
+	
+	\textbf{Remarks}
+	\begin{enumerate}
+		\item Necessary conditions for local minimizers ($\to$ weak)
+		
+		\begin{tikzpicture}[>=stealth, scale=0.9]
+			% Axes
+			\draw[->] (0.5,0) -- (10,0);
+			\draw[->] (1,-0.5) -- (1,4);
+			
+			% x-axis ticks and labels
+			\draw (2,0.1) -- (2,-0.1) node[below] {$s_1$};
+			\draw (8,0.1) -- (8,-0.1) node[below] {$s_2$};
+			
+			\draw[thick, blue, smooth]
+			plot coordinates {
+				(2,1.5)
+				(3,2.5)
+				(5,0.8)
+				(7.5,3)
+				(8,2.5)
+			}
+			node[right, above, blue,xshift=20] {$x^\star + \eta\xi$};
+			
+			\draw[thick, black, smooth]
+			plot coordinates {
+				(2,1.5)
+				(3,2)
+				(5,1.8)
+				(7,2)
+				(8,2.5)
+			}
+			node[right, below, black] {$x^\star$};
+			
+		\end{tikzpicture}
+		
+		as $\eta\to0$
+		
+		$(x^\star+\eta\xi)$ and $x^\star$ differentiable both in magnitude and in derivative.
+		
+		\hspace*{1cm}$\Rightarrow$ ``$(x^\star+\eta\xi)$ is inside the weak ball of $x^\star$''
+		
+		\hspace*{0.3cm}EE $\Rightarrow$ detect weak minimizers
+		\item To solve ODE we need Boundary conditions (BC).
+		
+		BC come from the admissible set $x(s_1)=x_1,\;x(s_2)=x_2$
+		
+		\hspace*{1cm}$\to$ $2n$ equations for a 2$^{nd}$ order ODE in $n$ unknowns.
+		
+		Two Point Boundary Value Problem (TPBVP)
+		\item There exists a reformulation of EE:
+		$$ p(s) \coloneqq l_{\dot{x}}(s, x, \dot{x}) \quad \text{Momentum associated with a given } x. $$
+		$$ H(s, x, \dot{x}, p) \coloneqq - l(s, x, \dot{x}) + \dot{x}^T p. \quad \text{Hamiltonian.} $$
+		
+		EE can be rewritten as:
+		$$ \dot{x} = H_p(s, x, \dot{x}, p). $$
+		$$ \dot{p} = -H_x(s, x, \dot{x}, p). $$
+		Canonical equation and $x, p$ canonical Variables.
+		
+		An immediate benefit of this reformulation is that we easily see the following special cases.
+		
+		[A] $l(x, \dot{x})$. $l$ does not depend on $s$.
+		$$ \frac{d}{ds} H = - l_x^T \dot{x} - l_{\dot{x}}^T \ddot{x} + \dot{x}^T \dot{p} + \ddot{x}^T p = \dot{x}^T \underbracket{\left(\underbrace{\frac{dl_{\dot{x}}}{ds}}_{\dot{p}} - l_x\right)}_{=0\text{ because of EE}} = 0 $$
+		$$ H = \text{const.} \coloneq c_1 \quad \text{on stationary solutions.} $$
+		
+		[B] $l(s, \dot{x})$ no dependence on $x$.
+		$$ \frac{d}{ds} p = \dot{p} = 0. $$
+		$$ p = c_2. $$
+	\end{enumerate}
+	
+	\begin{lemmabox}[Second-order necessary conditions for $(CV-P_1)$]
+		Assume $l \in \mathcal{C}^2$.
+		
+		If $x^\star$ is a weak minimizer of $[CV-P_1]$, then
+		\begin{enumerate}
+			\item $x^\star$ satisfies EE
+			\item $\nabla_{\dot{x}\dot{x}}^2 l(s, x^\star, \dot{x}^\star) \succeq 0, \quad \forall s \in [s_1, s_2]$. \\
+			Legendre condition
+		\end{enumerate}
+	\end{lemmabox}
+	\begin{lemmabox}[First-order sufficient condition for global minimizers]
+		Assume that $l(s, x, \dot{x})$ is \underline{jointly convex} in $x$ and $\dot{x}$. \\
+		If $x^\star \in \mathcal{D}$ satisfies the EE, then $x^\star$ is a global minimizer.
+	\end{lemmabox}
+	
+	\textbf{Free end-point problems}
+	$$
+	\mathcal{D} = \{(x, s_2) \in \mathcal{C}^1\left([s_1, \infty) \times (s_1, \infty)\right) \mid x(s_1) = x_1, x(s_2) \text{ free}, s_2 \text{ free} \}
+	$$
+	First-variation also suitably redefined:
+	$$ \delta J(x, s_2; \xi, \sigma) := \lim_{\eta \to 0}\; \frac{J(x+\eta\xi, s_2+\eta\sigma) - J(x, s_2)}{\eta} $$
+	$$ = \frac{\partial}{\partial\eta} J(x+\eta\xi, s_2+\eta\sigma) \Big|_{\eta=0} $$
+	
+	\begin{center}
+		\begin{tikzpicture}[>=Stealth, thick, font=\small]
+			% Achsen
+			\draw[->] (-0.5,0) -- (6,0); % s-Achse
+			\draw[->] (0,-0.5) -- (0,3); % x-Achse
+			
+			% Ticks und Beschriftungen auf der s-Achse
+			\draw (1.5, 0.15) -- (1.5, -0.15) node[below] {$s_1$};
+			\draw (4.0, 0.15) -- (4.0, -0.15) node[below] {$s_2^*$};
+			\draw (5.3, 0.15) -- (5.3, -0.15) node[below] {$s_2^* + \eta\sigma$};
+			
+			% Kurven
+			% Optimale Trajektorie x*
+			\draw[blue, thick] (1.5, 1.0) to[out=35, in=175] node[pos=0.5, above=2pt] {$x^*$} (4.0, 2.2);
+			
+			% Gestörte Trajektorie
+			\draw[red, thick] (1.5, 1.0) to[out=-10, in=190] node[pos=0.6, below=5pt] {$x^* + \eta\sigma$} (5.3, 1.2);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	[CV-P2] \quad $\underset{x(\cdot), s_2}{\min} \;\varphi(s_2, x(s_2)) + \int_{s_1}^{s_2} l(s, x(s), \dot{x}(s)) \, ds$
+	$$ \text{s.t.} \quad x \in \{ y \in \mathcal{C}^1([s_1, s_2]) \mid y(s_1) = x_1 \},\quad s_2 \in (s_1, \infty) $$
+	
+	\begin{lemmabox}[First order necessary conditions for local minimizers of $(CV-P2)$]
+		Suppose $(x^\star, s_2^\star)$ is a weak minimizer of $[CV-P2]$, then
+		\begin{enumerate}
+			\item $x^\star$ solves EE on $[s_1, s_2^\star]$
+			\item The transversal conditions
+			\begin{itemize}
+				\item[A)] $[l_{\dot{x}} + \varphi_x] \big|_{x=x^\star, s=s_2^\star} = 0$
+				\item[B)] $[l - \dot{x}^T l_{\dot{x}} + \varphi_s] \big|_{x=x^\star, s=s_2^\star} = 0$
+			\end{itemize}
+		\end{enumerate}
+	\end{lemmabox}
+	The transversal conditions ``replace'' the BC at $s_2$ because in $[CV-P2]$ we have none.
+	
+	\begin{itemize}
+		\item 2A is a vector equation with $n$ components $\to$ it replaces ``$x(s_2) = x_2$''
+		\item 2B is a scalar equation $\to$ it provides an equation to find $s_2$
+	\end{itemize}
+	
+	\textbf{``Partially'' free end-point problems}
+	\begin{enumerate}
+		\item[Case 1] $s_2$ free, $x(s_2) = x_2$ given
+		
+		Same as Lemma 2.6, but we only use 2B
+		
+		(2A not needed bc the BC on $x(s_2)$ is given)
+		\item[Case 2] $s_2$ fixed, $x(s_2)$ free
+		
+		Same as Lemma 2.6, but we only use 2A
+		\item[Case 3] $s_2, x(s_2)$ are free but related through $\psi: \mathbb{R} \to \mathbb{R}^n, \quad x(s_2) = \psi(s_2)$
+		
+		We do not need 2A $\to$ it is replaced by $x(s_2) = \psi(s_2)$.
+		
+		We need an extension to 2B.
+		$$ 2B': \left[ l + l_{\dot{x}}^T (\dot{\psi} - \dot{x}) + \varphi_s + \varphi_x^T \dot{\psi} \right]_{x=x^\star, s=s_2^\star} = 0 $$
+		
+		Note $\psi(s_2) = x_2$
+		
+		When $\dot{\psi} = 0$, 2B' collapses to 2B.
+		
+		% Common coordinates
+		\newcommand{\sone}{0.8}
+		\newcommand{\stwo}{2.4}
+		
+		\begin{tikzpicture}[scale=1,>=stealth]
+			
+			% === FIRST GRAPH ===
+			\begin{scope}[xshift=0cm]
+				% axes
+				\draw[->] (0,0) -- (3.2,0);
+				\draw[->] (0,0) -- (0,2.6);
+				% ticks
+				\coordinate (s1) at (\sone,0);
+				\coordinate (s2) at (\stwo,0);
+				\draw (s1) -- ++(0,-0.06) node[below] {$s_1$};
+				\draw (s2) -- ++(0,-0.06) node[below] {$s_2$};
+				% dashed horizontal line
+				\draw[dashed] (0,2) -- (3.2,2);
+				
+				% start point (common for all)
+				\coordinate (start) at (\sone,0.6);
+				
+				% upper and lower smooth loops
+				\draw[blue,thick,smooth]
+				plot coordinates {(\sone,0.6) (1.2,1.3) (1.8,2)};
+				\draw[red,thick,smooth]
+				plot coordinates {(\sone,0.6) (1.5,0.8) (2.2,1.2) (3,2)};
+				
+				% label
+				\node[below=15pt] at (1.6,0) {\small Case 1};
+			\end{scope}
+			
+			% === SECOND GRAPH ===
+			\begin{scope}[xshift=5cm]
+				% axes
+				\draw[->] (0,0) -- (3.2,0);
+				\draw[->] (0,0) -- (0,2.6);
+				% ticks
+				\coordinate (s1) at (\sone,0);
+				\coordinate (s2) at (\stwo,0);
+				\draw (s1) -- ++(0,-0.06) node[below] {$s_1$};
+				\draw (s2) -- ++(0,-0.06) node[below] {$s_2$};
+				% dashed vertical line
+				\draw[dashed] (\stwo,0) -- ++(0,2.2);
+				
+				% same start
+				\coordinate (start) at (\sone,0.6);
+				
+				% top and bottom smooth increasing curves
+				\draw[red,thick,smooth]
+				plot coordinates {(\sone,0.6) (1.5,1.8) (\stwo,2.0)};
+				\draw[blue,thick,smooth]
+				plot coordinates {(\sone,0.6) (1.3,0.7) (1.9,0.9) (2.2,1.0) (\stwo,1.05)};
+				
+				% mark endpoints
+				\fill (\stwo,2.0) circle (0.8pt);
+				\fill (\stwo,1.05) circle (0.8pt);
+				
+				% label
+				\node[below=15pt] at (1.6,0) {\small Case 2};
+			\end{scope}
+			
+			% === THIRD GRAPH (with two blue curves + psi in red) ===
+			\begin{scope}[xshift=10cm]
+				% parameters
+				\def\sone{0.8}
+				\def\stwo{2.3}
+				
+				% axes
+				\draw[->] (0,0) -- (3.2,0);
+				\draw[->] (0,0) -- (0,2.6);
+				
+				% ticks and labels
+				\coordinate (s1) at (\sone,0);
+				\coordinate (s2) at (\stwo,0);
+				\draw (s1) -- ++(0,-0.06) node[below] {$s_1$};
+				\draw (s2) -- ++(0,-0.06) node[below] {$s_2$};
+				
+				% --- blue curves (upper and lower arcs) ---
+				\draw[red,thick,smooth]
+				plot coordinates {
+					(\sone,0.6)
+					(1.3,1.8)
+					(1.9,2.2)
+					(2.72,1.8)
+				};
+				
+				\draw[blue,thick,smooth]
+				plot coordinates {
+					(\sone,0.6)
+					(1.3,1.3)
+					(1.6,1.2)
+					(1.9,0.97)
+				};
+				
+				% --- golden psi curve ---
+				\draw[thick,orange,smooth]
+				plot[domain=1.2:3]
+				(\x,{0.5 + 0.4*(\x-\sone)^1.8});
+				\node[right,orange] at (\stwo,1.2) {$\psi$};
+				
+				% label
+				\node[below=15pt] at (1.6,0) {\small Case 3};
+			\end{scope}
+			
+		\end{tikzpicture}
+		
+	\end{enumerate}
 \end{document}
