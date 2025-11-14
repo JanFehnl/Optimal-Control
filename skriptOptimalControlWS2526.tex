@@ -19,7 +19,7 @@
 \setlist[itemize]{topsep=0pt, itemsep=2pt}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning}
+\usetikzlibrary{arrows.meta, positioning, calc, tikzmark}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17}
 \usepackage{graphicx}
@@ -29,6 +29,7 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{wrapfig}
+\usepackage{soul}
 
 \KOMAoptions{parskip=half}
 
@@ -1606,14 +1607,14 @@
 	
 	\subsubsection{$V=\mathcal{C}^1$}
 	\[
-		\underset{x(\cdot)}{\min}\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\hspace*{2cm}[CV-P_1]
+		\underset{x(\cdot)}{\min}\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\hspace*{2cm}[CV-P1]
 	\]
 	\[
 		\text{s.t. }x\in\{y\in\mathcal{C}^1([s_1,s_2])\mid \underset{\substack{\text{special case of ``free problems''}\\\text{we fix the endpoint to }x_2}}{\underbrace{y(s_1)=x_1,\;y(s_2)=x_2}}\}
 	\]
 	
 	\begin{lemmabox}
-		Suppose $x^\star\in\mathcal{C}^1([s_1,s_2])$ is a weak minimum of $[CV-P_1]$.
+		Suppose $x^\star\in\mathcal{C}^1([s_1,s_2])$ is a weak minimum of $[CV-P1]$.
 		
 		Then
 		\[
@@ -1621,7 +1622,7 @@
 		\]
 		with $l_{\dot{x}_i}=\frac{\partial l}{\partial\dot{x}_i}$ and $l_{x_i}=\frac{\partial l}{\partial x_i}$ (Euler equations).
 	\end{lemmabox}
-	This is a set of nonlinear ordinary time-varying second-order differential equations. Their solutions are \underline{candidate} local minimizers of $[CV-P_1]$.
+	This is a set of nonlinear ordinary time-varying second-order differential equations. Their solutions are \underline{candidate} local minimizers of $[CV-P1]$.
 	
 	solution $x(s):\;s\in[s_1,s_2]$
 	
@@ -1799,10 +1800,10 @@
 		$$ p = c_2. $$
 	\end{enumerate}
 	
-	\begin{lemmabox}[Second-order necessary conditions for $(CV-P_1)$]
+	\begin{lemmabox}[Second-order necessary conditions for $(CV-P1)$]
 		Assume $l \in \mathcal{C}^2$.
 		
-		If $x^\star$ is a weak minimizer of $[CV-P_1]$, then
+		If $x^\star$ is a weak minimizer of $[CV-P1]$, then
 		\begin{enumerate}
 			\item $x^\star$ satisfies EE
 			\item $\nabla_{\dot{x}\dot{x}}^2 l(s, x^\star, \dot{x}^\star) \succeq 0, \quad \forall s \in [s_1, s_2]$. \\
@@ -1993,4 +1994,433 @@
 		\end{tikzpicture}
 		
 	\end{enumerate}
+	
+	\subsubsection{$V=\hat{\mathcal{C}}^1$ (Piecewise-continuously differentiable case)}
+	
+	Why?
+	
+	\begin{enumerate}
+		\item ``$\mathcal{C}^1\subseteq\hat{\mathcal{C}}^1$''\quad by enlarging our search space we can achieve better costs
+		\begin{center}
+			\begin{tikzpicture}[>=Stealth, line cap=round, line join=round]
+			
+			% Left: concentric "target" circles
+			\coordinate (C) at (-3.0,0); % center
+			\draw[line width=1pt,black,rounded corners=2pt] (C) circle (2.0);   % outer black
+			\filldraw[fill=yellow, draw=yellow!60!black] (C) circle (1.0);  % yellow core
+			\draw[line width=1.5pt,blue] (C) circle (1.0);                    % blue middle
+			
+			% small red dot on outer boundary (approx on the right side of circles)
+			\coordinate (Rdot) at ($(C)+(30:1.6)$);
+			\fill[red] (Rdot) circle (0.08);
+			
+			% little red squiggly/curve arrow pointing right (from Rdot towards top-right graph)
+			\draw[red,thick, ->] 
+			(Rdot) .. controls ($ (Rdot) + (0.7,0.2) $) .. (2.2,1.5);
+			
+			% small red graph (top-right)
+			\begin{scope}[shift={(3.0,0.5)}, scale=1.0]
+				% axes
+				\draw[->] (-0.6,0) -- (2.4,0);
+				\draw[->] (0,-0.2) -- (0,1.8);
+				% ticks and labels (s1, s2)
+				\draw (0.6,0) -- (0.6,-0.08) node[below, yshift=-2pt] {$s_1$};
+				\draw (1.8,0) -- (1.8,-0.08) node[below, yshift=-2pt] {$s_2$};
+				% hand-drawn-ish curve
+				\draw[red,thick] (0.6, 0.4) to[out=60, in=-150] (1.3, 1.5) to[out=-60, in=170] (1.8, 0.6);
+			\end{scope}
+			
+			% small purple dot on outer boundary (approx on the right side of circles)
+			\coordinate (Pdot) at ($(C)+(-30:0.0)$);
+			\fill[purple] (Pdot) circle (0.08);
+			
+			% Purple arrow from core to lower-left-ish then curve to bottom-right graph
+			\draw[purple,thick,->] 
+			(Pdot) .. controls ($ (Pdot) + (0.4,-0.4) $) .. (2.2,-1.0);
+			
+			% Purple graph (bottom-right)
+			\begin{scope}[shift={(3.0,-2.0)}, scale=1.0]
+				% axes
+				\draw[->] (-0.6,0) -- (2.4,0);
+				\draw[->] (0,-0.2) -- (0,1.8);
+				% ticks and labels
+				\draw (0.6,0) -- (0.6,-0.08) node[below, yshift=-2pt] {$s_1$};
+				\draw (1.8,0) -- (1.8,-0.08) node[below, yshift=-2pt] {$s_2$};
+				% purple curve
+				\draw[purple,thick] (0.6, 0.6) .. controls (1.0, 1.6) and (1.5, -0.4) .. (1.8, 0.6);
+			\end{scope}
+			
+			% optional labels near the concentric circles (like \hat{C}^1 etc.)
+			\node[anchor=north west] at ($(C)+(1.4,2.0)$) {\(\hat{\mathcal{C}}^1\)};
+			\node[anchor=west, blue] at ($(C)+(1.1,0.2)$) {\(\mathcal{C}^1\)};
+			
+		\end{tikzpicture}
+		\end{center}
+		\item We can study conditions that are necessary for strong minimizers (only)
+	\end{enumerate}
+	
+	\begin{lemmabox}[First-order necessary conditions for strong minimizers]
+		Consider $[CV-P1]$ with $x\in\hat{\mathcal{C}}^1([s_1,s_2])$.
+		
+		Suppose $x^\star$ with corner points $\left\{c_i\right\}_{i=1}^N$ is a strong minimizer.
+		
+		Then:
+		\begin{itemize}
+			\item $x^\star$ solves the EE inside the intervals $($\tikzmarknode{meinText1}{$c_i,c_{i+1}$} $),\quad i=0,1,\dots,N\\ c_0=s_1,\; c_{N+1}=s_2$
+			
+			\begin{tikzpicture}[overlay, remember picture]
+				% Stil für die Linien
+				\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+				
+				% --- Linien für "meinText1" ---
+				\coordinate (A1) at ([yshift=-2pt]meinText1.south west);
+				\coordinate (B1) at ([yshift=-2pt]meinText1.south east);
+				
+				% Linie 1 (oben)
+				\draw[yellow!70, mystyle] (A1) -- (B1);
+				
+				% Linie 2 (mitte) - ABSTAND REDUZIERT
+				\draw[red!70, mystyle] ([yshift=-1.2pt]A1) -- ([yshift=-1.2pt]B1);
+				
+				% Linie 3 (unten) - ABSTAND REDUZIERT
+				\draw[green!70!black, mystyle] ([yshift=-2.4pt]A1) -- ([yshift=-2.4pt]B1);
+			\end{tikzpicture}
+			
+			\begin{center}
+				\begin{tikzpicture}
+					% Achsen
+					\draw[->] (-0.6,0) -- (4.2,0) node[right, xshift=2pt] {$s$};
+					\draw[->] (0,-0.2) -- (0,1.4);
+					
+					% Ticks und Labels (s1, c1, c2, s2)
+					\draw (0.6,0) -- (0.6,-0.08) node[below, yshift=-2pt] {$s_1$};
+					\draw (1.6,0) -- (1.6,-0.08) node[below, yshift=-2pt] {$c_1$};
+					\draw (2.6,0) -- (2.6,-0.08) node[below, yshift=-2pt] {$c_2$};
+					\draw (3.6,0) -- (3.6,-0.08) node[below, yshift=-2pt] {$s_2$};
+					
+					% Balken 1 (gelb)
+					\fill[yellow!70, opacity=0.4] (0.6, -0.1) rectangle (1.6, 0.1);
+					% Balken 2 (rot)
+					\fill[red!70, opacity=0.4] (1.6, -0.1) rectangle (2.6, 0.1);
+					% Balken 3 (grün)
+					\fill[green!70!black, opacity=0.4] (2.6, -0.1) rectangle (3.6, 0.1);
+				\end{tikzpicture}
+			\end{center}
+			\item At every corner point $c_i$ the following continuity condition holds:
+			\begin{itemize}
+				\item[\boxed{A}] $l_{\dot{x}}(c_i^-)=l_{\dot{x}}(c_i^+)\quad$
+				
+				\hspace*{1cm}with $l(c_i^\pm)\coloneqq l(c_i,x^\star(c_i),\dot{x}^\star(c_i^\pm))$
+				\item[\boxed{B}] $\left[-l(c_i^-)+\dot{x}^\star(c_i^-)^Tl_{\dot{x}}(c_i^-)\right]=\left[-l(c_i^+)+\dot{x}^\star(c_i^+)^Tl_{\dot{x}}(c_i^+)\right]$
+				
+				\hspace*{1cm}with $l_{\dot{x}}(c_i^\pm)\coloneqq l_{\dot{x}}(c_i,x^\star(c_i),\dot{x}^\star(c_i^\pm))$
+			\end{itemize}
+		\end{itemize}
+	\end{lemmabox}
+	
+	\boxed{A} and \boxed{B} are also called Weierstrass-Erdmann-conditions (WE).
+	
+	\boxed{A} is the 1$^{st}$ WE-condition and is also necessary for weak minimizers.
+	
+	\boxed{B} is the 2$^{nd}$ WE-condition and is \underline{only} necessary for strong minimizers.
+	
+	\boxed{A} prescribes continuity of $p$ (momentum)
+	
+	\boxed{B} prescribes continuity of $H$ (Hamiltonian)
+	
+	In the $\mathcal{C}^1$ case we need (and have) $2n$ boundary conditions.
+	
+	In the $\hat{\mathcal{C}}^1$ case we need $2(N+1)n$ boundary conditions.
+	
+	$$
+	\left.
+	\begin{array}{l}
+		n \text{ at } c_0 = s_1 \\
+		n \text{ at } c_1^- \\
+		n \text{ at } c_1^+ \\
+		n \text{ at } c_2^- \\
+		\hspace*{0.5cm}\vdots \\
+		n \text{ at } c_N^+ \\
+		n \text{ at } c_{N+1} = s_2
+	\end{array}
+	\right\} 2(N+1)n \text{ in total.}
+	$$
+	
+	$\to$ The Problem $[CV-P1]$ still gives you only $2n$ conditions $x(s_1)=x_1,\;x(s_2)=x_2$.
+	
+	$$
+		\underset{\text{required}}{\underbracket{2(N+1)n}}-\underset{\text{given by the BC}}{\underbracket{2n}}=2Nn
+	$$
+	
+	We have $N$ corner points. At each $c_i$ we can enforce:
+	\begin{itemize}
+		\item continuity of $x\quad(n$ conditions $)$
+		\item \boxed{A}: continuity of $p\quad(n$ conditions $)$
+		
+		$\hspace*{1cm}\to$ The problem is closed
+	\end{itemize}
+	
+	\textbf{Proof:}
+	
+	$x^* \in \hat{\mathcal{C}}^1$ with 1 corner point $c_1 \in (s_1, s_2)$.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% Axes
+			\draw[->] (0,0) -- (6,0) node[below] {$s$};
+			\draw[->] (0,0) -- (0,4);
+			
+			% X-axis ticks and labels
+			\draw (1,0.1) -- (1,-0.1) node[below] {$s_1$};
+			\draw (3,0.1) -- (3,-0.1) node[below] {$c_1$};
+			\draw (5,0.1) -- (5,-0.1) node[below] {$s_2$};
+			
+			% Dashed line for c_1
+			\draw[dashed] (3,0) -- (3,2.5);
+			
+			% Curve segments
+			% First segment (yellow highlight)
+			\draw[green,thick] (1,0.5) .. controls (2,2) and (2.5,2.4) .. (3,2.5);
+			
+			% Second segment (red highlight)
+			\draw[red,thick] (3,2.5) .. controls (3.5,2.8) and (4.5,3.2) .. (5,3);
+			
+			% Label x*(s)
+			\node[above right, xshift=10pt, yshift=5pt] at (3.5, 3) {$x^*(s)$};
+			
+			% Vertical lines for s1 and s2 (if desired, not strictly in image but implied)
+			\draw[densely dashed] (1,0) -- (1,0.5); % Connect s1 to curve
+			\draw[densely dashed] (5,0) -- (5,3); % Connect s2 to curve (endpoint)
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	I will drop $^\star$ from $x$.
+	
+	$$
+		x_1: [s_1, c] \to \mathbb{R}^n \quad \xi_1\text{ is the perturbation to }x_1
+	$$
+	$$
+		x_2: [c, s_2] \to \mathbb{R}^n \quad \xi_2\text{ is the perturbation to }x_2
+	$$
+	
+	The location of $c$ can also be perturbed
+	\[ c \to c + \eta \lambda \]
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% Axes
+			\draw[->] (0,0) -- (7,0) node[below] {$s$};
+			\draw[->] (0,0) -- (0,4.5) node[left] {$x$}; % Changed label from generic arrow to 'x'
+			
+			% X-axis ticks and labels
+			\draw (1,0.1) -- (1,-0.1) node[below] {$s_1$};
+			\draw (3,0.1) -- (3,-0.1) node[below] {$c$};
+			\draw (3.8,0.1) -- (3.8,-0.1) node[below, blue] {$c+\eta\lambda$}; % Perturbed c
+			\draw (5.5,0.1) -- (5.5,-0.1) node[below] {$s_2$};
+			
+			% --- Original Curve ---
+			% First segment
+			\coordinate (c_orig) at (3,2.0); % Original corner point
+			\draw[green,thick] (1,0.8) .. controls (2,1.6) and (2.5,1.8) .. (c_orig);
+			\node[below right] at (2,1.5) {$x_1$}; % Label for x1
+			% Second segment
+			\draw[red,thick] (c_orig) .. controls (3.5,2.8) and (4.5,2.9) .. (5.5,3.0);
+			\node[below right] at (4.5,2) {$x_2$}; % Label for x2
+			
+			% Dashed line for original c
+			\draw[dashed] (3,0) -- (c_orig);
+			
+			% --- Perturbed Curve ---
+			\coordinate (c_pert) at (3.8,3.5); % Perturbed corner point
+			\draw[green,thick] (1,0.8) .. controls (2,2.8) and (3,3.3) .. (c_pert);
+			\node[above left, purple] at (2.5,3) {$x_1+\eta\xi_1$}; % Label for perturbed x1
+			
+			\draw[red,thick] (c_pert) .. controls (4.2,3.3) and (5,3) .. (5.5,3.0);
+			\node[above right, purple] at (4.2,3.5) {$x_2+\eta\xi_2$}; % Label for perturbed x2
+			
+			% Dashed line for perturbed c
+			\draw[dashed, blue] (3.8,0) -- (c_pert);
+			
+			\draw[thick,cyan,<->] (6.5,2.0) -- (6.5,3.5) node [right,midway,align=left,yshift=-30pt] {$\approx\eta\alpha$ \\ \small\hspace*{0.5cm} first-order change \\ \small\hspace*{0.5cm} in value of $x$ at \\ \small\hspace*{0.5cm} the corner point};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{align*}
+		J(x+\eta \xi; c+\eta \lambda) &= \int_{s_1}^{s_2} l[x+\eta \xi] ds \\
+		&= \underbrace{\int_{s_1}^{c+\eta \lambda} l[x+\eta \xi] ds}_{J_1} + \underbrace{\int_{c+\eta \lambda}^{s_2} l[x+\eta \xi] ds}_{J_2}
+	\end{align*}
+	
+	To show that $(x, c)$ is optimal, $\delta J$ must be zero.
+	
+	In fact $\delta J_1 = \delta J_2 = 0 \to x_1$ and $x_2$ are optimal in their intervals.
+	
+	Enforcing $\delta J = 0$ results in this expression. (as well as continuity
+	in the new corners $c+\eta \lambda$)
+	
+	$$
+		\forall \alpha, \forall \lambda: \; \big[ \underset{\boxed{A}}{\underbracket{l_{\dot{x}}(c_i^-) - l_{\dot{x}}(c_i^+)}} \big] \alpha - \big[\underset{\boxed{B}}{\underbracket{- l(c_i^-) - \dot{x}^\star(c_i^-)^T l_{\dot{x}}(c_i^-) + l(c_i^+) + \dot{x}^\star(c_i^+)^T l_{\dot{x}}(c_i^+)}}\big] \lambda = 0
+	$$
+	with $\alpha$ related to change in function value at the corner point and $\lambda$ as the change of location of the corner points.
+	
+	\begin{enumerate}
+		\item Because $\alpha,\lambda$ are independent, this means that \boxed{A}, \boxed{B} must hold. The proof shows why only \boxed{B} is necessary for strong minima.
+		
+		When $c$ can change the perturbed curve
+		$$
+			(x+\eta\xi)
+		$$
+		is not in the weak ball of $x$.
+		
+		In the interval $[c,c+\eta\lambda]$ we have that
+		$$
+			\norm{(x+\eta\xi)-x}_1\approx\underset{\hspace*{1.3cm}\neq0\quad\forall\eta\neq0}{\underbrace{\norm{\dot{x}(c^-)-\dot{x}(c^+)}}}.
+		$$
+		This shows that the perturbation is outside of the weak ball around $x$. It is instead in the strong ball around $x$ because $\norm{\cdot}_\infty$ does not look at derivatives of the functions.
+		
+		If instead \boxed{\lambda=0} (no perturbation to $c$) then $\norm{(x+\eta\xi)-x}_1\approx\eta$.
+		
+		$\to$ The perturbed area is inside the weak ball of $x$.
+		\item Condition \boxed{A} is not surprising after all.
+		
+		Recall the proof of EE, you can see, that the integral version
+		$$
+			l_{\dot{x}_i}[x^\star]-\int_{s_1}^{s}l_{x_i}[x^\star]d\sigma=c_i
+		$$
+		This shows already that $l_{\dot{x}}$ is always continuous if $x^\star$ satisfies the EE.
+	\end{enumerate}
+	
+	\begin{definitionbox}[Weierstrass excess function]
+		$$
+			E(s,x,\dot{x},w)\coloneqq l(s,x,w)-\left[l(s,x,\dot{x})+(w-\dot{x})^Tl_{\dot{x}}(s,x,\dot{x})\right]
+		$$
+		interpretation: difference between $l(s,x,w)$ and its first order approximation around $w=\dot{x}$.
+	\end{definitionbox}
+	
+	\begin{lemmabox}[First-order necessary conditions for strong minimizers - the Weierstrass condition]
+		Consider $[CV-P1]$ $x\in\hat{\mathcal{C}}^1$.
+		
+		Suppose $x^\star$ with corner point $\left\{c_i\right\}_{i=1}^N$ is a strong minimizer.
+		
+		Then
+		\begin{itemize}
+			\item $x^\star$ solves EE inside the intervals $(c_i,c_{i+1}),\quad i=0,1,\dots,N$
+			\item $	E(s,x,\dot{x},w)\geq0\quad\forall w\in\mathbb{R}^n,\quad\forall s\in[s_1,s_2]$ except corner points
+		\end{itemize}
+	\end{lemmabox}
+	
+	$w$ condition implies \boxed{A} and \boxed{B} from previous Lemma (it is a stronger condition).
+	
+	interpretation: for a given solution $x^\star$, we draw for fixed $s\in[s_1,s_2]$ the following curve:
+	\noindent
+	\begin{center}
+		\begin{tikzpicture}
+			% --- Definitions ---
+			\def\func{0.5*(x-2)^2 + 3} % The convex function
+			
+			\pgfmathsetmacro{\xk}{4} % The point x^k
+			\pgfmathsetmacro{\fxk}{0.5*(\xk-2)^2 + 3} % L(s, x^k, x^k)
+			\pgfmathsetmacro{\derivAtxk}{\xk-2} % Derivative at x^k
+			
+			% Define the tangent line equation
+			\def\tangent{\fxk + (x - \xk) * (\derivAtxk)} % Tangent line
+			
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$w$},
+				ylabel={$l(s, x^\star, w)$},
+				xmin=-1, xmax=8.5,
+				ymin=-1, ymax=12,
+				grid=major,
+				grid style={gray, opacity=0.3, dashed},
+				xtick=\empty,
+				ytick=\empty,
+				xlabel style={anchor=north, yshift=-5pt},
+				ylabel style={anchor=east, xshift=-5pt},
+				clip=false
+				]
+				
+				% 1. Plot the main curve (black)
+				\addplot [black, thick, domain=0.5:6.5, samples=50] {\func};
+				
+				% 2. Plot the tangent line (red)
+				\addplot [red, thick, domain=2:7] {\tangent};
+				
+				% 3. Mark the point (x^k)
+				\coordinate (P) at (axis cs:\xk, \fxk);
+				\fill (P) circle (2pt);
+				
+				% 4. Draw dashed lines (blue)
+				\draw [blue, dashed] (axis cs:\xk, 0) -- (P);
+				\draw [blue, dashed] (axis cs:0, \fxk) -- (P);
+				
+				% 5. Add labels (blue)
+				\node [blue, below] at (axis cs:\xk, 0) {$\dot{x}^\star$};
+				\node [blue, left] at (axis cs:0, \fxk) {$l(s, x^\star, \dot{x}^\star)$};
+				
+				% 6. Add tangent line label (red)
+				\node [red, anchor=south west, xshift=10pt] at (P) 
+				{$l(s, x^\star, \dot{x}^\star) + (w - \dot{x}^\star)^T l_x(s, x^\star, \dot{x}^\star)$};
+				
+				% 7. Add Error 'E' (green)
+				% Renamed \w_e to \errorX to avoid macro conflict
+				% Renamed the other macros for clarity
+				\pgfmathsetmacro{\errorX}{6} 
+				\pgfmathsetmacro{\tangentAtError}{\fxk + (\errorX - \xk) * (\derivAtxk)}
+				\pgfmathsetmacro{\funcAtError}{0.5*(\errorX-2)^2 + 3}
+				
+				\coordinate (T_e) at (axis cs:\errorX, \tangentAtError);
+				\coordinate (F_e) at (axis cs:\errorX, \funcAtError);
+				
+				\draw [green!50!black, thick, <->] (T_e) -- (F_e);
+				\node [green!50!black, right, xshift=2pt,yshift=10pt] at ($(T_e)!0.5!(F_e)$) {$E$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	This can be interpreted as a convexity requirement of the function $l(s,x^\star,\cdot)$ for fixed $s,x^\star$.
+	
+	So this is a weaker requirement than joint convexity of $l$\\
+	$\hspace*{1cm}\to$ we only need to check that at $x^\star$
+	
+	The Weierstrass condition can equivalently be written as a maximization condition on $H$:
+	$$
+		\underset{\text{substitude definition of $E$ in }E\geq0}{E(s,x^\star,\dot{x}^\star,w)\geq0\quad\Leftrightarrow\quad H(s,x^\star,\dot{x}^\star,p^\star)}-H(s,x^\star,w,p^\star)\geq0\qquad\forall w\in\mathbb{R}^n
+	$$
+	$\hspace*{1cm}\to$ $H(s,x^\star,\cdot,p^\star)$ has a maximum at $w=\dot{x}^\star$
+	
+	\subsection{Isoperimetric constraints}
+	
+	$[CV-P3]\hspace*{4cm}\underset{x(\cdot)}{\min}\;\int_{s_1}^{s_2}l(s,x,\dot{x})ds$
+	$$
+		\text{s.t. } x \in\Big\{y\in\mathcal{C}^1\mid\underset{G_i(y):\,V\to\mathbb{R},\quad k_i\in\mathbb{R}}{\underbracket{\int_{s_1}^{s_2}g_i(s,y(s),\dot{y}(s))ds}}=k_i,\quad i=1,\dots,n_g;\; y(s_1)=x_1;\; y(s_2)=x_2\Big\}
+	$$	
+	
+	\begin{lemmabox}
+		Consider $[CV-P3]$ and assume the following regularity condition
+		$$
+			\text{Det}\,(G(\left\{\xi_i\right\}_{i=1}^{n_g}))\neq0
+		$$
+		$$
+			(G(\left\{\xi_i\right\}_{i=1}^{n_g}))\coloneqq\begin{bmatrix}
+				\delta G_1(x^\star, \xi_1)      & \cdots & \delta G_1(x^\star, \xi_{n_g}) \\
+				\vdots                     & \ddots & \vdots                     \\
+				\delta G_{n_g}(x^\star, \xi_1) & \cdots & \delta G_{n_g}(x^\star, \xi_{n_g})
+			\end{bmatrix}
+		$$
+		for $n_g$ independent directions $\left\{\xi_i\right\}_{i=1}^{n_g}\in V$.
+		
+		If $x^\star$ is is a local minimizer of $J$, then $\exists\lambda\in\mathbb{R}^{n_g}$ such that
+		$$
+			\frac{d}{ds}\mathcal{L}_{\dot{x}_i}(s,x^\star(s),\dot{x}^\star(s))=\mathcal{L}_{x_i}(s,x^\star(s),\dot{x}^\star(s)),\quad\forall s\in[s_1,s_2],\quad i=1,\dots,n
+		$$
+		$\mathcal{L}(s,x,\dot{x})\coloneqq l(s,x,\dot{x})+\lambda^Tg(s,x,\dot{x}),\qquad$ Lagrangian
+		$$
+			g\coloneqq\begin{bmatrix}
+				g_1 \\ g_2 \\ \vdots \\ g_{n_g}
+			\end{bmatrix}^T
+		$$
+	\end{lemmabox}
 \end{document}
