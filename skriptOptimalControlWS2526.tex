@@ -2997,5 +2997,266 @@
 		\textcolor{red}{1$^{st}$ ELE is just the dynamic equation for $x$.}\hfill\qedsymbol{}
 	\end{enumerate}
 	
+	\textbf{Remark:}
+	\begin{itemize}
+		\item we always have $\begin{array}{l}
+			n_x\text{ BC at }t_0\\
+			n_x\text{ BC at }t_f
+		\end{array}\to$ This is a TPBVP
+		\item Typically we extract from the 3$^{rd}$ equation a relationship between $u$ and $x,\lambda$:
+		$$
+			\to u(x,\lambda).
+		$$
+		In this case we can replace $u(x,\lambda)$ in the ODEs. These ODEs then are a system of equations in $x,\lambda$. We solve for $x,\lambda$ and we find $u(x,\lambda)$.
+		\item What happens to the ELE when $f(t,x,u)=u\to\dot{x}=u$
+		$$
+			\left\{\begin{array}{ll}
+				\dot{x}=u&\;x(t_0)=x_0\\
+				\dot{\lambda}=l_x(t,x,\dot{x})&\;\lambda(t_f)=0\\
+				\lambda=l_u(t,x,\dot{x})&
+			\end{array}\right.
+		$$
+		$$
+			\Leftrightarrow\left\{\begin{array}{ll}
+				\dot{x}=u&\;x(t_0)=x_0\\
+				\frac{d}{dt}l_u(t,x,\dot{x})=l_x(t,x,\dot{x})&\;\left.[l_u(t,x,\dot{x})]\right|_{t=t_f}=0\\
+				\lambda=l_u(t,x,\dot{x})&
+			\end{array}\right.
+		$$
+		These are the EE!
+		
+		$\frac{dl_u}{dt}=l_x,\quad\left.[l_u]\right|_{t=t_f}=0$ is the transversality condition for the case $s_2$ fixed and $x(s_2)$ free in the CV problem.
+		\textbf{Surprising?}
+		
+		If we write $[OC-P1]$ for $\dot{x}=u$ we get
+		$$
+			\min_{x(\cdot)}\;\int_{t_0}^{t_f}l(t,x,\underbrace{\dot{x}}_{=u})\,dt
+		$$
+		$$
+			\text{s.t. }x(t_0)=x_0,\quad t_f\text{ given},\quad x(t_f)\text{ free}
+		$$
+		This problem is equivalent to finding a curve $x(s),\; s\in[s_1,s_2]$ where $s_1=t_0,\;s_2=t_f$.
+		
+		In this case: $\left.\lambda(t)=l_u(t,x,\dot{x})\right|_{x(t)}=p(t)$
+		
+		Therefore we can think of the adjoint as the momentum for the OC problem.
+		\item We can introduce the Hamiltonian for OC problems:
+		\begin{itemize}
+			\item[] In CV $\to \mathcal{H}(s,x,\dot{x},p)=-l(s,x,\dot{x})+\dot{x}^Tp$
+			\item[] In OC $\to \mathcal{H}(t,x,u,\lambda)=-l(t,x,u)+f^T(t,x,u)\lambda$
+		\end{itemize}
+		Once we have defined $\mathcal{H}$, we can rewrite ELE compactly:
+		
+		\begin{minipage}[t]{0.15\textwidth}
+			\centering
+			\begin{tabular}{c c}
+				H & \\
+				A & D \\
+				M & Y \\
+				I & N \\
+				L & A \\
+				T & M \\
+				O & I \\
+				N & C \\
+				I & S \\
+				A & \\
+				N &
+			\end{tabular}
+		\end{minipage}%
+		\begin{minipage}[c]{0.8\textwidth}
+				\begin{align*}
+				\dot{x}^\star &= \mathcal{H}_\lambda(t, x^\star, u^\star, \lambda^\star), & x^\star(t_0) &= x_0 \\[0.5em]
+				\dot{\lambda}^\star &= -\mathcal{H}_x(t, x^\star, u^\star, \lambda^\star), & \lambda^\star(t_0) &= 0 \\[0.5em]
+				0 &= \mathcal{H}_u(t, x^\star, u^\star, \lambda^\star), & \forall t &\in [t_0, t_f]
+			\end{align*}
+			\hspace*{2.15cm}\begin{tikzpicture}
+				\draw[->, thick] (1, 0.2) to[out=270, in=180] (2, -0.4) 
+				node[right,align=left] {Candidate optimal controllers \\ are stationary points for $\mathcal{H}
+					$};
+			\end{tikzpicture}
+		\end{minipage}
+		\item $\left.\frac{d\mathcal{H}}{dt}\right|_{\substack{\text{evaluated at}\\x^\star,\lambda^\star,u^\star\text{ solutions}\\\text{of ELE}}}=\mathcal{H}_t+\mathcal{H}_x^T\dot{x}+\mathcal{H}_u^T\dot{u}+f^T\dot{\lambda}$
+		$$
+			=\mathcal{H}_t+\underbrace{\mathcal{H}_u^T\dot{u}}_{=0}+f^T(\underbrace{\mathcal{H}_x+\dot{\lambda}}_{=0})=\mathcal{H}_t=\frac{\partial \mathcal{H}(t,x,u,\lambda)}{\partial t}
+		$$
+		$\mathcal{H}_t\neq0$ only if
+		\begin{itemize}
+			\item[] $f(t,x,u)$ depends on time and/or
+			\item[] $l(t,x,u)$ depends on time
+		\end{itemize}
+		Time-invariant problems (dynamics do not depend on $t$ and running cost neither) have $\mathcal{H}_t=0$.
+		
+		Thus: $\mathcal{H}$ is constant over ELE solutions in time-invariant problems.
+		\item Consider the case where $S=\{t_f\}\cross\underbrace{\{x_f\}}_{\textcircled{1}}\quad\quad\textcircled{1}$ fixed end-point
+		
+		\textbf{What changes in Lemma 3.1?}
+		
+		We remove $\lambda^\star(t_f)=0$ and add $x(t_f)=x_f$. All the rest stay the same.
+	\end{itemize}
 	
+	If we have 2$^{nd}$ order regularity properties on $f,l$, we can derive 2$^{nd}$ order necessary conditions for weak minima.
+	
+	\begin{lemmabox}[Second order necessary conditions for opitmal control problems]
+		Consider $[OC-P1]$ with the standing assumptions and $u\in\mathcal{C}$.
+		
+		Assume also that $f$ and $l$ have continuous second-order derivative in $u$.
+		$$
+			(\nabla_{uu}l,\;\nabla_{uu}f\text{ exist})
+		$$
+		Suppose $u^\star$ is a weak minimum and $x^\star$ its response.
+		
+		Then $(x^\star,u^\star,\lambda^\star)$ satisfies ELE and also
+		$$
+			-\nabla_{uu}l(t,x^\star,u^\star)+\nabla_{uu}(f^T(t,x^\star,u^\star)\lambda^\star)\preceq0\qquad\forall t\in[t_0,t_f]
+		$$
+		(Legendre-Clebsch condition).
+		
+		Equivalently:
+		$$
+			\mathcal{H}_{uu}(t,x^\star,u^\star,\lambda^\star)\preceq0\qquad\forall t\in[t_0,t_f]
+		$$
+	\end{lemmabox}
+	\textbf{Proof:} skipped: It proceeds similary to the proof of Legendre condition in CV by deriving $\delta^2J=0$.
+	
+	\textbf{Note:} If $S=\{t_f\}\cross\{x_f\}$, this Lemma still applies.
+	The cange of $S$ only affects the boundary conditions of the ELE.
+	
+	What about sufficient conditions?
+	
+	\begin{lemmabox}[First order sufficient conditions for unconstrained OC - Mangasarian conditions]
+		Consider $[OC-P1]$ with standard assumptions and $u\in\mathcal{C}$.
+		
+		Assume also that
+		$$
+			l(t,x,u)\text{ and }f(t,x,u)\text{ are jointly cvx in $x$ and $u$ }\forall t\in[t_0,t_f]
+		$$
+		If
+		\begin{itemize}
+			\item $(u^\star,x^\star,\lambda^\star)$ satisfies ELE,
+			\item $\lambda^\star(t)\leq0\quad\forall t\in[t_0,t_f]$.
+		\end{itemize}
+		Then $u^\star$ is a global minimizer.
+	\end{lemmabox}
+	\textbf{Proof:} The goal is to show that
+	$$
+		J(u)-J(u^\star)\geq0\quad\forall u\in\mathcal{D}
+	$$
+	\begin{align*}
+		J(u) - J(u^\star) &= \int_{t_0}^{t_f} (l(t,x,u) - l(t,x^\star,u^\star)) \, dt 
+		&&\hspace*{-3.5cm} \Bigg| \begin{array}{l} \text{jointly convex } l \\ \text{wrt } x, u \end{array} \\[1em]
+		&\ge \int_{t_0}^{t_f} \underbrace{l_x^\star}_{l_x(t,x^\star,u^\star)} (x-x^\star) + \underbrace{l_u^{\star T}}_{l_u(t,x^\star,u^\star)} (u-u^\star) \, dt 
+		&&\hspace*{-3.5cm} \Bigg| \ x^\star, u^\star, \lambda^\star \text{ satisfy ELE} \\[1em]
+		&= \int_{t_0}^{t_f} [f_x^\star \lambda^\star - \dot{\lambda}^\star]^T (x-x^\star) + [f_u^\star \lambda^\star]^T (u-u^\star)\, dt 
+		&&\hspace*{-3.5cm} \Bigg| \begin{array}{l} \text{Integration by parts} \\ \text{for } \dot{\lambda}^{\star T}(x-x^\star) \end{array} \\[1em]
+		&= \int_{t_0}^{t_f} \lambda^{\star T} \left[ f_x^{\star T}(x-x^\star) + f_u^{\star T}(u-u^\star) - \big(f(t,x,u) - f(t,x^\star,u^\star)\big) \right] dt \\[1em]
+		&\quad + \underset{=0 \text{ because BC of ELE}}{\underbrace{\lambda^{\star T}(t_f)} (x(t_f) - x^\star(t_f))} - \underset{\substack{=0 \text{ because } x(t_0) = x^\star(t_0) = x_0 \text{ BC of ELE} \\ (\text{all responses must start at } x_0)}}{\lambda^{\star T}(t_0) \big(\underbrace{x(t_0) - x^\star(t_0)}\big)\hspace*{2cm}}
+	\end{align*}
+	In summary:
+	$$
+		J(u) - J(u^\star) = \int_{t_0}^{t_f} \underset{\boxed{A}}{\underbracket{\lambda^{\star T}}} \underset{\boxed{B}}{\underbracket{\left[ f_x^{\star T}(x-x^\star) + f_u^{\star T}(u-u^\star) - \big(f(t,x,u) - f(t,x^\star,u^\star)\big) \right]}} dt
+	$$
+	By joint convexity of $f$ we have
+	$$
+		f(t,x,u)\geq f(t,x^\star,u^\star) + f_x^{\star T}(x-x^\star) + f_u^{\star T}(u-u^\star)\quad\forall x,u
+	$$
+	$$
+		\Leftrightarrow \underset{\boxed{B}}{\underbracket{f_x^{\star T}(x-x^\star) + f_u^{\star T}(u-u^\star) - \big(f(t,x,u) - f(t,x^\star,u^\star)\big) }}\leq0\quad\forall x,u
+	$$
+	$\boxed{B}\leq0\to$ If $\lambda^\star\leq0\underset{\text{assumption}}{\to}\int\limits_{t_0}^{t_f}\boxed{A}\cdot\boxed{B}dt\geq0$
+	
+	Therefore: $J(u)-J(u^\star)\geq0\quad\forall u\in\mathcal{D}$\hfill\qedsymbol
+	
+	\textbf{Remarks:}
+	\begin{itemize}
+		\item When $f$ is linear, can we relax the assumptions of the Lemma?
+		$$
+			f\text{ linear}\to \boxed{B}=0
+		$$
+		Thus, we do not need to require $\lambda^\star(t)\leq0\quad\forall t$
+		\item What happens if $S=\{t_f\}\cross\{x_f\}$?
+		
+		The Lemma holds exactly the same. In the proof instead of having $\lambda^\star(t_f)=0$ we have that $x^\star(t_f)=x(t_f)=x_f$.
+		\item When $f$ is jointly concave ($\leftrightarrow -f$ is convex).
+		
+		Then we require $\lambda^\star\geq0$. The rest ist still valid.
+	\end{itemize}
+	
+	\subsubsection{Piecewise continuous control}
+	\begin{align*}
+		u\in\hat{\mathcal{C}},\quad&S=\{t_f\}\cross\mathbb{R}^{n_x}\\
+		&S=\{t_f\}\cross\{x_f\}
+	\end{align*}
+	Why?
+	\begin{itemize}
+		\item For some OC problems, a continuous solution to ELE might not exist.
+		\begin{itemize}
+			\item This happens very frequently when we have input constraints.
+			\begin{center}
+				\begin{tikzpicture}[>=stealth]
+					
+					% --- Coordinates & Settings ---
+					\def\ymax{2.0}  % Upper bound
+					\def\ymin{-2.0} % Lower bound
+					\def\tstart{1.5} % t0
+					\def\tend{6.5}   % tf (approximately)
+					
+					% --- 1. The Yellow Highlighter (Background) ---
+					% Drawn first so it appears behind the red line
+					\begin{scope}[line width=12pt, yellow, opacity=0.5, line cap=round]
+						% Highlight the initial rise
+						\draw (\tstart, 0) to[out=0, in=260] (4, \ymax);
+						% Highlight bottom segment
+						\draw (4, \ymin) -- (5.5, \ymin);
+						% Highlight final top segment
+						\draw (5.5, \ymax) -- (\tend, \ymax);
+					\end{scope}
+					
+					% --- 2. The Bounds (Purple) ---
+					% Upper Bound Line
+					\draw[violet, thick] (-1, \ymax) -- (8, \ymax);
+					% Lower Bound Line
+					\draw[violet, thick] (-1, \ymin) -- (8, \ymin);
+					
+					% Hatching/Tick marks outside the bounds
+					% Using a loop to draw the diagonal ticks
+					\foreach \x in {-0.5, 1.0, 2.5, 4.0, 5.5, 7.0} {
+						\draw[violet, thick] (\x, \ymax+0.2) -- (\x+0.3, \ymax+0.8); % Top ticks
+						\draw[violet, thick] (\x, \ymin-0.2) -- (\x-0.3, \ymin-0.8); % Bottom ticks
+					}
+					
+					% --- 3. Axes ---
+					\draw[->] (-1.5, 0) -- (8.5, 0) node[below] {$t$}; % t-axis
+					\draw[->] (0, -2.5) -- (0, 3) node[left] {$u$};    % u-axis
+					
+					% --- 4. Ticks and Labels ---
+					\draw (\tstart, 0.15) -- (\tstart, -0.15) node[below=5pt] {$t_0$};
+					\draw (\tend, 0.15) -- (\tend, -0.15) node[below=5pt] {$t_f$};
+					
+					% --- 5. The Controller Signal (Red) ---
+					% Using rounded corners or controls to get the smooth start
+					\draw[red!90!black, line width=2.5pt] 
+					(\tstart, 0) to[out=0, in=260] (4, \ymax) % Initial curve up
+					-- (4, \ymin)   % Jump down
+					-- (5.5, \ymin) % Flat bottom
+					-- (5.5, \ymax) % Jump up
+					-- (\tend, \ymax); % Final flat top
+					
+					% --- 6. Annotation ---
+					\node[red!90!black, align=left, anchor=west] at (8.5, 1.0) {bang-bang \\ controller};
+					
+				\end{tikzpicture}
+			\end{center}
+			\item Usually $u$ is obtained by solving
+			$$
+				0=\mathcal{H}_u(t,x,u,\lambda)
+			$$
+			$$
+				\to u=u_1(x,\lambda),\; u=u_2(x,\lambda),\;\dots\qquad\text{might have more than 1 solution}
+			$$
+			even without constraints, $u$ might jump from $u_1$ to $u_2$.
+		\end{itemize}
+		\item To improve the cost $J$.
+		
+		$u\in\hat{\mathcal{C}}$ is a larger class than $u\in\mathcal{C}$.
+	\end{itemize}
 \end{document}
