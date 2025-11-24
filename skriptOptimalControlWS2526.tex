@@ -30,6 +30,7 @@
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{soul}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref}
 
 \KOMAoptions{parskip=half}
 
@@ -178,7 +179,7 @@
 		\item Minimum-time problem\\
 		Goal: transfer the system from $x_0$ to a set $\mathcal{S}$ in the minimum time
 		\[
-		J = t_f-t_0 = \int_{t_0}^{t_f}dt \qquad (l=1, \varphi=0)
+		J = t_f-t_0 = \int_{t_0}^{t_f}\, dt \qquad (l=1, \varphi=0)
 		\]
 		\[
 		x(t_f) \in \mathcal{S}
@@ -195,7 +196,7 @@
 		
 		\item Tracking problem
 		\[
-		J = \int_{t_0}^{t_f} (x(t)-r(t))^T Q (x(t)-r(t))dt
+		J = \int_{t_0}^{t_f} (x(t)-r(t))^T Q (x(t)-r(t))\, dt
 		\]
 		$Q > 0$ (positive definit matrix: symmetric \& all eigenvalues positive) \\
 		$r(t)$ given signal
@@ -1831,15 +1832,15 @@
 			
 			% Ticks und Beschriftungen auf der s-Achse
 			\draw (1.5, 0.15) -- (1.5, -0.15) node[below] {$s_1$};
-			\draw (4.0, 0.15) -- (4.0, -0.15) node[below] {$s_2^*$};
-			\draw (5.3, 0.15) -- (5.3, -0.15) node[below] {$s_2^* + \eta\sigma$};
+			\draw (4.0, 0.15) -- (4.0, -0.15) node[below] {$s_2^\star$};
+			\draw (5.3, 0.15) -- (5.3, -0.15) node[below] {$s_2^\star + \eta\sigma$};
 			
 			% Kurven
 			% Optimale Trajektorie x*
-			\draw[blue, thick] (1.5, 1.0) to[out=35, in=175] node[pos=0.5, above=2pt] {$x^*$} (4.0, 2.2);
+			\draw[blue, thick] (1.5, 1.0) to[out=35, in=175] node[pos=0.5, above=2pt] {$x^\star$} (4.0, 2.2);
 			
 			% Gestörte Trajektorie
-			\draw[red, thick] (1.5, 1.0) to[out=-10, in=190] node[pos=0.6, below=5pt] {$x^* + \eta\sigma$} (5.3, 1.2);
+			\draw[red, thick] (1.5, 1.0) to[out=-10, in=190] node[pos=0.6, below=5pt] {$x^\star + \eta\sigma$} (5.3, 1.2);
 			
 		\end{tikzpicture}
 	\end{center}
@@ -2066,15 +2067,15 @@
 		
 		Then:
 		\begin{itemize}
-			\item $x^\star$ solves the EE inside the intervals $($\tikzmarknode{meinText1}{$c_i,c_{i+1}$} $),\quad i=0,1,\dots,N\\ c_0=s_1,\; c_{N+1}=s_2$
+			\item $x^\star$ solves the EE inside the intervals $($\tikzmarknode{textToUnderline}{$c_i,c_{i+1}$} $),\quad i=0,1,\dots,N\\ c_0=s_1,\; c_{N+1}=s_2$
 			
 			\begin{tikzpicture}[overlay, remember picture]
 				% Stil für die Linien
 				\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
 				
-				% --- Linien für "meinText1" ---
-				\coordinate (A1) at ([yshift=-2pt]meinText1.south west);
-				\coordinate (B1) at ([yshift=-2pt]meinText1.south east);
+				% --- Linien für "textToUnderline" ---
+				\coordinate (A1) at ([yshift=-2pt]textToUnderline.south west);
+				\coordinate (B1) at ([yshift=-2pt]textToUnderline.south east);
 				
 				% Linie 1 (oben)
 				\draw[yellow!70, mystyle] (A1) -- (B1);
@@ -2162,7 +2163,7 @@
 	
 	\textbf{Proof:}
 	
-	$x^* \in \hat{\mathcal{C}}^1$ with 1 corner point $c_1 \in (s_1, s_2)$.
+	$x^\star \in \hat{\mathcal{C}}^1$ with 1 corner point $c_1 \in (s_1, s_2)$.
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -2186,7 +2187,7 @@
 			\draw[red,thick] (3,2.5) .. controls (3.5,2.8) and (4.5,3.2) .. (5,3);
 			
 			% Label x*(s)
-			\node[above right, xshift=10pt, yshift=5pt] at (3.5, 3) {$x^*(s)$};
+			\node[above right, xshift=10pt, yshift=5pt] at (3.5, 3) {$x^\star(s)$};
 			
 			% Vertical lines for s1 and s2 (if desired, not strictly in image but implied)
 			\draw[densely dashed] (1,0) -- (1,0.5); % Connect s1 to curve
@@ -2423,4 +2424,578 @@
 			\end{bmatrix}^T
 		$$
 	\end{lemmabox}
+	
+	\section{The CV approach to optimal control}
+	\label{sec:chapter3}
+	\subsection{Intro to CV problems}
+	
+	$$
+		\min_{u\in V}\;J(u)
+	$$
+	$[OC]\hspace*{2cm}\text{s.t. }\dot{x}=f(t,x,u),\quad x(t_0)=x_0,\quad t\in[t_0,t_f]$
+	
+	$\hspace*{4cm}(t_f,x(t_f))\in S\subseteq(t_0,\infty)\cross\mathbb{R}^{n_x}$
+	
+	\textbf{Remarks:}
+	\begin{itemize}
+		\item $t_0,t_f$: initial and final time:
+		$\begin{array}{l}
+			t_0\in(-\infty,\infty)\\
+			t_f\in(t_0,\infty)\text{ finite horizon problem}\\
+			t_f=+\infty\text{ infinite horizon problem} 
+		\end{array}$
+		
+		$t_0$ always given
+		
+		$t_f$ can be given or free variable (like $s_2$ in CV)
+		\item $f:[t_0,t_f]\cross\mathbb{R}^{n_x}\cross\mathbb{R}^{n_u}\to\mathbb{R}^{n_x}$
+		\item $(V,\norm{\cdot})$ normed vector space where $u$ belongs
+		$$
+			u:[t_0,t_f]\to \mathcal{U}\subseteq\mathbb{R}^{n_u},\qquad \mathcal{U}\subset\mathbb{R}^{n_u}\text{ if we have input contraints}
+		$$
+	\end{itemize}
+	
+	2 classes of functions:
+	\begin{itemize}
+		\item $V=\mathcal{C}([t_0,t_f],\mathcal{U})$ continuous
+		\item $V=\hat{\mathcal{C}}([t_0,t_f],\mathcal{U})$ piecewise continuous
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick]
+			
+			% 1. Define coordinates for start and end points
+			\coordinate (A) at (1.5, 1.5); % Corresponds to t0
+			\coordinate (B) at (5.5, 2.8); % Corresponds to tf
+			
+			% 2. Draw the Axes
+			\draw[->] (0,0) -- (6.5,0); % x-axis
+			\draw[->] (0,0) -- (0,4.5); % y-axis
+			
+			% 3. Draw the Dashed projection lines
+			\draw[dashed] (1.5,0) -- (A);
+			\draw[dashed] (5.5,0) -- (B);
+			
+			% 4. Draw the Ticks and Labels
+			\draw (1.5, 0.1) -- (1.5, -0.1) node[below=3pt] {\Large $t_0$};
+			\draw (5.5, 0.1) -- (5.5, -0.1) node[below=3pt] {\Large $t_f$};
+			
+			% 5. Draw the Curve
+			% The "controls" points define the shape (the hump and the dip)
+			\draw[ultra thick, violet!60!black] (A) .. controls (2.5, 4.0) and (4.0, 2.0) .. (B) node[pos=0.65, above=5pt, text=violet!60!black] {$u \in \mathcal{C}$};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{definitionbox}[Piecewise continuous function $\hat{\mathcal{C}}$]
+		$u\in\hat{\mathcal{C}}$ if there is a finite partition $\left\{c_k\right\}_{k=0}^{N+1}$ with  $t_0=c_0<c_1<\dots<c_N<c_{N+1}=t_f$ such that
+		$$
+			u:[c_k,c_{k+1}]\to\mathbb{R}^{n_u}\text{ is continuous}
+		$$
+		$$
+			\left\{c_k\right\}_{k=1}^N\text{: corner points}
+		$$
+		\begin{center}
+			\begin{tikzpicture}[>=stealth, thick]
+				
+				% --- Definitions for easy adjustment ---
+				\def\tzero{1.5}
+				\def\cone{3.5}
+				\def\ctwo{6.0}
+				\def\tf{8.5}
+				
+				% --- Axes ---
+				\draw[->] (-0.5,0) -- (9.5,0) node[right] {\Large $t$}; % t-axis
+				\draw[->] (0,-0.5) -- (0,5);   % y-axis
+				
+				% --- Ticks and Labels ---
+				% t0
+				\draw (\tzero, 0.15) -- (\tzero, -0.15) node[below=3pt] {\Large $t_0$};
+				% c1
+				\draw (\cone, 0.15) -- (\cone, -0.15) node[below=3pt] {\Large $c_1$};
+				% c2
+				\draw (\ctwo, 0.15) -- (\ctwo, -0.15) node[below=3pt] {\Large $c_2$};
+				% tl (or tf)
+				\draw (\tf, 0.15) -- (\tf, -0.15) node[below=3pt] {\Large $t_f$};
+				
+				% --- The Piecewise Function (Blue) ---
+				
+				% Segment 1: Rising Linear (t0 to c1)
+				\draw[ultra thick, blue] (\tzero, 1.5) -- (\cone, 2.8);
+				
+				% Jump 1: Dashed line at c1
+				\draw[dashed, thick, blue] (\cone, 2.8) -- (\cone, 4.0);
+				
+				% Segment 2: Constant/Flat (c1 to c2)
+				\draw[ultra thick, blue] (\cone, 4.0) -- (\ctwo, 4.2) 
+				node[midway, above=10pt, text=blue] {$u \in \hat{\mathcal{C}}$};
+				
+				% Jump 2: Dashed line at c2
+				\draw[dashed, thick, blue] (\ctwo, 4.2) -- (\ctwo, 2.0);
+				
+				% Segment 3: Curved Rising (c2 to tl)
+				\draw[ultra thick, blue] (\ctwo, 2.0) to[out=45, in=200] (\tf, 3.5);
+				
+			\end{tikzpicture}
+		\end{center}
+	\end{definitionbox}
+	
+	\begin{itemize}
+		\item $J:V\to\mathbb{R}$
+		\begin{itemize}
+			\item Lagrangian form
+			$$
+				J(u)=\int_{t_0}^{t_f}l(t,x,u)\,dt,\qquad l\text{: running cost}
+			$$
+			\item Bolza form
+			$$
+				J(u)=\varphi(t_f,x(t_f))+\int_{t_0}^{t_f}l(t,x,u)\,dt,\qquad \varphi\text{: terminal cost}
+			$$
+			\item Mayer form
+			$$
+				J(u)=\varphi(t_f,x(t_f))
+			$$
+		\end{itemize}
+		These terms are fully interchangeable: We can go from one to the others by reformulating the problem.
+		
+		$L\Rightarrow M$
+		\item Introduce fictitious states: $x_l$ evolving according to $\begin{array}{l}
+			\dot{x}_l=l(t,x,u)\\
+			x_l(t_0)=0
+		\end{array}$
+		
+		Our new system $\tilde{x}=\begin{bmatrix}
+			x\\
+			x_l
+		\end{bmatrix}$
+		$$
+			J(u)=\int_{t_0}^{t_f}l(t,x,u)\,dt=\varphi(t_f,\tilde{x}(t_f))=x_l(t_f)
+		$$
+		$M\Rightarrow L$ ?
+		\item $S$ is the target set. Examples:
+		\begin{itemize}
+			\item free-time free-end point case:
+			$$
+				S=(\underbrace{t_0,\infty)}_{t_f}\cross\underbrace{\mathbb{R}^{n_x}}_{x(t_f)}
+			$$
+			\item free-time constrained endpoint case:
+			$$
+				S=(t_0,\infty)\cross S_f,\qquad S_f\subseteq\mathbb{R}^{n_x}
+			$$
+			E.g. $S_f=\{x_f\}$
+			\begin{center}
+				\begin{tikzpicture}
+					
+					% 1. Draw the axes
+					\draw[->] (-2.5, 0) -- (4, 0) node[right] {$x_1$};
+					\draw[->] (0, -2) -- (0, 4) node[left] {$x_2$};
+					
+					% 2. Draw the circle with blue boundary and solid yellow fill
+					% We center it slightly off-origin to match the drawing's placement.
+					\coordinate (Center) at (0.5, 1.2);
+					\def\Radius{2}
+					% fill opacity is added to make the grid visible underneath, remove if solid opaque is wanted
+					\filldraw[draw=blue, fill=yellow, fill opacity=0.6,thick] (Center) circle (\Radius);
+					
+					% 3. Add the Label "S_f" and the arrow
+					% Place the label to the right and up
+					\node[blue, font={$S_f$}, anchor=west] (SeLabel) at (2.5, 2.5) {};
+					
+				\end{tikzpicture}
+			\end{center}
+			\item fixed-time fixed-end point case:
+			$$
+				S=\{t_f\}\cross\{x_f\}
+			$$
+		\end{itemize}
+		\item Standing assumptions:
+		\begin{itemize}
+			\item $l$ is $\mathcal{C}$ in $(t,x,u)$ and $\mathcal{C}^1$ in $x$
+			\item $f$ is $\mathcal{C}$ in $(t,x,u)$ and $\mathcal{C}^1$ in $x$
+		\end{itemize}
+	\end{itemize}
+	In the first part of \autoref{sec:chapter3} we also assume $f,l$ are $\mathcal{C}^1$ in $u$.
+	
+	\begin{definitionbox}[Strong and weak norms]
+		$V=\mathcal{C}([t_0,t_f],U)$
+		\begin{itemize}
+			\item $\norm{\cdot}_\infty$ strong norm
+			$$
+				\norm{u}_\infty\coloneq\max_{t_0\leq t\leq t_f}\;\norm{u(t)}
+			$$
+			\item $\norm{\cdot}_1$ weak norm
+			$$
+				\norm{u}_1\coloneq\left\{\begin{array}{lc}
+					\norm{u}_\infty+\max\limits_{t_0\leq t\leq t_f}\;\norm{\dot{u}(t)} & \text{if }u\in\mathcal{C}^1\\
+					\norm{u}_\infty+\sup\limits_{t\in\bigcup\limits_{k=0}^N(\hat{c}_k,\hat{c}_{k+1})}\;\norm{\dot{u}(t)} & \text{if }u\in\hat{\mathcal{C}}^1
+				\end{array}\right.
+			$$
+			where $\{\hat{c}_k\}$ are corner points of $\dot{u}$.
+		\end{itemize}
+		$V=\hat{\mathcal{C}}([t_0,t_f],U)$
+		\begin{itemize}
+			\item $\norm{\cdot}_\infty$ strong norm
+			$$
+				\norm{u}_\infty\coloneq\sup\limits_{t\in\bigcup\limits_{k=0}^N(c_k,c_{k+1})}\;\norm{u(t)}
+			$$
+			\begin{center}
+				\begin{tikzpicture}[>=stealth, thick]
+					
+					% --- Definitions for coordinates ---
+					\def\tzero{1.5}
+					\def\cone{4.0}
+					\def\ctwo{6.5}
+					\def\tf{9.0}
+					
+					\def\yMax{3.0} % The height of the middle segment (the max value)
+					\def\yLow{1.0}
+					\def\yMid{2.0}
+					
+					% --- 1. The "Highlighter" Axis markings ---
+					% Drawn first so they appear behind the black axis line
+					% Opacity makes them look like marker ink
+					\draw[line width=12pt, yellow, opacity=0.6] (\tzero,0) -- (\cone,0);
+					\draw[line width=12pt, red!50, opacity=0.6] (\cone,0) -- (\ctwo,0);
+					\draw[line width=12pt, green!50, opacity=0.6] (\ctwo,0) -- (\tf,0);
+					
+					% --- 2. Axes ---
+					\draw[->] (-1,0) -- (10,0) node[below right] {$t$}; % x-axis
+					\draw[->] (0,-1) -- (0,4);   % y-axis
+					
+					% --- 3. Ticks and Labels ---
+					\draw (\tzero, 0.2) -- (\tzero, -0.2) node[below=5pt] {$t_0$};
+					\draw (\cone, 0.2) -- (\cone, -0.2) node[below=5pt] {$c_1$};
+					\draw (\ctwo, 0.2) -- (\ctwo, -0.2) node[below=5pt] {$c_2$};
+					\draw (\tf, 0.2) -- (\tf, -0.2) node[below=5pt] {$t_f$};
+					
+					% --- 4. The Piecewise Function (Blue) ---
+					
+					% Segment 1: Rising Linear
+					\draw[thick, blue] (\tzero, 1.0) -- (\cone, \yMid);
+					
+					% Jump 1 dashed
+					\draw[dashed, thick, blue] (\cone, \yMid) -- (\cone, \yMax);
+					
+					% Segment 2: Constant (The Maximum)
+					\draw[thick, blue] (\cone, \yMax) -- (\ctwo, \yMax)
+					node[midway, above=10pt, text=blue] {$u \in \hat{G}$};
+					
+					% Jump 2 dashed
+					\draw[dashed, thick, blue] (\ctwo, \yMax) -- (\ctwo, 1.5);
+					
+					% Segment 3: Curved Rising
+					\draw[thick, blue] (\ctwo, 1.5) to[out=30, in=200] (\tf, 2.6);
+					
+					% --- 5. The Infinity Norm Annotations (Red) ---
+					
+					% The red dot on the y-axis representing the max value
+					\fill[red] (0, \yMax) circle (2pt);
+					
+					% Dashed projection lines
+					\draw[dashed, red, thick] (0, \yMax) -- (\cone, \yMax); % Top projection
+					\draw[dashed, red, thick] (0, \yMid) -- (\cone, \yMid); % Lower projection
+					\draw[dashed, red, thick] (0, 2.6) -- (\tf, 2.6);     % Lowest projection
+					
+					% The label and arrow
+					% We place the node to the left and up, then draw a red arrow to the dot
+					\node[red, anchor=south east] (NormLabel) at (-0.5, 3.5) {$\|\cdot\|_\infty \text{ of } u$};
+					\draw[-, red, thick] (NormLabel.south) -- (0, \yMax);
+					
+				\end{tikzpicture}
+			\end{center}
+			\item $\norm{\cdot}_1$ weak norm: same rationale
+		\end{itemize}
+	\end{definitionbox}
+	\textbf{Constraints}
+	\begin{itemize}
+		\item point constraints: Constraints on $x/u$ on specific time points
+		$$
+			\Psi_1(t,x(t),u(t))\left\{\begin{array}{l}
+				=0\\
+				\geq0
+			\end{array}\right.\;\text{at }t=\bar{t}
+		$$
+		\item path constraints:
+		$$
+			\Psi_2(t,x(t),u(t))\left\{\begin{array}{l}
+				=0\\
+				\geq0
+			\end{array}\right.\;\forall t\in[t_1,t_2]
+		$$
+		\item isoperimetric constraints:
+		$$
+			\int_{t_0}^{t_f}g(t,x,u)\,dt\leq G
+		$$
+	\end{itemize}
+	Ensuring constraint satisfaction in OC problems is hard.
+	
+	In this course:
+	\begin{itemize}
+		\item point constraints only at $t=t_f$
+		\item path constraints only on $u\to u:[t_0,t_f]\to\mathcal{U},\qquad\mathcal{U}=\{u:\Psi_2(t,u)=0\}$
+		\item isoperimetric constraints
+	\end{itemize}
+	If $u$ satisfies constraints it is called ``admissible control'' and is denoted by $u\in\mathcal{D}$
+	
+	\begin{definitionbox}[Global and local minima]
+		Admissible control $u^\star(\cdot)$ is a
+		\begin{itemize}
+			\item[] global minimizer of $[OC]$ if
+			$$
+			J(u)\geq J(u^\star),\qquad\forall u\in\mathcal{D}
+			$$
+			\item[] strong local minimizer if
+			$$
+				\exists\epsilon>0\text{ s.t. }J(u)\geq J(u^\star),\qquad\forall u\in\mathcal{D}\cap B_\epsilon^\infty(u^\star)
+			$$
+			\item[] is a weak local minimizer if
+			$$
+				\exists\epsilon>0\text{ s.t. }J(u)\geq J(u^\star),\qquad\forall u\in\mathcal{D}\cap B_\epsilon^1(u^\star)
+			$$
+		\end{itemize}
+	\end{definitionbox}
+	
+	\textbf{Reflection:} $u^\star$ is an open-loop controller. We see this from how we defined the OC problem here (``optimizer over $u(\cdot):[t_0,t_f]\to U$'') which are just functions of time. In \autoref{sec:chapter4} we change viewport and study closed-loop optimal controller $u(\underset{t}{\cdot},\underset{x}{\cdot})$ with Dynamic Programming.
+	
+	\subsection{Unconstrained problems and weak minima}
+	
+	$[OC-P1]\hspace*{3cm}\min\limits_{u(\cdot)\in V}\;\int\limits_{t_0}^{t_f}l(t,x,u)\,dt$
+	$$
+		\dot{x}=f(t,x,u),\quad x(t_0)=x_0,\quad S=\{t_f\}\cross\mathbb{R}^{n_x}
+	$$
+	
+	\subsubsection{$V=\mathcal{C}([t_0,t_f])$}
+	
+	Note on regularity of solution of $\dot{x}=f(t,x,u)$:
+	\begin{itemize}
+		\item[] if $u\in\mathcal{C},f\in\mathcal{C}$, then $\dot{x}\in\mathcal{C}\Leftrightarrow x\in\mathcal{C}^1$
+		\item[] if $u\in\hat{\mathcal{C}},f\in\mathcal{C}$, then $\dot{x}\in\hat{\mathcal{C}}\Leftrightarrow x\in\hat{\mathcal{C}}^1$
+	\end{itemize}
+	
+	\begin{lemmabox}[First-Order Necessary Conditions for unconstrained OC]
+		Suppose $u^\star$ is a weak minimum of $[OC-P1]$ and $x^\star\in\mathcal{C}^1$ the associated response.
+		
+		Then $\exists\lambda^\star\in\mathcal{C}^1$ (called adjoint or costate) such that $(x^\star,u^\star,\lambda^\star)$ satisfies:
+		
+		\hspace*{1cm}$\left.\begin{array}{cl}
+			n_x&\dot{x}^\star=f(t,x^\star,u^\star),\quad x^\star(t_0)=x_0\\
+			n_x&\dot{\lambda}^\star=l_x(t,x^\star,u^\star)-f(t,x^\star,u^\star)\lambda^\star,\quad\lambda^\star(t_f)=0\\
+			n_u&0=-l_u(t,x^\star,u^\star)+f_u(t,x^\star,u^\star)\lambda^\star,\quad\forall t\in[t_0,t_f]
+		\end{array}\right\}\begin{array}{l}
+		\text{Euler Lagrange}\\\text{equations (ELE)}
+		\end{array}$
+		
+		where $[f_x]_{i,j}=\frac{\partial f_j}{\partial x_i}, \quad[f_u]_{i,j}=\frac{\partial f_j}{\partial u_i}$.
+	\end{lemmabox}
+	
+	$\underset{x}{n_x}+\underset{\lambda}{n_x}+\underset{u}{n_u}$ unknowns and $2n_xODE+n_u$ algebraic equations $\Rightarrow$ Problem is closed
+	
+	\textbf{Proof:} Notation: I will drop $^\star$ from $x,u,\lambda$.
+	
+	Rationale: Cast problem $[OC-P1]$ as a CV problem.
+	
+	Then use the fundamental Lemma of CV.
+	
+	What is the difference between OC and CV? $\dot{x}=f(t,x,u)$
+	
+	Conceptional step: given $u$ (candidate), $x$ is fixed. In other words, think of $x$ as $x(t,u)$.
+	
+	$\to$ Rewrite $J$ of $[OC-P1]$ as follows:
+	$$
+		J(u)=\int\limits_{t_0}^{t_f}l(t,x(t,u),u(t))\,dt
+	$$
+	$$
+		=\int\limits_{t_0}^{t_f}l(t,x(t,u),u(t))+\underbrace{\lambda^T(t)}_{\mathcal{C}^1\text{ function}}\big(\underbrace{\dot{x}(t,u)-f(t,x(t,u),u(t))}_{=0}\big)\,dt
+	$$
+	This functional is equivalent to the one in $[OC-P1]$ and it is only a function of $u$. ``There's no more $x$''.
+	
+	Thus we now have the following CV problem
+	$$
+		\min_{u(\cdot)}\;\int_{t_0}^{t_f}l(t,x(t,u),u)+\lambda^T(t)\dots\, dt,\quad\text{There is only $u$ inside }J(u)
+	$$
+	
+	Step 2: enforce $\delta J=0$ for this CV problem:
+	
+	Perturb candidate $u$:
+	$$
+		\nu(t,\eta)\coloneq u(t)+\eta\omega(t),\quad\omega(t)\in\mathcal{C}([t_0,t_f])
+	$$
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			
+			% --- Coordinates ---
+			\coordinate (Origin) at (0,0);
+			\coordinate (StartLow) at (2.0, 1.0); % Where x and y start (t0)
+			\coordinate (Tf) at (8.5, 0);
+			
+			% --- Axes ---
+			\draw[->] (-1, 0) -- (10, 0) node[below] {$t$}; % t-axis
+			\draw[->] (0, -1) -- (0, 7);   % vertical axis
+			
+			% --- Ticks and Labels ---
+			\draw (2.0, 0.15) -- (2.0, -0.15) node[below] {$t_0$};
+			\draw (8.5, 0.15) -- (8.5, -0.15) node[below] {$t_f$};
+			
+			% --- x0 Dashed Line ---
+			\draw[dashed] (0, 1.0) node[left] {$x_0$} -- (StartLow);
+			
+			% --- Bottom Curves (x and y) ---
+			% Blue curve x: starts at t0, rises smoothly
+			\draw[thick, blue] (StartLow) to[out=20, in=195] (8.5, 3.0) 
+			node[right] {$x$};
+			
+			% Purple curve y: starts at t0, rises higher than x
+			\draw[thick, violet] (StartLow) to[out=45, in=190] (8.5, 4.0) 
+			node[right] {$y$};
+			
+			% --- Top Curves (u and w) ---
+			% Blue curve u: smoother, gently rising
+			\draw[thick, blue] (2.0, 4.0) to[out=30, in=190] (8.5, 6.0)
+			node[right] {$u$};
+			
+			% Purple curve w: The "wavy" one
+			% We use plot smooth coordinates to get the hump and the dip
+			\draw[thick, violet] plot [smooth, tension=0.8] coordinates {
+				(2.0, 3.6)  % Start
+				(4.0, 6.0)  % Peak
+				(5.5, 3.8)  % Dip
+				(7.5, 6.2)  % Rise again
+				(8.5, 6.8)  % End
+			} node[right] {$w$};
+			
+			% --- Side Text (Mapping) ---
+			% Placing the text to the left of the axis
+			\node[blue, anchor=west] at (-2, 6) {$u \to x$};
+			\node[violet, anchor=west] at (-2, 5) {$v \to y$};
+			
+		\end{tikzpicture}
+	\end{center}	
+	$y(t,\eta)\in\mathcal{C}^1$ is the state response of the system under $\nu$.\\
+	$x(t)\in\mathcal{C}^1$ is the state response of the system under $u$.
+	
+	$y_\eta(t;\eta)\coloneq\frac{\partial y}{\partial\eta}:\;y(t,0)=x(t),\quad\forall t\in[t_0,t_f]$ by definition
+	
+	Write $J$ for the perturbed $u$:
+	$$
+		J(\nu(\cdot; \eta)) = \int\limits_{t_0}^{t_f} l\big(t, y(t; \eta), \nu(t; \eta)\big) + \lambda^T(t) [\dot{y}(t; \eta) - f\big(t, y(t; \eta), \nu(t; \eta)\big)] \, dt
+	$$
+	$$
+		\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{integral by parts applied to }\lambda^T\dot{y}\hspace*{8cm}}{= \int\limits_{t_0}^{t_f} \big( l(t, y, \nu) - \dot{\lambda}^T y - \lambda^T f(t, y, \nu) \big) \, dt + \lambda^T(t_f) y(t_f; \eta) - \lambda^T(t_0) y(t_0; \eta)}
+	$$
+	
+	Now we write the derivative $\frac{\partial J}{\partial\eta}$ and set $\eta\to0$.
+	
+	$$
+		\frac{\partial J}{\partial \eta}(\nu) = \int\limits_{t_0}^{t_f}\tikzmarknode{textToUnderlineRed}{
+		[ l_u(t, y, \nu) - f_u(t, y, \nu) \lambda ]^T \omega} + \tikzmarknode{textToUnderlineGreen}{[ l_x(t, y, \nu) - f_x(t, y, \nu) \lambda - \dot{\lambda} ]^T y_\eta} \, dt
+	$$
+	\begin{tikzpicture}[overlay, remember picture]
+		% Stil für die Linien
+		\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+		
+		% --- Linien für "textToUnderline" ---
+		\coordinate (A1) at ([yshift=-2pt]textToUnderlineRed.south west);
+		\coordinate (B1) at ([yshift=-2pt]textToUnderlineRed.south east);
+		
+		% Linie 1 (oben)
+		\draw[red!70, mystyle] (A1) -- (B1);
+	\end{tikzpicture}	
+	\begin{tikzpicture}[overlay, remember picture]
+	% Stil für die Linien
+	\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+	
+	% --- Linien für "textToUnderline" ---
+	\coordinate (A1) at ([yshift=-2pt]textToUnderlineGreen.south west);
+	\coordinate (B1) at ([yshift=-2pt]textToUnderlineGreen.south east);
+	
+	% Linie 1 (oben)
+	\draw[green!70!black, mystyle] (A1) -- (B1);
+	\end{tikzpicture}	
+	$$
+		+\tikzmarknode{textToUnderlineBlue}{\lambda^T(t_f) y_\eta(t_f; \eta)} - \underbrace{\lambda^T(t_0) y_\eta(t_0; \eta)}_{= 0\text{ because } y(t_0; \eta) = x_0 \; \forall \eta}
+	$$
+	\begin{tikzpicture}[overlay, remember picture]
+	% Stil für die Linien
+	\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+	
+	% --- Linien für "textToUnderline" ---
+	\coordinate (A1) at ([yshift=-2pt]textToUnderlineBlue.south west);
+	\coordinate (B1) at ([yshift=-2pt]textToUnderlineBlue.south east);
+	
+	% Linie 1 (oben)
+	\draw[blue!70, mystyle] (A1) -- (B1);
+	\end{tikzpicture}
+	Take $\eta\to0$:
+	$$
+		\delta J(u;\omega) = \int\limits_{t_0}^{t_f}\tikzmarknode{textToUnderlineRed}{
+		[ l_u(t, x, u) - f_u(t, x, u) \lambda ]^T \omega} + \tikzmarknode{textToUnderlineGreen}{[ l_x(t, x, u) - f_x(t, x, u) \lambda - \dot{\lambda} ]^T y_\eta} \, dt
+	$$
+	\begin{tikzpicture}[overlay, remember picture]
+		% Stil für die Linien
+		\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+		
+		% --- Linien für "textToUnderline" ---
+		\coordinate (A1) at ([yshift=-2pt]textToUnderlineRed.south west);
+		\coordinate (B1) at ([yshift=-2pt]textToUnderlineRed.south east);
+		
+		% Linie 1 (oben)
+		\draw[red!70, mystyle] (A1) -- (B1);
+	\end{tikzpicture}	
+	\begin{tikzpicture}[overlay, remember picture]
+		% Stil für die Linien
+		\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+		
+		% --- Linien für "textToUnderline" ---
+		\coordinate (A1) at ([yshift=-2pt]textToUnderlineGreen.south west);
+		\coordinate (B1) at ([yshift=-2pt]textToUnderlineGreen.south east);
+		
+		% Linie 1 (oben)
+		\draw[green!70!black, mystyle] (A1) -- (B1);
+	\end{tikzpicture}	
+	$$
+		+\tikzmarknode{textToUnderlineBlue}{\lambda^T(t_f) y_\eta(t_f; 0)}
+	$$
+	\begin{tikzpicture}[overlay, remember picture]
+		% Stil für die Linien
+		\tikzstyle{mystyle} = [line width=1pt, opacity=0.8]
+		
+		% --- Linien für "textToUnderline" ---
+		\coordinate (A1) at ([yshift=-2pt]textToUnderlineBlue.south west);
+		\coordinate (B1) at ([yshift=-2pt]textToUnderlineBlue.south east);
+		
+		% Linie 1 (oben)
+		\draw[blue!70, mystyle] (A1) -- (B1);
+	\end{tikzpicture}
+	$\delta J=0\quad\forall\omega\;\forall\lambda$ for $u$ to be a candidate minimizer.
+
+	We are free to choose any $\omega, \lambda$ we want:
+	
+	\begin{enumerate}
+		\item We can choose $\lambda$ as follows:
+		$$
+			\dot{\lambda} = -l_x - f_x^T \lambda \quad \text{with BC } \lambda(t_f) = 0 \quad \textcolor{red}{\text{2nd ELE + BC}}
+		$$
+		This eliminates the \textcolor{green!70!black}{green} and \textcolor{blue!70}{blue} terms.
+		
+		\item To set the \textcolor{red!70}{red} term to 0, we can choose $n_u$ ``special'' perturbations $\omega^{(i)}$ defined as follows: $
+		\begin{cases}
+			\omega_i^{(i)} = l_{u_i} - f_{u_i}^T \lambda \\
+			\omega_j^{(i)} = 0, & \forall j \neq i
+		\end{cases}
+		\quad
+		\text{where } \omega^{(i)} = \begin{bmatrix} \omega_1^{(i)} \\ \vdots \\ \omega_{n_u}^{(i)} \end{bmatrix},\quad i=1, \dots, n_u
+		$
+		
+		This yields:
+		$$
+		0 = \int\limits_{t_0}^{t_f} \left[ l_{u_i} - f_{u_i}^T \lambda \right]^2\, dt, \quad \forall i=1, \dots, n_u
+		$$
+		
+		Which is only possible if:
+		$$
+		l_{u_i} - f_{u_i}^T \lambda = 0, \quad i=1, 2, \dots, n_u \quad \textcolor{red}{\text{3rd ELE eq.}}
+		$$		
+		\textcolor{red}{1$^{st}$ ELE is just the dynamic equation for $x$.}\hfill\qedsymbol{}
+	\end{enumerate}
+	
+	
 \end{document}
