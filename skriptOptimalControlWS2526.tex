@@ -19,9 +19,10 @@
 \setlist[itemize]{topsep=0pt, itemsep=2pt}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, calc, tikzmark}
+\usetikzlibrary{arrows.meta, positioning, calc, tikzmark, patterns, backgrounds}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17}
+\usepgfplotslibrary{groupplots}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -100,6 +101,16 @@
 		{\Large Wintersemester 2025/26}\par
 		\vspace{0.5cm}
 		{\Large Dozent: Prof. Dr. Andrea Iannelli}\par
+		
+		\vspace{2cm}
+		
+		% Hier deinen Namen als Autor eintragen
+		{\Large Autor: Jan Fehnl}\par
+		
+		\vspace{1.0cm}
+		
+		% Hier den Namen deines Kumpels eintragen
+		{\large Freundliche Unterstützung: Alexander Schütz \& Gemini}\par
 		\vfill
 		{\today}
 	\end{titlepage}
@@ -110,6 +121,7 @@
 	\pagenumbering{arabic}
 	
 	\section{Introduction}
+	\label{sec:chapter0}
 	\[
 	\dot{x} = f(t,x,u), \quad x(t_0)=x_0, \quad t \in [t_0,t_f]
 	\]
@@ -203,6 +215,7 @@
 	\end{enumerate}
 	
 	\section{Nonlinear Programming}
+	\label{sec:chapter1}
 	
 	Nonlinear Programs (NLP) are general \underline{finite-dimensional} optimization problems:
 	\[
@@ -465,7 +478,7 @@
 	\paragraph{Remarks}
 	\begin{itemize}
 		\item The definition extends to vector functions $f:C\to\mathbb{R}^n$ for convex $f_i$
-		\item $f: C_1 \cross C_2 \to \mathbb{R}$\\
+		\item $f: C_1 \times C_2 \to \mathbb{R}$\\
 		$f(x,y)$ is jointly cvx, in $x,y$ if $z\coloneqq\begin{bmatrix}x\\y\end{bmatrix},\,f(z)$ is in cvx in $z$.
 	\end{itemize}
 		
@@ -788,7 +801,7 @@
 		\[
 			\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\nabla h(\bar{x})^p=0,\,\nabla g_i(\bar{x})^p\leq0,\quad\forall i\in\mathcal{A}(\bar{x})\}\qquad\textcircled{1}
 		\]
-		where $\nabla h(\bar{x})\coloneqq[\nabla h_1(\bar{x}),\dots,\nabla h_{n_k}(\bar{x})]\in\mathbb{R}^{n\cross n_h}$.
+		where $\nabla h(\bar{x})\coloneqq[\nabla h_1(\bar{x}),\dots,\nabla h_{n_k}(\bar{x})]\in\mathbb{R}^{n\times n_h}$.
 		
 		\textcircled{1} can be written equivalently as $\mathcal{T}_\mathcal{D}(\bar{x})=\{p\mid\mathcal{A}(\bar{x})p\geq0\}$
 	\end{lemmabox}
@@ -804,7 +817,7 @@
 	\end{array}
 	\right]
 	\begin{array}{l}
-		\in\mathbb{R}^{(2n_h+\abs{\mathcal{A}(\bar{x})})\cross n} \\[6pt]
+		\in\mathbb{R}^{(2n_h+\abs{\mathcal{A}(\bar{x})})\times n} \\[6pt]
 		\left.\rule{0pt}{3.0em}\right\} i\in\mathcal{A}(\bar{x})
 	\end{array}
 	\]
@@ -818,7 +831,7 @@
 	Farkas Lemma to the rescue:
 	
 	\begin{lemmabox}[Farkas Lemma]
-		For any matrix $A\in\mathbb{R}^{m\cross n}$, vector $b\in\mathbb{R}^n$.
+		For any matrix $A\in\mathbb{R}^{m\times n}$, vector $b\in\mathbb{R}^n$.
 		
 		Exactly one of the following holds:
 		\begin{enumerate}
@@ -902,7 +915,7 @@
 	We are now ready for a fully algebraic characterization.
 	
 	\begin{definitionbox}[Karash-Kuhn-Tucker (KKT) points]
-		A triplet of vectors $(\bar{x},\bar{\lambda},\bar{\nu})\in\mathbb{R}^n\cross\mathbb{R}^{n_h}\cross\mathbb{R}^{n_g}$
+		A triplet of vectors $(\bar{x},\bar{\lambda},\bar{\nu})\in\mathbb{R}^n\times\mathbb{R}^{n_h}\times\mathbb{R}^{n_g}$
 		
 		\hspace*{2cm}$\bar{x}:\text{ opt. variable},\quad\bar{\lambda}:\text{ multiplier equality constraints},$
 		
@@ -956,18 +969,18 @@
 	
 	Intrestingly, if NLP is convex, KKT conditions are sufficient for global optimality:
 	
-	\begin{lemmabox}[KKT sufficient conditions fot global minimizer]
+	\begin{lemmabox}[KKT sufficient conditions for global minimizer]
 		Suppose $f,g_i\quad(i=1,\dots,n_g)$ are convex functions and
 		
 		\hspace*{2cm}$h_j\quad(j=1,\dots,n_h)$ are affine functions.
 		
-		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point, then $x^\star$ is a local minimizer.
+		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point, then $x^\star$ is a global minimizer.
 	\end{lemmabox}
 	
 	\textbf{Proof:} For $(\lambda^\star,\nu^\star)$ KKT points:
 	
 	\[
-		b(x)\coloneqq\mathcal{L}(x,\lambda^\star,\nu^\star)=f(x)+\sum_{i=1}^{n_g}\nu_i^\star g_i(x)+\sum_{j=1}^{n_h}\lambda_j^\star g_j(x)\hspace*{2cm} \textcircled{$\cross$}
+		b(x)\coloneqq\mathcal{L}(x,\lambda^\star,\nu^\star)=f(x)+\sum_{i=1}^{n_g}\nu_i^\star g_i(x)+\sum_{j=1}^{n_h}\lambda_j^\star g_j(x)\hspace*{2cm} \textcircled{$\times$}
 	\]
 	$f,g_i,h_j$ are convex functions
 	
@@ -1025,7 +1038,7 @@
 		
 		Then 
 		\[
-			p^T \nabla_{xx}^2 L(x^\star, \lambda^\star, \nu^\star) p \ge 0\quad \text{(curvature non-negative along critical directions)}
+			p^T \nabla_{xx}^2 \mathcal{L}(x^\star, \lambda^\star, \nu^\star) p \ge 0\quad \text{(curvature non-negative along critical directions)}
 		\]
 
 		$\forall p \ne 0$ with
@@ -1041,7 +1054,7 @@
 		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point with
 		
 		\[
-			p^T\nabla_{xx}\mathcal{L}(^\star,\lambda^\star,\nu^\star)p>0
+			p^T\nabla_{xx}\mathcal{L}(x^\star,\lambda^\star,\nu^\star)p>0
 		\]
 		
 		for same $p$ as in Lemma 1.15.
@@ -1050,6 +1063,7 @@
 	\end{lemmabox}
 	
 	\section{Calculus of Variations}
+	\label{sec:chapter2}
 	
 	Goal in OC: Find a function that maximizes a functional (function of function) subject \hspace*{2.3cm}to dynamic constraints
 	
@@ -1071,7 +1085,7 @@
 		\[
 			z=\begin{bmatrix}
 				x_1\\\vdots\\x_N
-			\end{bmatrix}\to\min_z\;p(z)\qquad z\in\mathcal{Z},\quad z\in\mathbb{R}^{n\cross N}
+			\end{bmatrix}\to\min_z\;p(z)\qquad z\in\mathcal{Z},\quad z\in\mathbb{R}^{n\times N}
 		\]
 		\item Continuous-time description of dynamics
 		
@@ -1296,11 +1310,11 @@
 	\begin{itemize}
 		\item Langrangian form
 		\[
-			J(x)\coloneqq\int_{s_1}^{s_2}\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ running cost, }L:\mathbb{R}\cross\mathbb{R}^n\cross\mathbb{R}^n\to\mathbb{R}}{\underline{l}(s,x(s),\dot{x}(s))ds\hspace*{1.6cm}}
+			J(x)\coloneqq\int_{s_1}^{s_2}\underset{\rotatebox[origin=c]{180}{$\Lsh$}\text{ running cost, }L:\mathbb{R}\times\mathbb{R}^n\times\mathbb{R}^n\to\mathbb{R}}{\underline{l}(s,x(s),\dot{x}(s))ds\hspace*{1.6cm}}
 		\]
 		\item Bolza form
 		\[
-			J(x)\coloneqq\varphi(s_2,x(s_2))+\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\qquad\varphi:\mathbb{R}\cross\mathbb{R}^n\to\mathbb{R}
+			J(x)\coloneqq\varphi(s_2,x(s_2))+\int_{s_1}^{s_2}l(s,x(s),\dot{x}(s))ds\qquad\varphi:\mathbb{R}\times\mathbb{R}^n\to\mathbb{R}
 		\]
 		\item Mayer form
 		\[
@@ -1854,8 +1868,8 @@
 			\item $x^\star$ solves EE on $[s_1, s_2^\star]$
 			\item The transversal conditions
 			\begin{itemize}
-				\item[A)] $[l_{\dot{x}} + \varphi_x] \big|_{x=x^\star, s=s_2^\star} = 0$
-				\item[B)] $[l - \dot{x}^T l_{\dot{x}} + \varphi_s] \big|_{x=x^\star, s=s_2^\star} = 0$
+				\item[A)] $[l_{\dot{x}} + \varphi_x] \big|_{x=x^\star, s=s_2^\star} = 0 \quad$ \textcolor{blue}{$\leftarrow$ use if $s_2$ free}
+				\item[B)] $[l - \dot{x}^T l_{\dot{x}} + \varphi_s] \big|_{x=x^\star, s=s_2^\star} = 0 \quad$\textcolor{blue}{$\leftarrow$ use if $x(s_2)$ free}
 			\end{itemize}
 		\end{enumerate}
 	\end{lemmabox}
@@ -2434,7 +2448,7 @@
 	$$
 	$[OC]\hspace*{2cm}\text{s.t. }\dot{x}=f(t,x,u),\quad x(t_0)=x_0,\quad t\in[t_0,t_f]$
 	
-	$\hspace*{4cm}(t_f,x(t_f))\in S\subseteq(t_0,\infty)\cross\mathbb{R}^{n_x}$
+	$\hspace*{4cm}(t_f,x(t_f))\in S\subseteq(t_0,\infty)\times\mathbb{R}^{n_x}$
 	
 	\textbf{Remarks:}
 	\begin{itemize}
@@ -2448,7 +2462,7 @@
 		$t_0$ always given
 		
 		$t_f$ can be given or free variable (like $s_2$ in CV)
-		\item $f:[t_0,t_f]\cross\mathbb{R}^{n_x}\cross\mathbb{R}^{n_u}\to\mathbb{R}^{n_x}$
+		\item $f:[t_0,t_f]\times\mathbb{R}^{n_x}\times\mathbb{R}^{n_u}\to\mathbb{R}^{n_x}$
 		\item $(V,\norm{\cdot})$ normed vector space where $u$ belongs
 		$$
 			u:[t_0,t_f]\to \mathcal{U}\subseteq\mathbb{R}^{n_u},\qquad \mathcal{U}\subset\mathbb{R}^{n_u}\text{ if we have input contraints}
@@ -2575,11 +2589,11 @@
 		\begin{itemize}
 			\item free-time free-end point case:
 			$$
-				S=(\underbrace{t_0,\infty)}_{t_f}\cross\underbrace{\mathbb{R}^{n_x}}_{x(t_f)}
+				S=(\underbrace{t_0,\infty)}_{t_f}\times\underbrace{\mathbb{R}^{n_x}}_{x(t_f)}
 			$$
 			\item free-time constrained endpoint case:
 			$$
-				S=(t_0,\infty)\cross S_f,\qquad S_f\subseteq\mathbb{R}^{n_x}
+				S=(t_0,\infty)\times S_f,\qquad S_f\subseteq\mathbb{R}^{n_x}
 			$$
 			E.g. $S_f=\{x_f\}$
 			\begin{center}
@@ -2604,7 +2618,7 @@
 			\end{center}
 			\item fixed-time fixed-end point case:
 			$$
-				S=\{t_f\}\cross\{x_f\}
+				S=\{t_f\}\times\{x_f\}
 			$$
 		\end{itemize}
 		\item Standing assumptions:
@@ -2760,7 +2774,7 @@
 	
 	$[OC-P1]\hspace*{3cm}\min\limits_{u(\cdot)\in V}\;\int\limits_{t_0}^{t_f}l(t,x,u)\,dt$
 	$$
-		\dot{x}=f(t,x,u),\quad x(t_0)=x_0,\quad S=\{t_f\}\cross\mathbb{R}^{n_x}
+		\dot{x}=f(t,x,u),\quad x(t_0)=x_0,\quad S=\{t_f\}\times\mathbb{R}^{n_x}
 	$$
 	
 	\subsubsection{$V=\mathcal{C}([t_0,t_f])$}
@@ -3087,7 +3101,7 @@
 		Time-invariant problems (dynamics do not depend on $t$ and running cost neither) have $\mathcal{H}_t=0$.
 		
 		Thus: $\mathcal{H}$ is constant over ELE solutions in time-invariant problems.
-		\item Consider the case where $S=\{t_f\}\cross\underbrace{\{x_f\}}_{\textcircled{1}}\quad\quad\textcircled{1}$ fixed end-point
+		\item Consider the case where $S=\{t_f\}\times\underbrace{\{x_f\}}_{\textcircled{1}}\quad\quad\textcircled{1}$ fixed end-point
 		
 		\textbf{What changes in Lemma 3.1?}
 		
@@ -3118,7 +3132,7 @@
 	\end{lemmabox}
 	\textbf{Proof:} skipped: It proceeds similary to the proof of Legendre condition in CV by deriving $\delta^2J=0$.
 	
-	\textbf{Note:} If $S=\{t_f\}\cross\{x_f\}$, this Lemma still applies.
+	\textbf{Note:} If $S=\{t_f\}\times\{x_f\}$, this Lemma still applies.
 	The cange of $S$ only affects the boundary conditions of the ELE.
 	
 	What about sufficient conditions?
@@ -3173,7 +3187,7 @@
 			f\text{ linear}\to \boxed{B}=0
 		$$
 		Thus, we do not need to require $\lambda^\star(t)\leq0\quad\forall t$
-		\item What happens if $S=\{t_f\}\cross\{x_f\}$?
+		\item What happens if $S=\{t_f\}\times\{x_f\}$?
 		
 		The Lemma holds exactly the same. In the proof instead of having $\lambda^\star(t_f)=0$ we have that $x^\star(t_f)=x(t_f)=x_f$.
 		\item When $f$ is jointly concave ($\leftrightarrow -f$ is convex).
@@ -3183,8 +3197,8 @@
 	
 	\subsubsection{Piecewise continuous control}
 	\begin{align*}
-		u\in\hat{\mathcal{C}},\quad&S=\{t_f\}\cross\mathbb{R}^{n_x}\\
-		&S=\{t_f\}\cross\{x_f\}
+		u\in\hat{\mathcal{C}},\quad&S=\{t_f\}\times\mathbb{R}^{n_x}\\
+		&S=\{t_f\}\times\{x_f\}
 	\end{align*}
 	Why?
 	\begin{itemize}
@@ -3259,4 +3273,3680 @@
 		
 		$u\in\hat{\mathcal{C}}$ is a larger class than $u\in\mathcal{C}$.
 	\end{itemize}
+	
+	% 24.11.2025 Lecture 10
+	
+	\begin{lemmabox}[First-order necessary conditions for opt $\hat{\mathcal{C}}$ control]
+		Consider $[OC-P1]$, $V=\hat{\mathcal{C}}([t_0,t_f],\mathbb{R}^{n_u})$.
+		
+		Suppose $u^\star\in\hat{\mathcal{C}}$ with corner points $\{c_k\}_{k=1}^N$ is a weak minimum with state response $x^\star\in\hat{\mathcal{C}}^1$.
+		
+		Then $\exists \lambda\in\hat{\mathcal{C}}^1$ such that
+		\begin{enumerate}
+			\item $(x^\star, u^\star, \lambda^\star)$ solves ELE inside the intervals $(c_k, c_{k+1}),\ k=0,\dots,N$ with $c_0=t_0,\ c_{N+1}=t_f$.
+			\item At every corner point of $u^\star$, the following continuity conditions must hold:
+			\begin{itemize}
+				\item[A:] $x^\star(c_k^-) = x^\star(c_k^+)$
+				
+				\hspace*{0.55cm}$\lambda^\star(c_k^-) = \lambda^\star(c_k^+)$
+				\item[B:] $\mathcal{H}(c_k^-, x^\star(c_k), u^\star(c_k^-), \lambda^\star(c_k)) = \mathcal{H}(c_k^+, x^\star(c_k), u^\star(c_k^+), \lambda^\star(c_k))$
+			\end{itemize}
+		\end{enumerate}
+	\end{lemmabox}
+	
+	A is a generalization of the $1^{st}$ WE conditions (where $p$ had to be cont.).
+	
+	B is a generalization of the $2^{nd}$ WE conditions (where $H$ had to be cont.).
+	
+	Same result holds for $\mathcal{S}=\{t_f\}\times\{x_f\}$.
+	
+	\subsubsection{Continuous control with general target set}
+	
+	$$
+	\mathcal{S} = \{(t,x) \in (t_0, \infty) \times \mathbb{R}^{n_x} \mid \Psi_k(t,x)=0,\ k=1\dots n_\Psi\}
+	$$
+	$$
+	\to t_f \times x(t_f) \in \mathcal{S} \qquad \Psi = \begin{bmatrix}
+		\Psi_1 \\ \Psi_2 \\ \vdots \\ \Psi_{n_\Psi}
+	\end{bmatrix} = 0
+	$$
+	
+	\begin{align*}
+		[OC-P2]\quad \min_{t_f, u(\cdot)} \quad & J(u) \coloneqq \int_{t_0}^{t_f} l(t,x,u)\,dt + \varphi(t_f, x(t_f)) \\
+		\text{s.t.} \quad & \dot{x} = f(t,x,u),\ x(t_0)=x_0 \\
+		& (t_f, x(t_f)) \in \mathcal{S} \\
+		& u \in \mathcal{C}([t_0, t_f])
+	\end{align*}
+	
+	\textbf{Assumption:} $\varphi, \Psi \in \mathcal{C}^1$.
+	
+		$[OC-P1]$ special case of $[OC-P2]$ by defining $\Psi$ to recover
+	$$
+	\mathcal{S} = \{t_f\} \times \mathbb{R}^{n_x} \quad \text{or} \quad \mathcal{S} = \{t_f\} \times \{x_f\}.
+	$$
+	
+	Normed vector space $V = \underbrace{\mathcal{C}[t_0, t_f]}_{u} \times \underbrace{(t_0, \infty)}_{t_f}$.
+	$$
+	\|(u, t_f)\|_\infty = \|u\|_\infty + |t_f|
+	$$
+	$$
+	J(u, t_f): \text{ cost functional depends on } u, t_f.
+	$$
+	$$
+	\delta J(u, t_f; \omega, \tau) \quad \begin{cases} \tau: \text{perturbation in } t_f \\ \omega: \text{perturbation in } u \end{cases}
+	$$
+	
+	Recall what we did in Chapter 2 when $s_2$ was free.
+	Let's define functionals associated with the eq. constraints $\Psi=0$.
+	$$
+	P_k(\underline{u}, t_f) \coloneqq \Psi_k(t_f, \underline{x(t_f)}) \qquad k=1,\dots,n_\Psi
+	$$
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			\draw[->] (0,0) -- (3,0) node[below right] {$t$};
+			\draw[->] (0,0) -- (0,2);
+			
+			\draw (0.7,0.1) -- (0.7,-0.1) node[below] {$t_0$};
+			\draw (2.3,0.1) -- (2.3,-0.1) node[below] {$t_f$};
+			
+			\draw[blue, thick] (0.7,0.5) to[out=20, in=160] (2.3, 1.5) node[right] {$x$};
+			\draw[red, thick] (0.7,1.2) to[out=-10, in=190] (2.3, 0.8) node[right] {$u$};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	$\delta P_k(u, t_f; \omega, \tau)$ first variation of $P_k$.
+	
+	We can now state the main result which again consists of:
+	\begin{itemize}
+		\item ELE
+		\item Boundary conditions taking into account $\varphi$ and $\Psi$.
+	\end{itemize}
+	
+	For this we require some Regularity conditions as typical in constrained problems.
+	
+	\begin{lemmabox}[First-order necessary cond. for weak minimizers and general terminal problems]
+		Consider $[OC-P2]$, standing regularity assumptions, $u \in \mathcal{C}$. Suppose $u^\star \in \mathcal{C}$ is a weak minimizer with optimal time $t_f^\star$ and state response $x^\star$. Assume that
+		$$
+		\text{Det}(P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\Psi})) \neq 0
+		$$
+		$$
+		P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\Psi}) = \begin{bmatrix}
+			\delta P_1(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_1(u^\star, t_f^\star; \bar{\omega}_{n_\Psi}, \bar{\tau}_{n_\Psi}) \\
+			\vdots & \ddots & \vdots \\
+			\delta P_{n_\Psi}(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_{n_\Psi}(u^\star, t_f^\star; \bar{\omega}_{n_\Psi}, \bar{\tau}_{n_\Psi})
+		\end{bmatrix}
+		$$
+		for $n_\Psi$ independent perturbations $\{\bar{\omega}_k, \bar{\tau}_k\}_{k=1}^{n_\Psi}$.
+		$\to$ regularity condition on eq. constraints $\Psi=0$ (similar to isoperimetric constraints in CV).
+		
+		Then $\exists \lambda^\star \in \mathcal{C}^1$ and a vector $\nu^\star \in \mathbb{R}^{n_\Psi}$ such that $(u^\star, x^\star, \lambda^\star, \nu^\star, t_f^\star)$ satisfy:
+		
+		\begin{itemize}
+			\item \textbf{Differential-Algebraic eq.} (Hamiltonian dynamics):
+			$$
+			\begin{aligned}
+				\dot{x} &= \mathcal{H}_\lambda(t, x^\star, u^\star, \lambda^\star) & x^\star(t_0) &= x_0 \\
+				\dot{\lambda} &= -\mathcal{H}_x(t, x^\star, u^\star, \lambda^\star) & \lambda^\star(t_f) &= -\Phi_x(t_f^\star, x^\star(t_f^\star), \nu^\star) \\
+				0 &= \mathcal{H}_u(t, x^\star, u^\star, \lambda^\star) & & \text{(BC on } \lambda \text{ at } t_f)
+			\end{aligned}
+			$$
+			
+			\item \textbf{Enforcing terminal set:}
+			$$
+			0 = \Psi(t_f^\star, x^\star(t_f^\star))
+			$$
+			
+			\item \textbf{Equation closing the problem by producing an extra scalar equation for $t_f$:}
+			$$
+			0 = -\Phi_t(t_f^\star, x^\star(t_f^\star), \nu^\star) + \mathcal{H}(t_f^\star, x^\star(t_f^\star), u^\star(t_f^\star), \lambda^\star(t_f^\star))
+			$$
+		\end{itemize}
+		$$
+		\Phi(t, x, \nu) \coloneqq \varphi(t,x) + \nu^T \Psi(t,x)
+		$$
+	\end{lemmabox}
+	
+	\paragraph{Remarks}
+	\begin{itemize}
+		\item Reg. conditions must be checked for the result to hold. Typical of constrained problems.
+		\item BC on $\lambda(t_f)$ also called transversal condition.
+		\item Can we interpret this condition?
+		\begin{enumerate}
+			\item $\Psi_x = \nabla_x \Psi = [\nabla \Psi_1 \dots \nabla \Psi_{n_\Psi}] \in \mathbb{R}^{x \times n_\Psi}$
+			$$
+			\lambda(t_f) = -\nu^T \Psi_x, \quad \nu \in \mathbb{R}^{n_\Psi}
+			$$
+			$$
+			= \sum \nu_i \nabla \Psi_i
+			$$
+			If $\Psi = x(t_f) - x_f = 0 \to \nabla_x \Psi$ has full rank. Thus, $\lambda$ is unconstrained $\to$ we retrieve the case we already knew for $\mathcal{S}=\{t_f\}\times\{x_f\}$.
+			
+			\item We always have
+			$$
+			\begin{array}{lcll}
+				n_x \text{ BC at } t=t_0 & \to & n_x \text{ on } x & x(t_0)=x_0 \\
+				n_x \text{ BC at } t=t_f & \to & n_\Psi \text{ on } x & \text{assuming } t_f \text{ free} \\
+				& & n_x - n_\Psi \text{ on } \lambda &
+			\end{array}
+			$$
+			When $\Psi \neq 0$ then we have constraints on $\lambda$.
+		\end{enumerate}
+	\end{itemize}
+	
+	What if $\mathcal{S} = \{(t,x) \mid \Psi(t,x) \leq 0\}$? What changes?
+	\begin{enumerate}
+		\item Regularity conditions must be checked \underline{only} on the active inequality constraints.
+		\item In the conditions of the previous Lemma, replace $\Psi=0$ with
+		$$
+		\left[ \begin{array}{l}
+			\Psi(t_f, x(t_f)) \leq 0 \\
+			\nu \geq 0 \\
+			\nu^T \Psi(t_f, x(t_f)) = 0
+		\end{array} \right.
+		$$
+	\end{enumerate}
+	
+	\subsubsection{Time-varying Linear-Quadratic Regulator (LQR)}
+	
+	$$
+	\min_{u(\cdot)} \quad \frac{1}{2} \int_{t_0}^{t_f} x^T Q(t) x + u^T R(t) u \, dt + \frac{1}{2} x(t_f)^T Q_f x(t_f)
+	$$
+	$$
+	\dot{x} = A(t)x + B(t)u \quad x(t_0)=x_0
+	$$
+	$$
+	\mathcal{S} = \{t_f\} \times \mathbb{R}^{n_x}
+	$$
+	$$
+	\underbrace{R(t) \succ 0, Q(t) \succeq 0 \quad \forall t \in [t_0, t_f], \quad Q_f \succeq 0}_{\text{running cost and terminal cost are convex}}
+	$$
+	$$
+	u \in \mathcal{C}
+	$$
+		
+	\textbf{Solution:} Write the ELE.
+	
+	$$
+	\mathcal{H} = -\frac{1}{2} [x^T Q x + u^T R u] + \lambda^T (Ax + Bu)
+	$$
+	$$
+	\dot{x}^\star = \mathcal{H}_\lambda, \quad x^\star(t_0)=x_0
+	$$
+	$$
+	\dot{\lambda}^\star = -\mathcal{H}_x, \quad \lambda^\star(t_f) = -\nabla \varphi(x(t_f)) = -Q_f x^\star(t_f)
+	$$
+	$$
+	0 = \mathcal{H}_u, \quad \forall t \in [t_0, t_f]
+	$$
+	
+	Replacing $\mathcal{H}$ we obtain:
+	
+	$$
+	\begin{bmatrix}
+		\dot{x}^\star \\ \dot{\lambda}^\star
+	\end{bmatrix} = \begin{bmatrix}
+		A & B R^{-1} B^T \\
+		Q & -A^T
+	\end{bmatrix} \begin{bmatrix}
+		x^\star \\ \lambda^\star
+	\end{bmatrix}, \quad x^\star(t_0)=x_0, \ \lambda^\star(t_f) = -Q_f x^\star(t_f)
+	$$
+	$$
+	u^\star = R^{-1} B^T \lambda^\star \quad (0 = \mathcal{H}_u)
+	$$
+	LQR solution consists of a TPBVP in $(x, \lambda)$ and plugging its solution in $u^\star = R^{-1} B^T \lambda$.
+	
+	How do we solve TPBVP? Not easy in general. Computational approaches in Chapter 5.
+	
+	\textbf{Ansatz:} The TPBVP is homogeneous in $x_0$ ($\to$ if $x_0=0$ then $x=\lambda=u\equiv0$ is the solution).
+	
+	Therefore, we can assume a solution on $\lambda$ of the form
+	\begin{itemize}
+		\item $\lambda^\star(t) = -P(t) x^\star(t)$
+		
+		with $\lambda^\star(t_f) = -Q_f x^\star(t_f) \qquad (P(t_f) = Q_f)$
+		
+		$\lambda^\star(t_0) = -P_0 x^\star(t_0)$
+	\end{itemize}
+	
+	We plug this Ansatz into the TPBVP and we get an equation in $P(t)$:
+	$$
+	\dot{P} = -PA - A^T P + P B R^{-1} B^T P - Q, \quad P(t_f)=Q_f \quad \text{(Riccati differential equation)}
+	$$
+	
+	ODE with final value condition $\xrightarrow{P} Q_f$.
+	Its solution gives us the Optimal Control $u^\star$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			\draw[->] (0,0) -- (4,0) node[right] {$t$};
+			\draw[->] (0,0) -- (0,2.5) node[left] {$P$};
+			
+			\draw (0.5,0.1) -- (0.5,-0.1) node[below] {$t_0$};
+			\draw (3.5,0.1) -- (3.5,-0.1) node[below] {$t_f$};
+			
+			\draw[dashed] (3.5,1.8) -- (0,1.8) node[left] {$Q_f$};
+			\filldraw[blue] (3.5,1.8) circle (1.5pt);
+			
+			% P(t) curve evolving backwards
+			\draw[thick, blue, ->] (3.5,1.8) to[out=250, in=0] (2.0,2.0) to[out=180, in=70] (0.5, 0.8);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	$$
+	u^\star = R^{-1} B^T \underbracket{\lambda^\star}_{\to -P(t)x^\star}
+	$$
+	$$
+	= -R^{-1}(t) B(t)^T P(t) x^\star(t)
+	$$
+	
+	\paragraph{Remarks}
+	\begin{itemize}
+		\item Linear $u^\star$: $u = -K(t)x, \quad K(t) = R^{-1}(t) B(t)^T P(t)$.
+		\item \underline{Closed loop controller} / control law $u(x)$.
+		
+		$\to$ ``by chance'': combination of lin dynamics + quad cost.
+		\item Why do I keep calling it ``optimal controller''?
+		Aren't ELE only necessary for ``weak minimizers''?
+		
+		Because of the Mangasarian sufficient conditions.
+		$$
+		\text{LQR} \quad
+		\begin{drcases}
+			\nearrow \quad \text{cvx } l \text{ and } \varphi \text{ (in fact quadratic)} \\
+			\searrow \quad \text{cvx } f \text{ (in fact linear)}
+		\end{drcases}
+		\quad \text{minimizer is global}
+		$$
+	\end{itemize}
+	
+	% 01.12.2025 Lecture 11
+	
+	\subsection{Pontryagin Maximum Principle (PMP)}
+	
+	\subsubsection{Limitations of the variational approach}
+	
+	ELE equations.
+	
+	\begin{enumerate}[label=\textcircled{\arabic*}]
+		\item \textbf{Constraints on $u$:}
+		
+		ELE approach struggles to cope with problems where we require path constraints on $\mathcal{U}$.
+		
+		\underline{Reason:} difficult to build perturbations $w$ s.t. $u+\eta w$ is admissible.
+		
+		\item \textbf{Relax regularity:}
+		
+		
+		\begin{itemize}
+		
+			\item So far we assumed $f_u, l_u \in \mathcal{C}$ ($\Leftrightarrow f, l$ have cont. derivatives w.r.t $u$).
+			
+			e.g. $l = \|u\|_1 \to$ minimum energy control.
+			\[
+			J = \int_{t_0}^{t_f} \|u\|_1 \, dt
+			\]
+			
+			\begin{center}
+				\begin{tikzpicture}[>=stealth, scale=1]
+					\draw[->] (-1.5,0) -- (1.5,0) node[right] {$u$};
+					\draw[->] (0,-0.2) -- (0,1.5) node[right] {$\|u\|_1$};
+					
+					\draw[blue, thick] (-1,1) -- (0,0) -- (1,1);
+					\draw[red] (0,0) circle (3pt);
+					\node[red, below right, align=left] at (0.2,0) {\small not differentiable\\ \small $\to l_u$ does not exist};
+				\end{tikzpicture}
+			\end{center}
+		
+			\item ELE assume $u \in \mathcal{C}$, we have seen corner conditions for $u \in \hat{\mathcal{C}}$.
+			\end{itemize}
+		We would like to have a method that generally works with $u \in \hat{\mathcal{C}}$.
+		
+		$\hspace*{0.5cm}\to$ We do not want to assume $f_u, l_u \in \mathcal{C}$ if possible.
+		
+		\item \textbf{ELE are necessary conditions for weak minimizers.}
+		
+		How about necessary conditions for strong minimizers?
+		
+		The key-issue is that in ELE we considered this class of perturbations:
+		
+		$u+\eta w$ is a weak perturbation.
+		\[
+		\eta \to 0, \quad \|u - (u+\eta w)\| \to 0
+		\]
+		
+		\begin{center}
+			\begin{tikzpicture}[>=stealth, thick]
+				
+				% Axes
+				\draw[->] (-0.5,0) -- (8.5,0) node[below] {$t$};
+				\draw[->] (1,-1) -- (1,3.5) node[left] {$u$};
+				
+				% Ticks
+				\draw (2.5,0.15) -- (2.5,-0.15) node[below=3pt] {$t_0$};
+				\draw (6.5,0.15) -- (6.5,-0.15) node[below=3pt] {$t_f$};
+				
+				% Blue Curve (u) - smooth
+				\draw[blue, very thick] (2.5,1.0) .. controls (3.5,1.8) and (5.5,1.2) .. (6.5,2.2) node[above right, xshift=-5pt] {$u$};
+				
+				% Red Curve (u + eta w) - oscillating around u
+				\draw[red, very thick] (2.5,1.6) .. controls (3.5,3.0) and (4.5,-0.5) .. (6.5,2.8) node[above right, xshift=-5pt] {$u+\eta w$};
+				
+				% Side Text / Legend
+				\node[align=left, anchor=west] at (8.0, 2.5) {
+					\color{blue}$u \in \mathcal{C}$ \\[2pt]
+					\color{red}$w \in \mathcal{C}$ \\[2pt]
+					\color{black}$\eta > 0$
+				};
+			\end{tikzpicture}
+		\end{center}
+	\end{enumerate}
+	
+	What type of perturbations would be strong?
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, scale=1.0, thick]
+			
+			% --- Top Plot: u vs u + eta w ---
+			\begin{scope}
+				\draw[->] (-0.5,0) -- (7.5,0) node[right] {$t$};
+				\draw[->] (1,-0.5) -- (1,3.5) node[right] {$u$};
+				
+				% Ticks and Labels
+				\draw (2.5,0.1) -- (2.5,-0.1) node[below] {$t_0$};
+				\draw (6.5,0.1) -- (6.5,-0.1) node[below] {$t_f$};
+				
+				% Tau and Tau - epsilon labels
+				\draw (4.5,0.1) -- (4.5,-0.1) node[below] {$\tau$};
+				\draw (3.8,0.1) -- (3.8,-0.1); 
+				\node[below, xshift=-5pt, yshift=-8pt] at (3.8,0) {$\tau-\varepsilon$};
+				
+				% Blue Curve (u) - Step function
+				\draw[blue, very thick] (2.5,0.6) -- (4.5,0.6) -- (4.5,2.8) -- (6.5,2.8);
+				\node[blue, above] at (5.5, 2.8) {$u$};
+				
+				% Red Curve (u + eta w) - needle/pulse variation (here depicted as shifted switching time)
+				\draw[red, very thick] (2.5,0.8) -- (3.8,0.8) -- (3.8,2.6) -- (6.5,2.6);
+				\node[red, left] at (3.8, 1.8) {$u+\eta w$};
+				
+				% Dashed projection lines
+				\draw[dashed, thin] (3.8,0) -- (3.8,0.8);
+				\draw[dashed, thin] (4.5,0) -- (4.5,1.0);
+			\end{scope}
+			
+			% --- Bottom Plot: Difference / Needle ---
+			\begin{scope}[yshift=-5cm]
+				\draw[->] (-0.5,0) -- (7.5,0) node[above] {$t$};
+				\draw[->] (1,-0.5) -- (1,2.5) node[above] {$\Delta u = u - (u + \eta w)$};
+				
+				% Ticks
+				\draw (2.5,0.1) -- (2.5,-0.1) node[below] {$t_0$};
+				\draw (6.5,0.1) -- (6.5,-0.1) node[below] {$t_f$};
+				
+				% The "Needle" / Spike
+				% Assuming the perturbation is the difference in the interval [tau-epsilon, tau]
+				\draw[black, very thick] (0.5,0) -- (3.8,0); % Zero part left
+				\draw[black, very thick] (3.8,0) -- (3.8,2.0) -- (4.5,2.0) -- (4.5,0); % The Pulse
+				\draw[black, very thick] (4.5,0) -- (7.0,0); % Zero part right
+				
+				% Epsilon marking
+				\draw[<->, thin] (3.8,-0.4) -- (4.5,-0.4) node[midway, below] {$\varepsilon$};
+				\draw[thin] (3.8,-0.1) -- (3.8,-0.5);
+				\draw[thin] (4.5,-0.1) -- (4.5,-0.5);
+				
+				% Text
+				\node[align=left, anchor=west] at (5.0, 1.5) {needle perturbation\\(``spikey'')};
+				\node[align=left, anchor=east] at (0.5, 1.0) {strong perturbation\\as $\varepsilon \to 0$};
+			\end{scope}
+			
+			% Dashed connecting lines between plots
+			\draw[dashed, gray, thin] (3.8, 0) -- (3.8, -5);
+			\draw[dashed, gray, thin] (4.5, 0) -- (4.5, -5);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	We have:
+	\[
+	\|u - (u+\eta w)\|_1 \neq 0
+	\]
+	\[
+	\|x - y\| \to 0
+	\]
+	($y$: perturbed $x$ where $(u+\eta w)$ acts).
+	
+	We want an approach that captures local optimality w.r.t. all perturbations (weak + strong).
+	
+	\subsubsection{Statements of PMP}
+	
+	\[
+	[OC-P3] \quad \min_{u(\cdot), t_f} \int_{t_0}^{t_f} l(x,u) \, dt
+	\]
+	\[
+	\text{s.t. } \dot{x} = f(x,u), \quad x(t_0) = x_0
+	\]
+	\[
+	(t, x(t_f)) \in (t_0, \infty) \times S_f
+	\]
+	\[
+	V = \hat{\mathcal{C}}([t_0, t_f], \mathcal{U}), \quad \mathcal{U} \subseteq \mathbb{R}^{n_u}
+	\]
+	
+	\paragraph{Remarks:}
+	\begin{itemize}
+		\item Time-invariant problems (autonomous): $l$ and $f$ depend not on time.
+		\item $\varphi = 0$
+		\item 2 cases for $S_f$:
+		\begin{enumerate}
+			\item $S_f = \{x_f\}$
+			\item $S_f = \{x \mid h_i(x)=0, \forall i=1,\dots,n_h\}$, where we assume that all points in $S_f$ are regular (see \autoref{sec:chapter1})
+		\end{enumerate}
+		\item $t_f$ is free.
+		\item $u$ is constrained to lie inside $\mathcal{U} \subseteq \mathbb{R}^n$.
+		
+		\begin{center}
+			\begin{tikzpicture}[>=stealth, thick]
+				% Achsen
+				\draw[->] (-0.25,-1.25) -- (5.5,-1.25) node[right] {$t$};
+				\draw[->] (0,-1.5) -- (0,2.5) node[left] {$u$};
+				
+				% Definition der Grenzen
+				\def\yUpper{1.5}
+				\def\yLower{-0.5}
+				\def\xMax{5.0}
+				
+				% Verbotene Bereiche (Rote Striche / Schraffur)
+				% Wir zeichnen diese manuell, um den Look der Skizze nachzuahmen
+				\foreach \x in {0.2, 0.8, ..., \xMax} {
+					% Oben
+					\draw[red!80, thin] (\x, \yUpper+0.2) -- (\x+0.3, \yUpper+0.7);
+					% Unten
+					\draw[red!80, thin] (\x, \yLower-0.2) -- (\x+0.3, \yLower-0.7);
+				}
+				
+				% Begrenzungslinien (Constraints)
+				\draw[black, thick] (0, \yUpper) -- (\xMax, \yUpper);
+				\draw[black, thick] (0, \yLower) -- (\xMax, \yLower);
+				
+				% Zulässige Steuerung (Blaue Kurve)
+				% Eine glatte Kurve, die innerhalb der Grenzen bleibt
+				\draw[blue, very thick, smooth] (0.2, 0.2) 
+				to[out=60, in=180] (1.5, 1.2) 
+				to[out=0, in=180] (3.0, -0.2) 
+				to[out=0, in=200] (5.0, 0.8);
+				
+				% Markierung der Menge U (entspricht dem gelben Marker/Text links)
+				\draw[decorate, decoration={brace, amplitude=5pt}, thick] (-0.3, \yLower) -- (-0.3, \yUpper)
+				node[midway, left=8pt, align=right] {$\mathcal{U} \subseteq \mathbb{R}^{n_u}$};
+				
+			\end{tikzpicture}
+		\end{center}
+		
+		\item $u \in \hat{\mathcal{C}}$ piecewise cont. function.
+		\item Regularity conditions: $l, f \in \mathcal{C}$ and $l_x, f_x \in \mathcal{C}$. No more conditions on $l_u, f_u!$
+	\end{itemize}
+	
+	\begin{theorembox}[PMP for fixed endpoint]
+		\label{theorem:3.1}
+		\begin{itemize}
+			\item Problem $[OC-P3]$
+			\item $\mathcal{S} = (t_0, \infty) \times \{x_f\}$
+		\end{itemize}
+		Suppose $u^\star \in \hat{\mathcal{C}}$ is a strong minimizer with associated final time $t_f^\star$ and $x^\star \in \hat{\mathcal{C}}_n^1$. Then $\exists \lambda \in \hat{\mathcal{C}}^1$ and a constant $\lambda_0^\star \leq 0$ satisfying $(\lambda_0^\star, \lambda^\star(t)) \neq (0,0) \ \forall t \in [t_0, t_f^\star]$ s.t.:
+		
+		\begin{enumerate}
+			\item $(x^\star, \lambda^\star)$ satisfy Hamiltonian dynamics
+			\[
+			\dot{x}^\star = \mathcal{H}_\lambda(x^\star, u^\star, \lambda^\star, \lambda_0^\star), \quad x^\star(t_f^\star) = x_f, \quad x^\star(t_0) = x_0
+			\]
+			\[
+			\dot{\lambda}^\star = -\mathcal{H}_x(x^\star, u^\star, \lambda^\star, \lambda_0^\star)
+			\]
+			where $\mathcal{H}(x, u, \lambda, \lambda_0) = \lambda_0 l(x,u) + f(x,u)^T \lambda$.
+			
+			\item For every $t$, the function $\mathcal{H}(x^\star, \cdot, \lambda^\star, \lambda_0^\star)$ has a global maximum at $u=u^\star(t)$ i.e.
+			\[
+			\mathcal{H}(x^\star(t), u^\star(t), \lambda^\star(t), \lambda_0^\star) \ge \mathcal{H}(x^\star(t), u, \lambda^\star(t), \lambda_0^\star) \quad \substack{\forall t \in [t_0, t_f^\star] \\ \forall u \in \mathcal{U}}
+			\]
+			or $u^\star \in \underset{u \in \mathcal{U}}{\arg\max} \ \mathcal{H}(x^\star(t), u, \lambda^\star(t), \lambda_0^\star)$.
+			
+			\item $\mathcal{H}(x^\star(t), u^\star(t), \lambda^\star(t), \lambda_0^\star) = 0 \quad \forall t \in [t_0, t_f^\star]$.
+		\end{enumerate}
+	\end{theorembox}
+	
+	\paragraph{Remarks:}
+	\begin{itemize}
+		\item How do we handle $\lambda_0$?
+	
+		\textbf{2 cases:}
+		\begin{itemize}
+			\item $\lambda_0 < 0$: we can divide $\mathcal{H}$ by $|\lambda_0|$ w.l.o.g.
+			We retrieve $\mathcal{H} = -l + \lambda^T f$.
+			\item $\lambda_0 = 0$: we have $\mathcal{H} = \lambda^T f$.
+		\end{itemize}
+		\item $\mathcal{H} = 0$ is typical value of the Hamiltonian for free problems.
+		When $t_f$ is fixed $\to \mathcal{H} = \text{const.} \neq 0$ (because problem is time-invariant). And we do not need \textcircled{3} because $t_f$ is known.
+	\end{itemize}
+	
+	\underline{Proof:} Liberzon's book Ch. 4, Sect 4.2 is on the proof of PMP.
+	
+	Second statement: $\mathcal{S}_f = \{x \mid h_i(x)=0, i=1,\dots,n_h\}$.
+	
+	We expect changes on the boundary conditions.
+	
+	\begin{theorembox}[PMP for variable end point]
+		\label{theorem:3.2}
+		Same conditions as \autoref{theorem:3.1} except
+		\[
+		\mathcal{S} = (t_0, \infty) \times \{x \mid h_i(x)=0\} \quad (\text{with regular } x).
+		\]
+		If ...
+		
+		Then $\exists \lambda \in \hat{\mathcal{C}}^1([t_0, t_f^\star])$ and $\lambda_0 \le 0$ satisfying $(\lambda_0^\star, \lambda^\star(t)) \neq (0,0) \ \forall t \in [t_0, t_f^\star]$.
+		
+		\textcircled{1}: $(x^\star, \lambda^\star)$ satisfy the Hamiltonian dynamics with boundary conditions
+		\[
+		\left. \begin{array}{l}
+			x^\star(t_0) = x_0 \\
+			x^\star(t_f) \in S_f
+		\end{array} \right\} n_x + n_h \text{ conditions}
+		\]
+		\[
+		\langle \lambda^\star(t_f^\star), d \rangle = 0 \quad \forall d \in \mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star)) \quad \Big\} n_x - n_h \text{ conditions}
+		\]
+		or equivalently $\lambda^\star(t_f^\star) \perp \mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star))$
+		($\mathcal{T}_{\mathcal{S}_f}$ tangent cone to $\mathcal{S}_f$ at $x^\star(t_f^\star)$, see \autoref{sec:chapter1}).
+		
+		$\to$ in total $n_x + n_x$ BC:
+		\[
+		\begin{array}{l}
+			n_x \text{ at } t_0 \\
+			n_x \text{ at } t_f
+		\end{array}
+		\begin{cases}
+			n_h \text{ on } x \\
+			n_x - n_h \text{ on } \lambda
+		\end{cases}
+		\]
+		
+		\textcircled{2}, \textcircled{3} stay the same.
+	\end{theorembox}
+	
+	\paragraph{BC (or transversal condition) on $\lambda^\star(t_f^\star)$}
+	\[
+	\mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star)) = \{d \in \mathbb{R}^{n_x} : \langle \nabla h_k(x^\star(t_f^\star)), d \rangle = 0, \ k=1,\dots,n_h\}
+	\]
+	The B.C. prescribes that $\lambda^\star(t_f^\star)$ belongs to the orthogonal complement of $\mathcal{T}_{\mathcal{S}_f}$.
+	That is, by definition of $\mathcal{T}_{\mathcal{S}_f}$: $\lambda^\star(t_f^\star)$ a linear combination of $\nabla h_k, \ k=1,\dots,n_h$.
+	
+	We had a similar interpretation for the transversality condition of ELE.
+	More on this in T5.
+	
+	$(\lambda_0^\star, \lambda^\star(t)) \neq 0 \ \forall t \in [t_0, t_f^\star]$ why?
+	
+	Non-triviality condition, because if you have $\lambda_0^\star = \lambda^\star(t) \equiv 0$, then all conditions of PMP hold!
+	
+	From the proof, one can see that
+	\[
+	(\lambda_0^\star, \lambda^\star(t)) \neq 0 \ \forall t \iff \exists \bar{t} \text{ s.t. } (\lambda_0^\star, \lambda^\star(\bar{t})) \neq 0.
+	\]
+	($(\lambda_0, \lambda) \neq 0$ is a condition to rule out the case that $\lambda_0^\star = 0$.)
+	
+	E.g. $l \neq 0$ running cost.
+	This happens in time-optimal control problems.
+	\[
+	\min_{t_f} \int_{t_0}^{t_f} 1 \, dt
+	\]
+	\[
+	\mathcal{H} = \lambda^T f + \lambda_0 l = 0, \quad \text{\textcircled{3} from PMP}
+	\]
+	\[
+	= \lambda^T f + \lambda_0.
+	\]
+	If $\exists t$ s.t. $\lambda(t) = 0$, then we have $\lambda_0 = 0$.
+	
+	Therefore, for problems where $l(x,u) \neq 0$.
+	We have that $\lambda(t) \neq 0$!
+	Otherwise also $\lambda_0 = 0$ and this is not possible.
+	
+	\subsubsection{Extensions of PMP}
+	
+	\begin{enumerate}
+		\item Fixed terminal time
+		\item Time-varying problems
+		\item Non-zero terminal costs
+	\end{enumerate}
+	
+	\textbf{\textcircled{1} $t_f$ fixed}
+	
+	We said before that $\mathcal{H}=0$ in time-free problems. When $t_f$ is fixed then we still have $\mathcal{H}=$ const. but ``const.'' $\neq 0$.
+	
+	In practice, this has little implications. We just ignore the third condition of the PMP ($t_f$ is not unknown here after all).
+	
+	To further analyze this case, we augment the system with a "state" denoting time:
+	\[
+	\left[
+	\begin{aligned}
+		&\dot{x} = f(x,u) && x(t_0)=x_0 \\
+		&\dot{x}_{n+1} = 1 && x_{n+1}(t_0)=t_0 \\
+		&t_f \in (t_0, \infty) && \text{"free final time": final time will be fixed through } x_{n+1} \\
+		&(x, x_{n+1}) \in \mathcal{S}_f \times \{t_f\} && \text{target set for the "state"}
+	\end{aligned}
+	\right.
+	\]
+	$\to$ this problem is in the standard PMP form.
+	
+	Hamiltonian for our modified system:
+	\[
+	\overline{\mathcal{H}}(x,u,\lambda,\lambda_0, \lambda_{n+1}) := \underbrace{\lambda_0 l(x,u) + f(x,u)^T \lambda}_{\mathcal{H}(x,u,\lambda,\lambda_0) \text{ (Hamilt. for original system)}} + \underbrace{1}_{\substack{\text{dynamic}\\\text{of } x_{n+1}}} \cdot \underbrace{\lambda_{n+1}}_{\substack{\text{co-state}\\\text{of } x_{n+1}}}
+	\]
+	
+	Because the modified system has free final time, we can write:
+	\[
+	0 = \overline{\mathcal{H}} = \mathcal{H} + \lambda_{n+1}
+	\]
+	Thus:
+	\[
+	\mathcal{H} = -\lambda_{n+1}
+	\]
+	
+	How do we obtain $\lambda_{n+1}$ (and thus $\mathcal{H}$ for the original problem)?
+	
+	Write the Hamiltonian dynamics for the last adjoint:
+	\[
+	\dot{\lambda}_{n+1}  \underset{\substack{\uparrow \\ \text{``}\dot{\lambda}=-\mathcal{H}_x\text{''}}}{=} -\overline{\mathcal{H}}_{x_{n+1}}  \underset{\substack{\uparrow \\ \text{because } x_{n+1} \text{ is time}}}{=} -\mathcal{H}_t  \underset{\substack{\uparrow \\ \text{because } \mathcal{H}=\text{const}}}{=} 0
+	\]
+	
+	BC for $\lambda_{n+1}$?
+	$x_{n+1}$ is fixed at final time ($=t_f$). Thus $\lambda_{n+1}(t_f)$ is free (because its corresponding state is fixed).
+	Depending on the other variables, $\lambda_{n+1}(t_f)$ will have a certain value.
+	
+	In summary: for these problems $\mathcal{H} = \text{const}$ but $\neq 0$.
+	
+	% 04.12.2025 Lecture 12
+	
+	\bigskip
+	\noindent\textbf{\textcircled{2} Time-varying problems}
+	
+	$f(t,x,u)$, $l(t,x,u)$, $t_f$ fixed or free.
+	
+	Again we augment the dynamic with a fictitious state representing time.
+	\[
+	\tilde{x} = \begin{bmatrix} x \\ x_{nx+1} \end{bmatrix} \qquad
+	\begin{aligned}
+		&\dot{x} = f(x_{nx+1},x,u) & x(t_0)=x_0 \\
+		&\dot{x}_{nx+1} = 1 & x_{nx+1}(t_0)=t_0 \\
+		&l(x_{nx+1}, x, u) & \left\{\begin{aligned}
+		&x_{nx+1}(t_f) = t_f \quad \text{if } t_f \text{ fixed} \\
+		&x_{nx+1}(t_f) \in \mathbb{R} \quad \text{if } t_f \text{ free}
+	\end{aligned}\right.
+	\end{aligned}
+	\]
+	$\to$ Time-invariant problem. Therefore, ``standard PMP'' theorem applies.
+	
+	\textcircled{1}-\textcircled{2} do not change.
+	
+	\textcircled{3} $\bar{H} = 0$ because augmented system, the problem is time-invariant.
+	
+	$\bar{H}:$ Hamiltonian for the augmented system with state $\tilde{x}$.
+	\[
+	\bar{H} = H + \lambda_{nx+1} \quad (\text{Like in extension \textcircled{1}})
+	\]
+	$\to H(t,x,u,\lambda_0,\lambda)$ Hamiltonian of the original problem.
+	
+	Thus: $\dot{\lambda}_{nx+1} = -H_t \neq 0$ because $H$ depends on time.
+	
+	If $t_f$ is fixed, then we just solve \textcircled{1}+\textcircled{2} and keep in mind that $H$ is now time-varying.
+	
+	If $t_f$ is free, we need an equation to determine it. We need to obtain a value for $H$ to have a condition \textcircled{3}.
+	\[
+	\frac{d}{dt} H = H_t, \quad (H(t_f) = -\lambda_{nx+1}(t_f))
+	\]
+	When $t_f$ is free, what is $\lambda_{nx+1}(t_f)$?
+	
+	Remember: When $x(t_f)$ is free, $\lambda(t_f)=0$.
+	
+	Here: $\underbrace{x_{nx+1}(t_f)}_{t_f \text{ free}}$ is free, thus $\lambda_{nx+1}(t_f)=0$.
+	
+	Therefore we have $\frac{d}{dt}H = H_t$ and $H(t_f) = 0$.
+	\[
+	H(t) = -\int_{t}^{t_f} H_t(s,x,u,\lambda_0,\lambda)\, ds
+	\]
+	This term depends on $u,x,\lambda$ which are obtained from \textcircled{1}-\textcircled{2}.
+	
+	So we have a system of equations in $u,x,\lambda,t_f$:
+	\begin{enumerate}
+		\item Ham. dynamics\quad\textcolor{blue}{$(x,\lambda)$}
+		\item Ham. maximization\quad\textcolor{blue}{$(u)$}
+		\item $H(t) = -\int_{t}^{t_f} H_t$ B.C. $H(t_f)=0$\quad\textcolor{blue}{$(t_f)$}
+	\end{enumerate}
+	
+	\bigskip
+	\noindent\textbf{\textcircled{3} Terminal cost}
+	
+	W.l.o.g we assume $l=0$, $\varphi(x_f) \neq 0 \to J(u) = \varphi(x_f)$.
+	
+	$t_f, x(t_f)$ are free $\to H = u^T \dots$
+	
+	The difference to ``standard PMP'' is that in \autoref{theorem:3.1}, \autoref{theorem:3.2} we consider Lagrangian functionals $J = \int l$. Now we have Mayer functionals $J=\varphi$.
+	
+	The strategy to solve this problem is then to write our Mayer form in Lagrangian form ($M \Rightarrow L$).
+	\[
+	\varphi(x_f) = \varphi(x_0) + \int_{t_0}^{t_f} \varphi_x(x)^T f(x,u)\, dt \quad (\text{assuming diff of } \varphi)
+	\]
+	\[
+	\to J(u) = \underbrace{\varphi(x_0)}_{\text{constant, can be dropped}} + \int_{t_0}^{t_f} \underbrace{\varphi_x(x)^T f(x,u)}_{\bar{l}(x,u)}\, dt
+	\]
+	$\to$ We have an equivalent problem in $L$ form.
+	\[
+	\bar{H} = \bar{\lambda}_0 \bar{l} + \bar{\lambda}^T f = (\bar{\lambda} + \bar{\lambda}_0 \varphi_x)^T f
+	\]
+	Both the original ($M$) problem and the reformulated ($L$) problem are time-invariant and $t_f$ free.
+	\[
+	\to \bar{H} = H = 0
+	\]
+	So we can relate the variables of the two problems by setting $\bar{H} = H$.
+	\[
+	(\bar{\lambda} + \bar{\lambda}_0 \varphi_x)^T f = \lambda^T f
+	\]
+	Thus $\lambda = \bar{\lambda} + \bar{\lambda}_0 \varphi_x$.
+	
+	Note: the $M$ problem has no terminal cost and free final state. Standard PMP applies.
+	\[
+	\bar{\lambda}(t_f) = 0
+	\]
+	$\bar{\lambda}_0 \neq 0$, otherwise we have
+	
+	\[
+		\underset{\text{non-triviality condition would not be satisfied}}{\begin{Bmatrix}
+			\bar{\lambda}(t_f) \\ \bar{\lambda}_0
+		\end{Bmatrix} = 0}
+	\]
+	
+	Thus we set $\bar{\lambda}_0 = -1$.
+	\[
+	\forall t: \boxed{\lambda = \bar{\lambda} - \varphi_x} \quad \text{relationship btw } \begin{aligned}
+		&\lambda \to \text{adjoint of original problem} \\
+		&\bar{\lambda} \to \text{adjoint in the new problem}
+	\end{aligned}
+	\]
+	Specifically at $t_f$:
+	\[
+	\lambda(t_f) = \underbrace{\bar{\lambda}(t_f)}_{=0} - \varphi_x(x(t_f)) = -\varphi_x(x(t_f))
+	\]
+	$\to$ Summary:
+	\begin{itemize}
+		\item All stays the same except for the B.C. on $\lambda$.
+		\item Without terminal cost, we would have $\lambda(t_f)=0$.
+		\item With terminal cost, $\lambda(t_f) = -\varphi_x(x(t_f))$.
+	\end{itemize}
+	
+	Compare this with ELE for general problems $[OC-P2]$. There we also had a similar result on $\lambda(t_f)$.
+	
+	\subsubsection{Time-optimal control problems \& bang-bang principle}
+	
+	Exercises on t-opt in Tutorial and HW.
+	
+	Here, we consider LTI systems:
+	\[
+	\dot{x} = Ax + Bu
+	\]
+	\[
+	u \in \mathcal{U} \subset \mathbb{R}^{n_u}, \quad \mathcal{U} = \{ u \in \mathbb{R}^{n_u} \mid u_i \in [-1, 1], i=1,\dots,n_u \}
+	\]
+	\[
+	-\begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix} \le \begin{bmatrix} u_1 \\ \vdots \\ u_{n_u} \end{bmatrix} \le \begin{bmatrix} 1 \\ \vdots \\ 1 \end{bmatrix}
+	\]
+	w.l.o.g. we could have $\underline{u}_i, \bar{u}_i$ instead of $[-1, 1]$.
+	
+	\textbf{Goal:} steer $x$ from $x_0$ to given final state $x_f$ in minimal time.
+	
+	\textbf{Assumption:} controllability of the system, because we need to have at least a feasible controller that steers $x$ from $x_0 \to x_f$.
+	
+	Solution via PMP: $\min\limits_{u, t_f} \int_{t_0}^{t_f} 1\, dt,\ \dot{x}=Ax+Bu,\ x(t_0)=x_0,\ x(t_f)=x_f$.
+	\[
+	\mathcal{H}(x,u,\lambda,\lambda_0) = \lambda^T (\underbrace{Ax + Bu}_{f(x,u)}) + \underbrace{\lambda_0 \cdot 1}_{l}
+	\]
+	
+	Condition \textcircled{2} can be written as:
+	\[
+	t \in [t_0, t_f^\star]: \quad u^\star(t) \in \underset{u \in \mathcal{U}}{\arg\max}\ \underbrace{\lambda^\star(t)^T}_{\underset{\text{ $\to$ Ham. dynamics.}}{\text{$\lambda^\star(x^\star)$ solve \textcircled{1}}}} (Bu) \qquad | \text{ Linear programme (LP)}
+	\]
+	
+	When the objective is linear, maximizers are on the boundary of the constraints. The value of the maximizer depends on the slope.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, scale=1.2]
+			% Achsen
+			\draw[->, thick] (0,-1.5) -- (0,2.5) node[above left] {$a^T u$}; % y-Achse (Zielfunktion)
+			\draw[->, thick] (-2.5,0) -- (3,0) node[below] {$u$};   % x-Achse
+			
+			% Beschränkungen (Constraints) - vertikale Balken
+			\draw[line width=4pt, red!40] (-1.5, -2) -- (-1.5, 2.5);
+			\draw[line width=4pt, red!40] (1.5, -2) -- (1.5, 2.5);
+			
+			% Verbotene Bereiche (Schraffur) - optisch wie in der Skizze
+			\foreach \y in {-1.8, -1.2, ..., 2.2} {
+				% Linke Seite Schraffur
+				\draw[red!40, line width=3pt, cap=round] (-2.2, \y) -- (-1.7, \y+0.4);
+				% Rechte Seite Schraffur
+				\draw[red!40, line width=3pt, cap=round] (1.7, \y) -- (2.2, \y+0.4);
+			}
+			
+			% Zielfunktionsgerade (Slope)
+			\draw[blue, very thick] (-2, -1) -- (2.2, 1.1);
+			
+			% Winkel/Steigung 'a' Indikation
+			\draw[thick] (0.5, 0) arc (0:26.5:0.5);
+			\node at (0.8, 0.2) {$a$};
+			
+			% Optimaler Punkt u* (Schnittpunkt Gerade mit Constraint)
+			% Annahme: Steigung 0.5, Constraint bei x=1.5 -> y=0.75
+			\draw[purple, very thick] (1.5, 0.75) circle (3.5pt);
+			
+			% Label für u* mit Pfeil
+			\node[purple, below] (ustar) at (1.2, -0.5) {\Large $u^\star$};
+			\draw[->, purple, very thick, shorten >= 4pt] (ustar) -- (1.5, 0.1);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	For our problem, this means that $u^\star(t)$ will switch between -1 and 1 depending on the slope $(\lambda^\star(t)^T B)$.
+	$\to$ as $\lambda^\star(t)$ changes, same will happen to the location of the maximum $u^\star$.
+	
+	Component-wise, we have:
+	\[
+	i=1,\dots,n_u \quad u_i^\star(t) = \begin{cases}
+		1 & \text{if } \lambda^\star(t)^T b_i > 0 \\
+		-1 & \text{if } \lambda^\star(t)^T b_i < 0 \\
+		? & \text{if } \lambda^\star(t)^T b_i = 0
+	\end{cases}
+	\]
+	\[
+		B = [b_1 | b_2 | \dots | b_{n_u}]
+	\]
+	
+	If ? is satisfied on a non-zero interval $t \in [t_1, t_2]$, then we call this int a \underline{SINGULAR ARC}.
+	OC problems with singular arcs are called \underline{SINGULAR OPTIMAL CONTROL PROBLEMS}.
+	$\to$ problems in which condition \textcircled{2} of PMP does not provide any information $u^\star$ for a non-zero time-interval.
+	
+	Tutorial 6 (next Thursday) is on this topic.
+	
+	Let's try to understand when we can rule out that $\lambda^\star(t)^T b_i = 0$ for $t \in [t_1, t_2]$.
+	
+	For this we need to study $\lambda^\star(t)$ which satisfy
+	\[
+	\dot{\lambda}^\star = -A^T \lambda^\star \quad (\dot{\lambda} = -H_x)
+	\]
+	\[
+	\to \lambda^\star(t) = e^{A^T(t_f^\star - t)} \lambda^\star(t_f^\star)
+	\]
+	\[
+	\to \lambda^\star(t)^T b_i = \underbrace{\lambda^\star(t_f^\star)^T \left( e^{A^T(t_f^\star - t)} b_i \right)}_{\text{when is this 0 on a non-infinitesimal interval?}}
+	\]
+	This function is an \underline{analytic function}:
+	\begin{itemize}
+		\item it is $\mathcal{C}^\infty$ (all derivatives exist)
+		\item it coincides with its Taylor expansion on any neighborhood of its argument.
+		\[
+		\forall t_0 \in D: \quad \sum_{n=0}^\infty \frac{f^{(n)}(t_0)}{n!} (t-t_0)^n \to f(t)
+		\]
+	\end{itemize}
+	Ex: exponentials, poly, logarithm.
+	
+	\paragraph{Prop:} Analytic functions vanish on finite intervals iff they vanish for all $t$, together with its derivatives.
+	
+	We can study its derivatives and conditions for which they are zero at a generic $t$. We pick $t=t_f^\star$.
+	\begin{align*}
+		0^{th}\text{ deriv:} \quad & \lambda^\star(t_f^\star)^T b_i \\
+		1^{th}\text{ deriv:} \quad & \lambda^\star(t_f^\star)^T A b_i \\
+		&\vdots \\
+		(n-1)^{th}\text{ deriv:} \quad & \lambda^\star(t_f^\star)^T A^{n-1} b_i
+	\end{align*}
+	When are they all zero ($i=1,\dots,n_u$)?
+	\[
+	\underbrace{\begin{bmatrix}
+			b_i & A b_i & \dots & A^{n-1} b_i
+		\end{bmatrix}^T}_{P} \underbrace{\lambda^\star(t_f^\star)}_{\neq 0\text{ because }x(t_f) = x_f} = 0 \qquad ?
+	\]
+	
+	$\text{rank}(P) = n_x$ if the system is ``normal'', that is controllable w.r.t to \underline{any} input channel $u_i$.
+	
+	This is a stronger notion than controllability than the standard one obtained by ``replacing $b_i \to B$''.
+	
+	Even if we cannot rule out singular arcs because $(A, B)$ is not ``normal'', one can still show that for controllable LTI plants there exists an optimal controller switching between its boundary values as a function of $\lambda^\star(t)$.
+	\[
+	\to u_i^\star = \begin{cases} 1 & \lambda^\star(t)^T b_i > 0 \\ -1 & \lambda^\star(t)^T b_i < 0 \end{cases} \quad \text{bang-bang-controller!}
+	\]
+	
+	% 15.12.2025 Lecture 13
+	
+	\section{Dynamic Programming}
+	\label{sec:chapter4}
+	
+	
+	In \autoref{sec:chapter3} we learned how to solve \textbf{``open-loop optimal control problems''}.
+	
+	Informally: Given
+	\begin{itemize}
+		\item $f$ (model of the system)
+		\item Cost function $J$ + constraints
+		\item Initial condition $(t_0, x_0)$
+	\end{itemize}
+	We find an optimal input trajectory $u^\star: [t_0, t_e] \to \mathbb{R}^{n_u}$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick]
+			\draw[->] (-0.5,0) -- (4,0) node[right] {$t$};
+			\draw[->] (0,-0.5) -- (0,2.5) node[left] {$u^\star$};
+			
+			\draw (0.5, 0.1) -- (0.5, -0.1) node[below] {$t_0$};
+			\draw (3.5, 0.1) -- (3.5, -0.1) node[below] {$t_e$};
+			
+			\draw[blue, thick] (0.5, 0.5) to[out=45, in=180] (2, 2) to[out=0, in=135] (3.5, 1.5);
+		\end{tikzpicture}
+	\end{center}
+	
+	Here (Chapter 4) we want to solve \textbf{``Closed-loop Optimal Control problems''}.
+	
+	Given $\mathcal{U}, \mathcal{X}$, and the cost, we seek a feedback policy:
+	\[
+	u = \mu(x, t)
+	\]
+	\[
+	\mu: \mathbb{R}^{n_x} \times [t_0, t_e] \to \mathcal{U} \subseteq \mathbb{R}^{n_u}
+	\]
+	
+	\subsection{Multi-stage decision problems and the DP recursion}
+	\label{sec:chapter4.1}
+	
+	We consider discrete-time stages ($k$) with finite state and input (or action) spaces.
+	\[
+	x \in X := \{x^{(1)}, x^{(2)}, \dots, x^{(N)}\} \quad (\text{Finite state space})
+	\]
+	\[
+	u \in U := \{u^{(1)}, \dots, u^{(M)}\} \quad (\text{Finite input space})
+	\]
+	Example: $X = \{1, 0, -1\}$; $N=3$.
+	Think about games (e.g., chess) as an example of where this scenario applies.
+	
+	\textbf{Dynamics:}
+	\[
+	x_{k+1} = f_k(x_k, u_k), \quad k=0, 1, \dots, T-1
+	\]
+	Transition function mapping: $X_k \times U_k \to X_{k+1}$.
+	
+	\textbf{Problem:}
+	Starting from $x_0 \in X$, find the sequence of optimal inputs solving:
+	\[
+	\min_{\{u_0, u_1, \dots, u_{T-1}\}} \sum_{k=0}^{T-1} g_k(x_k, u_k) + g_T(x_T)
+	\]
+	s.t. dynamic constraints.
+	
+	\textbf{Optimal solution:} Sequence of optimal inputs $\{u_0^\star, u_1^\star, \dots, u_{T-1}^\star\}$.
+	
+	\textbf{Optimal value (or Value Function):}
+	$J^\star(x_0)$: optimal value of the cost evaluated at $x_0$.
+	
+	How can we approach the solution to this problem?
+	
+	\begin{enumerate}
+		\item \textbf{``Brute force''}
+		Starting from $x_0$, we can enumerate all possible trajectories going forward from $0$ to $T$, calculate their costs, and select the best.
+		
+		The number of operations scales with $M^T$.
+		This strategy is \textbf{computationally expensive} (Curse of Dimensionality).
+		Furthermore, it yields an ``open loop'' solution for every specific $x_0$. If $x_0$ changes (or we have disturbances), we have to recompute everything; no replanning strategy.
+		
+		\item \textbf{Dynamic Programming (DP) algorithm}
+		
+		\begin{quote}
+			``Life can only be understood backward, but it must be lived forward.'' — Kierkegaard
+		\end{quote}
+		
+		Let's start from the end time $T$.
+		\begin{itemize}
+			\item At $k=T$: For each $x_T \in X$, we can compute $g_T(x_T)$. This operation is independent of $u$.
+			
+			\item At $k=T-1$: For each $x_{T-1} \in X$, we solve the following truncated problem:
+			\[
+			\min_{u_{T-1} \in U} \left[ g_{T-1}(x_{T-1}, u_{T-1}) + g_T(x_T) \right]
+			\]
+			subject to $x_T = f_{T-1}(x_{T-1}, u_{T-1})$.
+			
+			Since $g_T(x_T)$ is pre-computed (or known), we can find the minimizer $u_{T-1}^\star(x_{T-1})$.
+			
+			We define the \textbf{Cost-to-go} at $T-1$:
+			\[
+			V_{T-1}(x_{T-1}) = \min_{u_{T-1} \in U} \left[ g_{T-1}(x_{T-1}, u_{T-1}) + g_T(f_{T-1}(x_{T-1}, u_{T-1})) \right]
+			\]
+			
+			\item Let's do the same at $k=T-2$:
+			\[
+			V_{T-2}(x_{T-2}) = \min_{u_{T-2}, u_{T-1}} \left[ g_{T-2}(x_{T-2}, u_{T-2}) + g_{T-1}(x_{T-1}, u_{T-1}) + g_T(x_T) \right]
+			\]
+			Using the dynamic equation and the result from step $T-1$:
+			\[
+			V_{T-2}(x_{T-2}) = \min_{u_{T-2} \in U} \left[ g_{T-2}(x_{T-2}, u_{T-2}) + \underbrace{V_{T-1}(f_{T-2}(x_{T-2}, u_{T-2}))}_{\text{Cost-to-go from } T-1} \right]
+			\]
+		\end{itemize}
+	\end{enumerate}
+	
+	This holds for all stages and can be written as the \textbf{DP recursion}:
+	
+	For $k = T-1, \dots, 0$:
+	\[
+	V_k(x_k) = \min_{u_k \in U} \left[ g_k(x_k, u_k) + V_{k+1}(f_k(x_k, u_k)) \right]
+	\]
+	with terminal condition $V_T(x_T) = g_T(x_T)$.
+	
+	We have a sequence of value functions (Cost-to-go) $V_0(\cdot), V_1(\cdot), \dots, V_T(\cdot)$.
+	And a sequence of optimal \textbf{closed-loop controllers} (policies):
+	\[
+	\{\mu_0(\cdot), \mu_1(\cdot), \dots, \mu_{T-1}(\cdot)\}
+	\]
+	\[
+	\mu_k(x) \in \arg\min_{u \in U} \left[ g_k(x, u) + V_{k+1}(f_k(x, u)) \right]
+	\]
+	The optimal control depends on the current state $x$ and the stage $k$. This is \textbf{CLOSED-LOOP}.
+	
+	The number of operations required for this procedure scales with $T \cdot N \cdot M$ (Linear in $T$!).
+	This was enabled by the Principle of Optimality.
+	
+	\begin{lemmabox}[Principle of Optimality - Multi-stage version]
+		Consider the problem [DP-P1] and assume $\{u_0^\star, u_1^\star, \dots, u_{T-1}^\star\}$ is an optimal policy.
+		
+		Consider the \textbf{Tail Subproblem} starting at time step $i \in \{1, \dots, T-1\}$ from state $x_i$, where we wish to solve:
+		\[
+		\min_{\{u_i, \dots, u_{T-1}\}} \sum_{k=i}^{T-1} g_k(x_k, u_k) + g_T(x_T)
+		\]
+		s.t. $x_{k+1} = f_k(x_k, u_k)$, given $x_i$.
+		
+		Then the \textbf{tail policy} $\{u_i^\star, u_{i+1}^\star, \dots, u_{T-1}^\star\}$ (obtained by removing the first $i$ terms from the original optimal policy) is optimal for the tail subproblem.
+	\end{lemmabox}
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=0.9]
+			% Benötigte Library für geschweifte Klammern
+			\usetikzlibrary{decorations.pathreplacing}
+			
+			% --- ORIGINAL PROBLEM (Obere Achse) ---
+			% Achse
+			\draw[->] (0,0) -- (10.5,0);
+			
+			% Ticks und Labels oben
+			\foreach \x/\l in {0/0, 1.5/1, 3/2}
+			\draw (\x, 0.15) -- (\x, -0.15) node[below] {\l};
+			
+			\node at (6, -0.1) {$\dots$}; % Auslassungspunkte
+			
+			\foreach \x/\l in {9/T-1, 10/T}
+			\draw (\x, 0.15) -- (\x, -0.15) node[below] {\l};
+			
+			% Text rechts daneben
+			\node[anchor=west, font=\bfseries] at (11, 0) {ORIGINAL PROBLEM};
+			
+			% Rote geschweifte Klammer oben
+			\draw[red, decorate, decoration={brace, amplitude=10pt, raise=10pt}, thick]
+			(0,0) -- (10,0) 
+			node[midway, above=25pt, red, font=\large] {$\{\mu_0^*, \mu_1^*, \dots, \mu_{T-1}^*\}$};
+			
+			% --- TAIL SUBPROBLEM (Untere Achse) ---
+			\begin{scope}[yshift=-2.5cm]
+				% Achse (Blau) - startet später (bei i)
+				\draw[->, blue] (4.5,0) -- (10.5,0);
+				
+				% Ticks und Labels unten
+				% Start bei i (visuell verschoben gegenüber 0)
+				\draw[blue] (4.5, 0.15) -- (4.5, -0.15) node[below, black] {$i$};
+				\draw[blue] (6.0, 0.15) -- (6.0, -0.15) node[below, black] {$i+1$};
+				
+				\node[blue] at (7.5, -0.1) {$\dots$}; % Auslassungspunkte
+				
+				% Endpunkte (aligned mit oben)
+				\draw[blue] (9, 0.15) -- (9, -0.15) node[below, black] {$T-1$};
+				\draw[blue] (10, 0.15) -- (10, -0.15) node[below, black] {$T$};
+				
+				% Text rechts daneben
+				\node[anchor=west, font=\bfseries] at (11, 0) {TAIL SUBPROBLEM};
+				
+				% Violette geschweifte Klammer unten
+				\draw[violet, decorate, decoration={brace, amplitude=10pt, mirror, raise=15pt}, thick]
+				(4.5,-0.1) -- (10,-0.1);
+				
+				% Text zur Klammer
+				\node[violet, anchor=north west, align=left] at (5.0, -1.0) 
+				{$\{\mu_i^*, \mu_{i+1}^*, \dots, \mu_{T-1}^*\}$ \\[4pt]
+					\small tail policy: obtained by removing \\[-2pt]
+					\small the first $i$ terms};
+			\end{scope}
+			
+			% Optional: Gestrichelte Hilfslinie zur Verdeutlichung des Schnitts (falls gewünscht)
+			% \draw[dashed, gray] (4.5, 0.5) -- (4.5, -2.0);
+		\end{tikzpicture}
+	\end{center}	
+	
+	This is a central result which basically says that optimization of the future does not depend on what we did in the past.
+	In the DP recursion, this principle guarantees that the paths we discard going back cannot be portions of optimal trajectories.
+	
+	\subsection{Hamilton-Jacobi-Bellman equation}
+	
+	
+	Let us go back to the usual Optimal Control setting (Continuous time, nonlinear dynamics, etc.).
+	
+	In \autoref{sec:chapter3}: $t \in [t_0, t_e]$, $x(t_0)$ fixed.
+	\[
+	J(t_0, x_0, u) = \int_{t_0}^{t_e} l(t, x(\tau), u(\tau)) d\tau + \varphi(x(t_e))
+	\]
+	
+	In \autoref{sec:chapter4}: We do not want to solve 1 single problem (for $t_0, x_0$ fixed), but a ``family of problems'' parametrized by $(t, x)$.
+	
+	Formally, the problem can be stated as follows:
+	
+	Find
+	\[
+	\min_{u[t, t_e]} \int_{t}^{t_e} l(\tau, x(\tau), u(\tau)) d\tau + \varphi(x(t_e))
+	\]
+	s.t. $\dot{x} = f(\tau, x, u)$, $x(t) = x$ (initial condition for this subproblem).
+	
+	We seek a closed-loop controller $u^\star(\cdot, \cdot): \mathbb{R}^{n_x} \times [t_0, t_e] \to U$ which solves the problem $\forall (t, x)$.
+	
+	Next time we will write the value function for this problem and characterize it through the principle of optimality. This will lead to the \textbf{Hamilton-Jacobi-Bellman (HJB) equation}.
+	
+	% 18.12.2025 Lecture 14
+	
+	\[
+	[DP-P2] \quad \min_{u[t,t_f]} \quad \int_{t}^{t_f} l(s,x(s),u(s)\,ds + \varphi(x(t_f))
+	\]
+	\[
+	\dot{x}=f(t,x,u), \quad x(t)=x, \quad u \in \mathcal{U}, \quad (t_f, x(t_f)) \in \mathcal{S}
+	\]
+	
+	What is the value function associated with $[DP-P2]$?
+	\[
+	V(t,x) := \inf_{u[t,t_f]} \left\{ J(t,x,u) \mid \dot{x}=f(t,x,u), u \in \mathcal{U}, (t_f, x(t_f)) \in \mathcal{S} \right\}
+	\]
+	$\to$ Extension of the cont. time setting of the value function/cost-to-go introduced in \autoref{sec:chapter4.1}.
+	
+	$\Rightarrow$ optimal cost of the problem starting at time $t \in [t_0, t_f]$ from state $x \in \mathbb{R}^{n_x}$.
+	
+	\begin{lemmabox}[Regularity properties of $V$]
+		\label{lem:lemma4.2}
+		Assume:
+		\begin{itemize}
+			\item $f(t,x,u)$ bounded $\forall x \in \mathbb{R}^{n_x}, u \in \mathcal{U}$ and Lipschitz cont. in $x$.
+			\item $l(t,x,u)$ bounded $\forall x \in \mathbb{R}^{n_x}, u \in \mathcal{U}$ and Lipschitz cont. in $x$.
+			\item $\varphi(x)$ bounded $\forall x \in \mathbb{R}^{n_x}$ and Lipschitz cont.
+			\item $\mathcal{U}$ compact.
+		\end{itemize}
+		Then the value fct $V$ is bounded and un. Lipschitz cont.
+		
+		$\exists c, c' > 0$ s.t.
+		\begin{itemize}
+			\item $|V(t,x)| \leq c \quad \forall t, \forall x$
+			\item $|V(t_a, x_a) - V(t_b, x_b)| \leq c' (|t_a - t_b| + \|x_a - x_b\|) \quad \forall t_a, t_b \in [t_0, t_f], \forall x_a, x_b \in \mathbb{R}^{n_x}$
+		\end{itemize}
+	\end{lemmabox}
+	
+	We want to further char. $V$ in order to compute it.
+	First we know that $V$ must satisfy bound. conditions.
+	\[
+	V(t_f, x) = \varphi(x) \qquad \forall x \in \mathbb{R}^{n_x}
+	\]
+	Because $\mathcal{S} = \{t_f\} \times \mathbb{R}^{n_x}$ fixed final time, free final state.
+	
+	Second, we leverage the Principle of Optimality to characterize $V(t,x), t \in [t_0, t_f], \forall x$.
+	
+	\begin{lemmabox}[Principle of Optimality - cont. time]
+		$\forall (t,x) \in [t_0, t_f] \times \mathbb{R}^{n_x}, \forall \Delta t \in (0, t_f-t]$.
+		\begin{center}
+			\begin{tikzpicture}
+				\draw (0,0) -- (4,0);
+				\foreach \x/\label in {0/t_0, 2/t, 4/t_f}
+				\draw (\x,0.1) -- (\x,-0.1) node[below] {$\label$};
+			\end{tikzpicture}
+		\end{center}
+		The value function $V$ satisfies the relation:
+		\[
+		V(t,x) = \inf_{u[t, t+\Delta t]} \int_{t}^{t+\Delta t} l(s, x(s), u(s)) \, ds + V(t+\Delta t, x(t+\Delta t))
+		\]
+		where $x(\cdot)$ is the state traj. starting at $x(t)=x$ and subject to $u_{[t, t+\Delta t]}$.
+		\begin{center}
+			\begin{tikzpicture}
+				\draw (0,0) -- (6,0);
+				\draw (0,0.1) -- (0,-0.1) node[below] {$t_0$};
+				\draw (2,0.1) -- (2,-0.1) node[below] {$t$};
+				\draw (6,0.1) -- (6,-0.1) node[below] {$t_f$};
+				
+				\draw[<->] (2,0.3) -- (3.5,0.3) node[midway, above] {$\Delta t$};
+				\draw (3.5,0.1) -- (3.5,-0.1) node[below] {$x(t+\Delta t)$};
+			\end{tikzpicture}
+		\end{center}
+	\end{lemmabox}
+	
+	Interpretation: The optimal cost over any interval $[t, t_f]$ can be split into the ``integrated cost'' over $[t, t+\Delta t]$ plus the value function at $t+\Delta t$, starting from $x(t+\Delta t)$.
+	
+	Dynamic equation in $V$, that appears on the left (at $t,x$) and on the right (at $t+\Delta t, x(t+\Delta t)$).
+	If we find $V$ that satisfies Lemma 4.3, then we found the value function of our problem.
+	
+	How to find $V$ that satisfies Lemma? The one above is a functional equation $\to$ difficult to solve.
+	We work on its ``infinitesimal version'' $\to$ we have Taylor expansions of the terms on the right hand side.
+	
+	\begin{enumerate}[label=\textcircled{\arabic*}]
+		\item $x(t+\Delta t) = x + f(t,x,u(t))\Delta t + o(\Delta t), \quad (x=x(t))$
+		
+		If we assume that $V \in \mathcal{C}^1$ then:
+		\item $V(t+\Delta t, x(t+\Delta t)) = V(t,x) + V_t(t,x)\Delta t + \langle V_x(t,x), f(t,x,u(t))\Delta t \rangle + o(\Delta t)$
+		\item $\displaystyle \int_{t}^{t+\Delta t} l(s,x(s),u(s))\,ds = l(t,x,u(t))\Delta t + o(\Delta t)$
+	\end{enumerate}
+	
+	Replace 1-2-3 in Lemma
+	\[
+	V(t,x) = \inf_{u[t, t+\Delta t]} ( l(t,x,u(t))\Delta t + V(t,x) + V_t(t,x)\Delta t + \langle V_x(t,x), f(t,x,u(t))\Delta t \rangle + o(\Delta t) )
+	\]
+	$V(t,x)$ cancel out (note that $V(t,x)$ does not depend on $u$, hence I can take it out of the infimum).
+	
+	We go infinitesimal by taking the limit $\Delta t \to 0$.
+	
+	If we divide by $\Delta t$ and then take the limit, we have that
+	\begin{itemize}
+		\item $\frac{o(\Delta t)}{\Delta t} \to 0$ because $o(\Delta t)$ is second or higher order.
+		\item $\underset{u[t, t+\Delta t]}{\inf} \to \underset{u}{\inf} \quad \Rightarrow$ infimum over instantaneous value of $u$.
+	\end{itemize}
+	
+	So we obtain:
+	\[
+	- V_t(t,x) = \inf_{u \in \mathcal{U}} l(t,x,u) + \langle V_x(t,x), f(t,x,u) \rangle \quad \forall x \in \mathbb{R}^{n_x}, t \in [t_0, t_f]
+	\]
+	(with bound. condition $V(t_f, x) = \varphi(x)$).
+	
+	\[
+	\inf p = - \sup (-p) \qquad 
+	\begin{tikzpicture}[baseline={(0,-0.5ex)}]
+		\draw[->] (-0.5,0) -- (0.5,0);
+		\draw[->] (0,-0.5) -- (0,0.5);
+		\draw (-0.3,0.3) to[out=-45, in=225] (0.3,0.3) node[right, scale=0.7] {$\inf p$};
+		\draw (-0.3,-0.3) to[out=45, in=-225] (0.3,-0.3) node[right, scale=0.7] {$\sup -p$};
+	\end{tikzpicture}
+	\]
+	
+	\[
+	\Rightarrow \quad +V_t(t,x) = + \sup_{u \in \mathcal{U}} \mathcal{H}(t,x,u, -V_x(t,x))
+	\]
+	where $\mathcal{H}(t,x,u,\lambda) = -l(t,x,u) + \langle \lambda(t), f(t,x,u) \rangle = -V_x(t,x)$
+	
+	$\to$ equivalent reformulation of HJB in terms of $\mathcal{H}$.
+	
+	What about the optimal controller?
+	
+	So far we have not even assumed that it exists, so we use ``if'' throughout.
+	If $u^\star$ exists, then it satisfies
+	\[
+	V(t, x^\star(t)) = \int_{t}^{t+\Delta t} l(s, x^\star(s), u^\star(s))\,ds + V(t+\Delta t, x^\star(t+\Delta t))
+	\]
+	where $x^\star(t)$ is the optimal state trajectory (state evolution under $u^\star$).
+	
+	Repeating the same steps we did before, this means $u^\star$ satisfies
+	\[
+	-V_t(t, x^\star(t)) = l(t, x^\star(t), u^\star(t)) + \langle V_x(t,x), f(t, x^\star(t), u^\star(t)) \rangle \quad \forall t
+	\]
+	$\to$ in other words:
+	\[
+	u^\star(t,x) \in \underset{u \in \mathcal{U}}{\arg\min} \ l(t,x,u) + \langle V_x(t,x), f(t,x,u) \rangle \qquad \forall t
+	\]
+	Once we found $V$, we get $u^\star$ in this way.
+	
+	HJB + minimization condition of $u$, solve our problem $[DP-P2]$.
+	HJB is a Nonlinear, time varying PDE with an $\inf$ inside $\to$ rarely tractable!
+	
+	\paragraph{Example 4.1}
+	$\dot{x}=u, \quad x,u \in \mathbb{R}, \quad l(x,u)=x^4+u^4, \quad J=\int_{t}^{t_f} l(x,u)\,ds, \quad \varphi=0$
+	
+	HJB:
+	\[
+	-V_t(t,x) = \inf_{u \in \mathbb{R}} \underbrace{x^4 + u^4 + V_x(t,x)u}_{\text{this function is convex}}
+	\]
+	Generally we want to get rid of the $\inf$.
+	Here, this is simple because rhs. is a convex problem, thus we can solve it by setting the gradient to 0.
+	\[
+	4u^3 + V_x(t,x) = 0 \quad \Rightarrow \quad u = - \left( \frac{1}{4} V_x(t,x) \right)^{\frac{1}{3}}
+	\]
+	This step solves the ``inf'' problem.
+	We replace this $u$ in the HJB and obtain
+	\[
+	-V_t(t,x) = x^4 - 3 \left( \frac{1}{4} V_x(t,x) \right)^{\frac{4}{3}} \qquad \text{standard PDE}
+	\]
+	$\to$ Once we have a solution $V$, the optimal controller is
+	\[
+	u^\star(t,x) = - \left( \frac{1}{4} V_x(t,x) \right)^{\frac{1}{3}}
+	\]
+	
+	
+	There is a special case where HJB simplifies:
+	
+	\underline{Infinite horizon} ($t_f := +\infty$) and \underline{time-invariant problems} ($f, l$ do not depend on $t$).
+	
+	In this case, $V$ does not depend on $t$!
+	Value function $V(x), x \in \mathbb{R}^{n_x}$.
+	Because time does not play any role in the optimality.
+	
+	Let's go back to the previous example and set $t_f = \infty$.
+	Then $V_t = 0$ and HJB:
+	\[
+	x^4 - 3 \left( \frac{1}{4} V_x(x) \right)^{\frac{4}{3}} = 0, \quad x \in \mathbb{R}
+	\]
+	We can directly extract $V_x$ from this equation and plug it in $u^\star$.
+	\[
+	\to u^\star = - \left( \frac{1}{4} V_x(x) \right)^{\frac{1}{3}} = - \left( \frac{1}{3} \right)^{\frac{1}{4}} x
+	\]
+	Sometimes, the sign of $V$ must be chosen by YOU!
+	If the stage cost is non-negative (like here), then $V$ must also be non-negative.
+	
+	What we have seen so far is that (assuming $V \in \mathcal{C}^1$)
+	\begin{itemize}
+		\item if $V$ is a value function (= satisfies the Principle of Optimality) then $V$ must satisfy the HJB.
+		\item if $u^\star$ exists, then it must be given by the minimization condition seen before.
+		
+		$\to$ HJB is necessary condition for $V$ and $u^\star$
+	\end{itemize}
+	
+	Actually, the implication can be proven also in the other direction.
+	
+	$\to$ HJB are Nec. and Suf. conditions for optimal controllers and value functions (in finite horizon problems) (see proof in T.9).
+	
+	Note: For the infinite horizon case, we need an additional condition to make HJB sufficient (see T.9).
+	
+	% 08.01.2026 Lecture 15
+	
+	\paragraph{PMP vs. HJB}
+	
+	Let's compare those 2 approaches to finding optimal controllers.
+	
+	\begin{center}
+		\begin{tabular}{p{0.45\textwidth} | p{0.45\textwidth}}
+			\centering\textbf{PMP} & \centering\textbf{HJB} \tabularnewline
+			\hline
+			\textbf{Type of opt. condition} & \\
+			$u^\star$ satisfies necessary conditions for \underline{local} (strong) minimizers. & $u^\star$ satisfies necessary and sufficient conditions for \underline{global} minimizers. \\
+			$\to$ we do not even know if $u^\star$ is opt. & $\to$ $u^\star$ is the optimal controller. \\[1em]
+			
+			\textbf{Open loop vs. closed loop} & \\
+			``Informally'' $\begin{cases} \dot{x}=\mathcal{H}_\lambda \\ \dot{\lambda}=-\mathcal{H}_x \end{cases} + \text{B.C.}$ & HJB to determine $V$. \\
+			$u^\star(t) \in \underset{u\in\mathcal{U}}{\text{argmax}}\ \mathcal{H}(t, x(t), u, \lambda(t))$ & $u^\star(x,t) \in \underset{u\in\mathcal{U}}{\text{argmax}}\ \mathcal{H}(t, x(t), u, -V_x(t,x))$ \\
+			$\to$ $u^\star$ is open-loop because it depends on $\lambda$ which is ``computed offline'' (not measured). & $\to$ $u^\star$ is closed-loop because it depends on $t$ and $x$. \\[2em]
+			
+			\textbf{Computational complexity} & \\
+			TPBVP (two point boundary val. prob.) & Nasty PDE \\
+			ODE + maximization condition & (+ assumption $V \in \mathcal{C}^1$) \\
+			$\to$ very well developed numerical methods to solve this problem (Something in \autoref{sec:chapter5}). & $\to$ still today an open problem for general classes of systems. \\[2em]
+			
+			\textbf{Proof technique} & \\
+			We did not see in lecture (see Liberzon's book $\sim$ 10 pages). & We saw it in the lecture, quite easy to show.
+		\end{tabular}
+	\end{center}
+	
+	Can we prove PMP with HJB by seeing it as a special case?
+	
+	Assume that $u^\star, x^\star$ are optimal. Assume time-invariant problem (like in PMP) $\to f(x,u), l(x,u)$, no time.
+	
+	Then HJB guarantees that $u^\star, x^\star$ satisfy
+	\[
+	-V_t(t, x^\star) = l(x^\star, u^\star) + \langle V_x(x^\star), f(x^\star, u^\star) \rangle
+	\]
+	where $V$ is the value function.
+	
+	To show PMP, we need to show:
+	\begin{itemize}
+		\item Hamiltonian dynamics
+		\item Max condition $\to$ if we define the costate $\lambda^\star(t) \coloneqq -V_x(t, x^\star)$, then the max condition is automatically satisfied.
+	\end{itemize}
+	So we conjecture that a quantity denoted as $\lambda^\star$ and defined as above must exist.
+	
+	What is left to show are the Ham. dynamics.
+	\[
+	\dot{x} = \mathcal{H}_\lambda \to \text{trivial, } \dot{x}=f.
+	\]
+	\[
+	\dot{\lambda} = -\mathcal{H}_x + \text{B.C.}
+	\]
+	
+	BC for our problem $S=\{t_f\}\times\mathbb{R}^{n_x}$ is $\lambda^\star(t_f) = -\varphi_x(x^\star(t_f))$ (see \autoref{sec:chapter3}, transversality condition ELE, PMP).
+	
+	Indeed, from the HJB we use that
+	\[
+	V(t_f, x) = \varphi(x) \quad \text{BC of HJB}
+	\]
+	Therefore $\lambda^\star = -V_x = -\varphi_x$
+	
+	The only thing that is left is to show that if we have $\lambda^\star = -V_x$, $V$ satisfying HJB, then $\dot{\lambda}^\star = -\mathcal{H}_x$.
+	
+	This is true!
+	We can use the relationship $\lambda = -V_x$ to interpret $\lambda$ as the sensitivity of the optimal cost wrt $x$.
+	
+	\paragraph{Question:} Why can't we just use HJB to show PMP?
+	
+	Underlying HJB there is the assumption that $\underline{V \in \mathcal{C}^1}$. This does not always hold.
+	
+	\textbf{Example 4.2:}
+	\[
+	\dot{x} = xu, \quad x \in \mathbb{R}, \quad u \in [-1, 1]
+	\]
+	\[
+	S = \{t_f\} \times \mathbb{R}^{n_x}
+	\]
+	\[
+	J(u) = x(t_f), \quad (l=0, \varphi=x)
+	\]
+	
+	$u^\star$?
+	\[
+	\begin{cases}
+		+1, & x_0 < 0 \quad (\dot{x}=x) \\
+		-1, & x_0 > 0 \quad (\dot{x}=-x)
+	\end{cases}
+	\]
+	
+	optimal cost $J^\star$?
+	\[
+	x(t_f) = \begin{cases}
+		e^{(t_f-t_0)} x_0, & x_0 < 0 \\
+		e^{-(t_f-t_0)} x_0, & x_0 > 0 \\
+		0, & x_0 = 0 \quad (x \equiv 0)
+	\end{cases}
+	\]
+	
+	From this, we can easily obtain the value function $\circledast$
+	\[
+	V(t,x) = \begin{cases}
+		e^{(t_f-t)} x, & x < 0 \\
+		e^{-(t_f-t)} x, & x > 0 \\
+		0, & x = 0
+	\end{cases} \qquad x \in \mathbb{R}^{n_x}, \quad t \in [t_0, t_f]
+	\]
+	
+	What is the HJB for this problem?
+	\[
+	-V_t = \inf_u \{ V_x \overbrace{ x u}^{f} \underset{\substack{\nwarrow \\ ~~ l = 0}}{ \} } = -|V_x x|
+	\]
+	Check that $\circledast$ satisfy the HJB. But only away from ``$x=0$''.
+	
+	At $x=0$, $V$ is not $\mathcal{C}^1$.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-3,0) -- (3,0) node[right] {$x$};
+			\draw[->] (0,-1) -- (0,2) node[right] {$V(t,x)$};
+			
+			% V(t,x) function (looks like |x| but smoothed/exponential slopes)
+			\draw[blue, thick] (-2.5,-1.2) -- (0,0) -- (2.5,0.8);
+			
+			% Slopes text
+			\node[blue, right] at (1.2, 0.3) {$\sim \exp(-(t_f-t))$};
+			\node[blue, left] at (-1.2, -0.4) {$\exp(t_f-t)$};
+			
+			% Circle at origin
+			\draw[blue] (0,0) circle (2pt);
+		\end{tikzpicture}
+	\end{center}
+	
+	This is not a pathological case. Non-differentiability arises often for problems with constraints and/or terminal costs.
+	
+	Note: $V$ has some regularity property (see Lemma \autoref{lem:lemma4.2}). Specifically, it is Lipschitz continuity.
+	From Rademacher theorem, if a function is Lip. cont. then it is ``almost everywhere'' differentiable. ($\to$ it can only be non-differentiable at isolated points).
+	
+	How do we deal with the possibility that $V \notin \mathcal{C}^1$?
+	$\to$ viscosity solution.
+	
+	Some concepts from ``nonsmooth analysis''.
+	
+	\begin{definitionbox}[super-differential and sub-differential]
+		Let $v: \mathbb{R}^{n_x} \to \mathbb{R}$ be a continuous function.
+		
+		$\zeta \in \mathbb{R}^{n_x}$ is a \underline{super-differential} of $v$ at $x$ if
+		\[
+		v(y) \le v(x) + \langle \zeta, y-x \rangle +\underset{\text{higher order term ($2^{nd}$ or higher}}{ o(\|y-x\|)} \quad \forall y \in \mathbb{R}^n
+		\]
+		
+		$\dots$ is a \underline{sub-differential} of $v$ at $x$ if
+		\[
+		v(y) \ge v(x) + \langle \zeta, y-x \rangle + o(\|y-x\|) \quad \forall y \in \mathbb{R}^{n_x}
+		\]
+		
+		$D^+v(x)$ denotes the set of all super-diff of $v$ at $x$.
+		
+		$D^-v(x)$ denotes the set of all sub-diff of $v$ at $x$.
+	\end{definitionbox}
+	
+	Geometrically:
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=1.1]
+			
+			% --- Graph 1: Super-differential (D^+) ---
+			\begin{scope}
+				% Axes
+				\draw[->] (-0.5,0) -- (4.5,0) node[right] {$y$};
+				\draw[->] (0,-0.5) -- (0,3) node[left] {$v(y)$};
+				
+				% Function v(y): Concave-like kink at x
+				% Left part steeper, right part flatter/horizontal -> allows tangents above
+				\draw[black, line width=1.2pt] (0.5, 0.5) to[out=20, in=240] (2, 2) to[out=0, in=180] (4, 2);
+				
+				% Point x
+				\draw[dashed] (2,0) node[below] {$x$} -- (2, 2);
+				
+				% Super-differentials (Affine functions ABOVE the graph)
+				% Slope 1 (Green)
+				\draw[green!60!black, thick] (0.8, 0.8) -- (3.2, 3.2) node[right, scale=0.8] {$\zeta \in D^+v(x)$};
+				% Slope 2 (Purple) - Flatter
+				\draw[violet, thick] (0.5, 1.7) -- (3.5, 2.3) node[right, pos=1.0, scale=0.8] {$\zeta \in D^+v(x)$};
+				
+				% Winkel/Steigungs-Indikatoren (optional, wie im Bild)
+				%\draw[green!60!black, thin] (2.3, 2.3) arc (45:70:0.4);
+				
+				% Annotation
+				\node[align=left, anchor=west, font=\small, text width=4cm] at (5.5, 1.5) 
+				{The affine function\\[2pt] 
+					$y \to v(x) + \langle \zeta, y-x \rangle$\\[2pt] 
+					upper bounds $v(y)$\\ 
+					at least locally};
+			\end{scope}
+			
+			% --- Graph 2: Sub-differential (D^-) ---
+			\begin{scope}[yshift=-4.5cm]
+				% Axes
+				\draw[->] (-0.5,0) -- (4.5,0) node[right] {$y$};
+				\draw[->] (0,-0.5) -- (0,3) node[left] {$v(y)$};
+				
+				% Function v(y): Convex-like kink at x
+				% Left part going down/flat, right part going up -> allows tangents below
+				\draw[black, line width=1.2pt] (0.5, 1.2) to[out=0, in=180] (2, 1.2) to[out=80, in=180] (4, 2.8);
+				
+				% Point x
+				\draw[dashed] (2,0) node[below] {$x$} -- (2, 1.2);
+				
+				% Sub-differentials (Affine functions BELOW the graph)
+				% Slope 1 (Green) - Flatter
+				\draw[green!60!black, thick] (0.5, 1.0) -- (3.5, 1.4) node[below right, pos=0.9, scale=0.8] {$\zeta \in D^-v(x)$};
+				% Slope 2 (Purple) - Steeper
+				\draw[violet, thick] (0.8, 0.4) -- (3.2, 2.0) node[right, scale=0.8] {$\zeta \in D^-v(x)$};
+				
+				% Annotation
+				\node[align=left, anchor=west, font=\small, text width=4cm] at (5.5, 1.5) 
+				{Here the affine\\ 
+					function lower\\ 
+					bounds $v(y)$};
+			\end{scope}
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\textbf{Lemma:} Relation with classical differentials $\to$ gradients.
+	
+	$v \in \mathcal{C}^1$ at $x$ iff $D^+v(x) = D^-v(x) = \{ \nabla v(x) \}$.
+	
+	\textbf{Example 4.3}
+	\[
+	v(x) = \begin{cases}
+		0 & x < 0 \\
+		\sqrt{x} & 0 \le x \le 1 \\
+		1 & x > 1
+	\end{cases}
+	\]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.7]
+			\draw[->] (-1,0) -- (2.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,1.5) node[left] {$v(x)$};
+			\draw[blue, thick] (-1,0) -- (0,0) to[out=90, in=180] (1,1) -- (2.2,1);
+			\draw[blue] (1,1) circle (2pt);
+			\draw[blue] (0,0) circle (2pt);
+		\end{tikzpicture}
+	\end{center}
+	
+	Determine $D^+v(x)$ and $D^-v(x)$ for the 3 ranges of $x$:
+	$\begin{cases}
+		x < 0 \\
+		0 \le x \le 1 \\
+		x > 1
+	\end{cases}$
+	
+	\subsubsection*{Viscosity solution of a PDE}
+	
+	PDE in generic form:
+	\[
+	F(y, v(y), \nabla v(y)) = 0
+	\]
+	$F: \mathbb{R}^n \times \mathbb{R} \times \mathbb{R}^n \to \mathbb{R}$ is a function.
+	
+	Think about $F$ associated with HJB where $y = \begin{bmatrix} x \\ t \end{bmatrix}$, $v = V(t,x)$, $n=n_x+1$.
+	
+	\begin{definitionbox}
+		Viscosity subsolution of $\blacksquare$ is a function $v$ such that
+		\[
+		F(y, v(y), \zeta) \le 0 \quad \forall \zeta \in D^+ v(y), \forall y
+		\]
+		
+		Viscosity supersolution of $\blacksquare$ is a function $v$ such that
+		\[
+		F(y, v(y), \zeta) \ge 0 \quad \forall \zeta \in D^- v(y), \forall y
+		\]
+		
+		Viscosity solution of $\blacksquare$ is a function $v$ such that is \underline{Both} a sub and a supersolution.
+	\end{definitionbox}
+	
+	\[
+	\forall y \begin{cases}
+		\zeta \in D^+ v(y) \Rightarrow F(y, v(y), \zeta) \le 0 \quad (\text{subsolution}) \\
+		\zeta \in D^- v(y) \Rightarrow F(y, v(y), \zeta) \ge 0 \quad (\text{supersolution})
+	\end{cases}
+	\]
+	
+	Let's take now $F$ as our HJB. It turns out that viscosity solutions of the HJB give the (potentially non-differentiable) value function of the optimal control problem.
+	
+	\textbf{Note:} under the assumptions on $l, f, \varphi$ in Lemma \autoref{lem:lemma4.2}, this solution is unique.
+	
+	\[
+	\underbrace{-V_t(t,x) - \inf_{u \in \mathcal{U}} ( l(t,x,u) + \langle V_x(t,x), f(t,x,u) \rangle )}_{F\left(\left[\begin{smallmatrix}x\\t\end{smallmatrix}\right], V(t,x), \left[\begin{smallmatrix}V_x\\V_t\end{smallmatrix}\right] \right)} = 0
+	\]
+	
+	The viscosity solution \underline{always} gives us the value function $V$ (no $V \in \mathcal{C}^1$ assumption is required).
+	
+	This solves the problem in the general case where $V \notin \mathcal{C}^1$ everywhere.
+	You can check by exercise that $V$ in Ex. 4.2 is a Viscosity Solution (you need to check separately the cases $\underbrace{x=0}_{\substack{\downarrow\\\text{Sub/super viscosity solutions}}}$ and $\underbrace{x \neq 0}_{\substack{\downarrow\\\text{classic HJB}}}$).
+	
+	% 12.01.2026 Lecture 16
+	
+	\subsection{DP methods for discrete-time infinite horizon problems}
+	\label{sec:chapter4.3}
+	
+	\subsubsection{Problem formulation and the Bellman equation}
+	
+	\textbf{Motivation for the material discussed in 4.3:}
+	\begin{itemize}
+		\item Overcome some of the limitations of HJB (tractability).
+		\item Methods used as basis in many Reinforcement Learning (RL) algorithms.
+	\end{itemize}
+	
+	\textbf{Major changes compared to Section 4.2:}
+	\begin{itemize}
+		\item Dynamical Systems described in \underline{discrete-time} and time-invariant:
+		\[
+		x_{k+1} = f(x_k, u_k), \quad x \in \mathbb{R}^{n_x}, \ u \in \mathbb{R}^{n_u}
+		\]
+		($\to$ Markov Decision Processes, T8)\\
+		($x,u$ are discrete).
+		\item Infinite horizon (unbounded time-interval).
+	\end{itemize}
+	
+	As in the rest of the chapter, we are interested in closed-loop controllers:
+	\[
+	\mathcal{M} = \left\{ \mu \mid \mu: x \in X \subseteq \mathbb{R}^{n_x} \to u \in \mathcal{U}(x) \subseteq \mathbb{R}^{n_u} \right\} \quad \text{input/policy class}
+	\]
+	The input constraints set $\mathcal{U}(x)$ can be a function of $x$.
+	
+	We optimize over the set of policies:
+	\[
+	\Pi = \left\{ \{\mu_0, \mu_1, \mu_2, \dots \} \mid \mu_k \in \mathcal{M}, \ k=0,1,2,\dots \right\} \quad \text{Set of policies}
+	\]
+	
+	\textbf{Goal:} Find $\Pi^\star \in \Pi$ that solves the OC problem. What is the problem we want to solve (4.3)?
+	
+	Find $\Pi^\star \in \Pi$ solving $\forall x_0 \in X$:
+	\[
+	\min_{\pi \in \Pi} \ J_{\pi}(x_0) \coloneqq \lim_{N \to \infty} \sum_{k=0}^{N-1} \alpha^k g(x_k, u_k) \hspace*{2cm} [DP-P3]
+	\]
+	\[
+	\text{s.t. } x_{k+1} = f(x_k, u_k), \ u_k = \mu_k(x_k), \ u_k \in \mathcal{U}(x_k), \ x_0 \text{ given.}
+	\]
+	where $\alpha \in (0, 1]$ is the discount factor.
+	
+	\paragraph{Why $\alpha$?}
+	\begin{enumerate}[label=(\roman*)]
+		\item Mathematically: it makes it easier to argue existence of limit (convergence of the series).
+		\item Control design: one might want to discount future costs to prioritize "present" costs.
+	\end{enumerate}
+	
+	\textbf{Value function of problem DP-P3:}
+	\[
+	J^\star(x) \coloneqq \inf_{\pi \in \Pi} J_\pi(x), \quad \forall x \in X
+	\]
+	\underline{Not} surprisingly, $J^\star$ depends on $x$, but not on $k$.
+	($\to$ because $N \to \infty$ and time-invariant problem, analogous to 4.2).
+	
+	We want to characterize $J^\star$. Consider:
+	\[
+	\pi = \{\mu_0, \mu_1, \mu_2, \dots \} \quad \text{generic policy}
+	\]
+	\[
+	\pi_1 = \{\mu_1, \mu_2, \mu_3, \dots \} \quad \text{shifted policy (first entry dropped)}
+	\]
+	Then the cost can be written recursively:
+	\[
+	J_\pi(x) = g(x, \mu_0(x)) + \alpha J_{\pi_1}(f(x, \mu_0(x))), \quad x \in X
+	\]
+	Why? $J_\pi(x) = g(x, \mu_0(x)) + \lim_{N \to \infty} \sum_{k=1}^\infty \alpha^k g(x_k, \mu_k(x_k))$.
+	
+	Using the Principle of Optimality logic:
+	\[
+	\begin{aligned}
+		J^\star(x) &= \inf_{\pi} J_\pi \\
+		&= \inf_{\pi=\{\mu_0, \pi_1\}} \left[ g(x, \mu_0(x)) + \alpha J_{\pi_1}(f(x, \mu_0(x))) \right] \\
+		&= \inf_{\mu_0 \in \mathcal{M}} \left[ g(x, \mu_0(x)) + \alpha \inf_{\pi_1} J_{\pi_1}(f(x, \mu_0(x))) \right] \\
+		&= \inf_{\mu_0 \in \mathcal{M}} \left( g(x, \mu_0(x)) + \alpha J^\star(f(x, \mu_0(x))) \right)
+	\end{aligned}
+	\]
+	Equivalently:
+	\[
+	\boxed{J^\star(x) = \inf_{u \in \mathcal{U}(x)} \left( g(x, u) + \alpha J^\star(f(x, u)) \right)}
+	\]
+	\textbf{Bellman Equation} $\to$ the functional equation that the value function of [DP-P3] must satisfy.
+	
+	In 4.1 we found the "recursion" $V_k(x_k) = \min_{u_k} g_k(x_k, u_k) + V_{k+1}(f_k(x_k, u_k))$.
+	
+	There is a close connection.
+	
+	If we have $J^\star$, we can find an optimal stationary policy $\{\mu^\star, \mu^\star, \dots \}$ as:
+	\[
+	\mu^\star(x) \in \arg\min_{u \in \mathcal{U}(x)} g(x, u) + \alpha J^\star(f(x, u)), \quad x \in X
+	\]
+	
+	As in HJB, we have 1 equation for the value function and 1 equation for the optimal controller. Is it easier (than HJB) to solve the value function equation?
+	Maybe. We need a small detour in \underline{operator theory} ($\to$ maps between functions).
+	\subsubsection*{Mathematical preliminaries}
+	\begin{definitionbox}[Monotone and contractive operators (or mapping)]
+		Let $Y$ be a finite dim. vector-space (e.g. $\mathbb{R}^{n_x}$).
+		
+		$S(Y)$: vector space of real-valued functions
+		\[ S: Y \to \mathbb{R}^n \quad \text{(in our case $n=1$)}\]
+		(Note: for us, this is the space where $J^\star$ lives $j^\star : X \to \mathbb{R}$).
+		
+		A mapping $K: S(Y) \to S(Y)$ (``from functions to functions'') is \underline{monotone} iff:
+		\[
+		\langle K p_1 - K p_2, p_1 - p_2 \rangle \ge 0, \quad \forall p_1, p_2 \in S(Y).
+		\]
+		The definition depends on the choice of inner product. In our case ($n=1$), this simplifies to:
+		\[
+		p_1(x) \ge p_2(x) \implies (K p_1)(x) \ge (K p_2)(x), \quad \forall x \in Y.
+		\]
+		\begin{center}
+			\begin{tikzpicture}[>=stealth, thick, font=\small, scale=0.8]
+				
+				% --- Linker Graph: Operator K ---
+				% Koordinatensystem
+				\draw[->] (-0.5,0) -- (4.5,0) node[right] {$p$};
+				\draw[->] (0,-0.5) -- (0,3.5) node[left] {$K(p)$};
+				
+				% Die Funktion K (Operator)
+				\draw[thick] (0,0.5) .. controls (1.5,1.0) and (2.5,1.5) .. (4.0,3.5);
+				
+				% Punkte p1 und p2 auf der x-Achse
+				\coordinate (x1) at (1.5, 0);
+				\coordinate (x2) at (3.0, 0);
+				
+				% Funktionswerte auf der Kurve
+				\coordinate (y1) at (1.5, 1.15); % geschätzt passend zur Kurve
+				\coordinate (y2) at (3.0, 2.2);  % geschätzt passend zur Kurve
+				
+				% Gestrichelte Projektionslinien (blau)
+				\draw[dashed, blue] (x1) -- (y1) -- (0, 1.15) node[left, black] {$Kp_1$};
+				\draw[dashed, blue] (x2) -- (y2) -- (0, 2.2) node[left, black] {$Kp_2$};
+				
+				% Punkte und Labels auf der x-Achse
+				\fill[blue] (x1) circle (2pt);
+				\fill[red] (x2) circle (2pt);
+				
+				% Gelbe Highlights für Labels
+				\node[fill=yellow!30, inner sep=1pt, anchor=north] (p1label) at (x1) {$p_1$};
+				\node[fill=yellow!30, inner sep=1pt, anchor=north] (p2label) at (x2) {$p_2$};
+				
+				% Rote Anmerkung "this is a function"
+				\node[red, align=left, anchor=west] (note) at (4.2, 2.5) {this is a function};
+				\draw[->, red] (note) to[out=180, in=45] (x2);
+				
+				
+				% --- Rechter Graph: Funktionsraum ---
+				\begin{scope}[xshift=7cm, yshift=-1cm]
+					% Koordinatensystem
+					\draw[->] (-0.5,0) -- (4.0,0) node[right] {$y$};
+					\draw[->] (0,-0.5) -- (0,4.0) node[left] {$P$};
+					
+					% Funktionen p1 und p2 (Schwarz)
+					\draw[black, thick] (0,0) .. controls (1,0.5) and (3,1.5) .. (3.8,2.5) node[right, fill=yellow!30, inner sep=1pt] {$p_1$};
+					\draw[black, thick] (0,1.2) .. controls (1,2.2) and (3,2.5) .. (3.8,3.5) node[right, fill=yellow!30, inner sep=1pt] {$p_2$};
+					
+					% Funktionen Kp1 und Kp2 (Violett)
+					% Kp1 etwas welliger/anders, wie in Skizze angedeutet
+					\draw[violet, thick] (-0.2, 0.8) .. controls (0.5, 1.2) and (1.5, 1.0) .. (2.5, 1.5) .. controls (3.0, 2.0) .. (3.8, 2.8) node[right] {$Kp_1$};
+					
+					% Kp2 darüber
+					\draw[violet, thick] (-0.2, 1.8) .. controls (0.5, 2.2) and (1.5, 2.5) .. (3.8, 4.2) node[right] {$Kp_2$};
+					
+					% Bedingung unten
+					\node[below] at (2,-0.8) {$p_2(y) \ge p_1(y), \ \forall y \in Y$};
+				\end{scope}
+				
+				% --- Verbindungspfeil (Mapping) ---
+				% Gestrichelte Box um p1, p2 im linken Graphen
+				\draw[dashed, darkgray, rounded corners] (1.0, -0.6) rectangle (3.5, 0.2);
+				
+				% Pfeil von der Box zum rechten Graphen
+				\draw[->, black, thin] (3.5, -0.2) to[out=-20, in=180] (6.5, -0.5);
+				
+				% --- Formel oben ---
+				\node[anchor=west] at (-1, 4.5) {
+					$p_2(y) \ge p_1(y) \implies (Kp_2)(y) \ge (Kp_1)(y), \quad \forall y \in Y$
+				};
+				
+			\end{tikzpicture}
+		\end{center}
+		
+		Let $P(Y)$ be the vector space of functions $p: Y \to \mathbb{R}^n$ s.t. 
+		\[\|p\|_\infty = \sup_{y \in Y} |p(y)| < \infty\]
+		finite sup-norm (or $\infty$-norm).
+		
+		$K: P(Y) \to P(Y)$ is a \underline{contraction} if $\exists \alpha \in [0, 1)$ s.t.:
+		\[
+		\| K p_1 - K p_2 \|_\infty \le \alpha \| p_1 - p_2 \|_\infty, \quad \forall p_1, p_2 \in P(Y).
+		\]
+		$\alpha$ is the modulus of contraction.
+	\end{definitionbox}
+	
+	\begin{definitionbox}[Fixed point of a mapping]
+		$K: P(Y) \to P(Y)$.
+		
+		A fixed point of $\mathcal{K}$ is $x \in P(Y)$ which is mapped onto itself, i.e.,
+		\[
+		\mathcal{K} x = x.
+		\]
+	\end{definitionbox}
+	
+	\begin{theorembox}[Banach Fixed Point Theorem (Theorem 4.2)]
+		Let $(P(Y), \|\cdot\|_\infty)$ be a complete normed space ($\to$ Banach space).
+		
+		Let $\mathcal{K}$ be a contractive mapping.
+		
+		Then $\mathcal{K}$ has a \underline{unique} fixed point $x \in P(Y)$.
+	\end{theorembox}
+	
+	Very important! In general operators might not have or might have multiple fixed points.
+	We also have a "simple way" of finding \underline{the} fixed point:
+	
+	\textbf{Fixed point iteration:} start with $x_0$ and iterate as follows:
+	\[
+	x_{n+1} = \mathcal{K} x_n, \quad n=0, 1, 2, \dots
+	\]
+	Using contraction we know that:
+	\[
+	\| x_{n+1} - x_n \|_\infty \le \alpha \| x_n - x_{n-1} \|_\infty
+	\]
+	If we unroll the right-side:
+	\[
+	\| x_{n+1} - x_n \|_\infty \le \alpha^{n} \| x_1 - x_0 \|_\infty
+	\]
+	
+	\subsubsection{Bellman operators and properties}
+	
+	We give an operator viewpoint on the relationships found earlier ($J^\star, \mu^\star$).
+	
+	DP operators $\to T_\mu, T : S(X) \to S(X)$ ($X \to \mathbb{R}$, like $J^\star, J_\pi$).
+	
+	\boxed{T_\mu} For given $\mu \in \mathcal{M}$:
+	\[
+	(T_\mu J)(x) := g(x, \mu(x)) + \alpha J(f(x, \mu(x))), \quad J \in S(X), x \in X
+	\]
+	
+	\boxed{T} The Bellman Operator:
+	\[
+	(T J)(x) := \inf_{u \in \mathcal{U}(x)} \{ g(x,u) + \alpha J(f(x,u)) \} = \inf_{\mu \in \mathcal{M}} (T_\mu J)(x)
+	\]
+	
+	The Bellman equation can be written as:
+	\[
+	\forall x \in X, \quad J^\star(x) = (T J^\star)(x)
+	\]
+	\begin{enumerate}[label=\protect\textcircled{\arabic*}]
+		\item $J^\star = T J^\star \implies J^\star$ is the fixed point of $T$.
+		\item The cost of policy $\mu$ ($J_\mu$) is the fixed point of $T_\mu$:
+		\[
+		J_\mu(x) = g(x, \mu(x)) + \alpha J_\mu(f(x, \mu(x))), \quad x \in X
+		\]
+		\[
+		\implies J_\mu = T_\mu J_\mu.
+		\]
+		\item Finally, the condition for policy $\mu^\star$ to be optimal can be written as:
+		\[
+		T_{\mu^\star} J^\star(x) = T J^\star(x), \quad x \in X.
+		\]
+	\end{enumerate}
+	
+	Summary:
+	\begin{itemize}
+		\item \textcircled{1} Bellman equation
+		\item \textcircled{2} Cost of policy
+		\item \textcircled{3} Optimal policy
+	\end{itemize}
+	They have an operator representation!
+	
+	\begin{theorembox}[Theorem 4.3: Monotonicity \& Contraction of operators in DP]
+		Given problem [DP-P3]. If:
+		\begin{itemize}
+			\item $\alpha \in (0, 1)$
+			\item bounded cost $|g(x,u)| < \infty, \ \forall x \in X, \forall u \in \mathcal{U}$
+		\end{itemize}
+		Then $T_\mu$ and $T$ are monotone and contractive.
+	\end{theorembox}
+	
+	\subsubsection{Algorithmic strategies}
+	
+	\paragraph{1) Limited Lookahead policies}
+	Given $\hat{J} \in P(X)$ approximation of $J^\star$.
+	We can obtain a policy $\hat{\mu}$ by "treating $\hat{J}$ as if it was $J^\star$":
+	\[
+	\hat{\mu}(x) \in \arg\min_{u \in \mathcal{U}(x)} g(x,u) + \alpha \hat{J}(f(x,u)), \quad x \in X
+	\]
+	Equivalently: $T_{\hat{\mu}} \hat{J} = T \hat{J}$.
+	
+	$\hat{\mu}$ is called \underline{one-step} lookahead policy because it solves an optimal control problem with ``one step'' and terminal cost $\hat{J}$.
+	
+	Thanks to the contraction property of $T, T_\mu$ we can bound the suboptimality of $\hat{\mu}$ as a function of the difference between $\hat{J}$ and $J^\star$.
+	
+	% 15.01.2026 Lecture 17
+	
+	\begin{lemmabox}[Lemma 4.4]
+		Assume $T, T_\mu$ contractive, $\hat{\mu}$ is a one-step look-ahead policy associated with $\hat{J}$. Then
+		\[
+		\| \underset{\substack{\text{Cost achieved}\\\text{by }\hat{\mu}}}{\underbracket{J_{\hat{\mu}}}} - \underset{\text{Value fcn}}{\underbracket{J^\star}} \| \le \frac{2\alpha}{1-\alpha} \| \underset{\substack{\text{approximate value function}\\\text{might be diff to compute if we don't know }J^\star}}{\underbracket{\hat{J}}} - J^\star \|
+		\]
+		Alternative bound:
+		\[
+		\| J_{\hat{\mu}} - J^\star \| \le \frac{2}{1-\alpha} \| \hat{J} - T\hat{J} \|
+		\]
+		if $\hat{J} = J^\star$ then $\hat{J} = T\hat{J}$ because $J^\star (=\hat{J})$ is the fixed point of $T$.
+	\end{lemmabox}
+	
+	\paragraph{What happens if you use ``multisteps''?}
+	
+	We are given an approximate $J_n$ (like $\hat{J}$ before) and we compute sequences.
+	
+	1) Value sequence:
+	\[
+	\left\{ J_i(x) = \min_{u \in \mathcal{U}(x)} g(x,u) + \alpha J_{i+1}(f(x,u)) \right\}_{i=0, \dots, m-1}
+	\]
+	\[
+	\begin{aligned}
+		i=m-1 &: \quad J_{m-1} = \dots J_m \\
+		i=m-2 &: \quad J_{m-2} = \dots J_{m-1} \\
+		&\quad \vdots \\
+		&\quad \{J_0, J_1, \dots, J_{m-1}\}
+	\end{aligned}
+	\]
+	
+	2) Policy sequence:
+	\[
+	\mu_i(x) \in \underset{u \in \mathcal{U}(x)}{\text{argmin}} \ g(x,u) + \alpha J_{i+1}(f(x,u))
+	\]
+	\[
+	\{\mu_0, \mu_1, \dots, \mu_{m-1}\}
+	\]
+	Any improvement wrt One-step?
+	
+	\begin{lemmabox}
+		Assume that DP operators are contractive. And we apply
+		\[
+		\pi = \{\mu_0, \mu_1, \dots, \mu_{m-1}, \mu_0, \mu_1, \dots, \mu_{m-1}, \dots \}
+		\]
+		Then:
+		\[
+		\| J_\pi - J^\star \| \le \frac{2\alpha^m}{1-\alpha^m} \| J_m - J^\star \|
+		\]
+		\begin{itemize}
+			\item if $m=1$, we recover the previous Lemma.
+			\item if $m > 1$ then $\frac{2\alpha^m}{1-\alpha^m} < \frac{2\alpha}{1-\alpha}$.
+		\end{itemize}
+	\end{lemmabox}
+	
+	For the same approximation error, by increasing $m$, we can decrease the suboptimality gap.
+	
+	\paragraph{2) Value Iteration (VI)}
+	straightforward application of Banach fixed point theorem.
+	
+	Given an initial estimate $J_0 \in P(X)$, we apply fixed point iteration to the Bellman operator
+	\[
+	J_{n+1} = T J_n = \underbrace{T^{n+1}}_{T^n(T J)} J_0, \quad n=0,1,2 \dots
+	\]
+	We can graphically represent operators acting on function spaces.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, scale=1.3]
+			% Achsen
+			\draw[->, thick] (-1,0) -- (6,0) node[right] {\Large $J$};
+			\draw[->, thick] (0,-1) -- (0,5);
+			
+			% 45-Grad-Linie (Fixpunkt-Linie)
+			\draw[red, dashed] (-1,-1) -- (5,5);
+			% Winkel-Markierung
+			\draw[red] (0.8,0) arc (0:45:0.8);
+			\node[red] at (1.1, 0.3) {$45^\circ$};
+			
+			% Die Operator-Kurve TJ (blau)
+			% Eine konkave Funktion, die die 45-Grad-Linie schneidet (Kontraktion)
+			\draw[blue, very thick] (-0.5, 2.0) .. controls (1, 3.5) and (3, 3.8) .. (5.5, 4.2) node[right] {\Large $TJ$};
+			
+			% Fixpunkt J* (Schnittpunkt)
+			\coordinate (Jstar) at (3.95,3.95);
+			\fill[purple] (Jstar) circle (1.5pt);
+			\draw[dashed, purple] (Jstar) -- (3.95,0) node[below] {\Large $J^\star$};
+			
+			% --- Iteration Schritt 0 ---
+			\coordinate (J0) at (1,0);
+			\coordinate (OnCurve0) at (1, 3.075); % Geschätzter Schnittpunkt
+			\coordinate (OnLine0) at (2.9, 2.9);
+			
+			% J0 auf x-Achse
+			\fill[purple] (J0) circle (1.5pt) node[below=5pt] {\Large $J_0$};
+			
+			% Hoch zur Kurve (J1 auf y-Achse bestimmen)
+			\draw[dashed, purple] (J0) -- (OnCurve0);
+			\fill[purple] (OnCurve0) circle (1.5pt);
+			
+			% Projektion nach links für J1 = T J0 Label
+			\draw[dashed, purple] (OnCurve0) -- (0, 3.075) node[left] {$J_1 = T J_0$};
+			
+			% Runter zur x-Achse -> J1
+			\draw[dashed, purple] (OnLine0) -- (2.9, 0) node[below=5pt] {\Large $J_1$};
+			\fill[purple] (2.9, 0) circle (1.5pt);
+			
+			% --- Iteration Schritt 1 ---
+			\coordinate (OnCurve1) at (2.9, 3.725); % Neuer Punkt auf Kurve
+			
+			% Hoch zur Kurve (J2 auf y-Achse bestimmen)
+			\draw[dashed, purple] (2.9, 0) -- (OnCurve1);
+			\fill[purple] (OnCurve1) circle (1.5pt);
+			
+			% Projektion nach links für J2 = T J1 Label
+			\draw[dashed, purple] (OnCurve1) -- (0, 3.725) node[left] {$J_2 = T J_1$};
+			
+			% --- Beschriftungen ---
+			% Text links
+			\node[align=left, font=\bfseries\small, purple] at (-2.5, 3.5) {VALUE\\ITERATION};
+			
+			% Limit Text unten
+			\node[align=center, below, font=\Large] at (3, -1.2) {$\{J_n\} \to J^\star$};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{lemmabox}[Properties of VI]
+		Assume contraction of the DP operators, $J_0 \in \mathcal{B}(X)$. Then
+		\begin{itemize}
+			\item VI converges to $J^\star$
+			\item rate of convergence I
+			\[
+			\| T^n J_0 - J^\star \| \le \alpha^n \| J_0 - J^\star \|, \quad n=0,1,\dots
+			\]
+			\item rate of convergence II
+			\[
+			\| T^n J_0 - J^\star \| \le \frac{\alpha}{1-\alpha} \underbrace{\| T^{n+1} J_0 - T^n J_0 \|}_{\text{always computable}}, \quad n=0,1,\dots
+			\]
+		\end{itemize}
+	\end{lemmabox}
+	
+	Note: $T^n J_0 = J_n$, $T^{n+1} J_0 = J_{n+1}$.
+	
+	Typically VI is run for a number of steps until we obtain an approximation $\hat{J}$, with which we compute an approximate policy:
+	\[
+	\hat{\mu}(x) \in \underset{u \in \mathcal{U}(x)}{\text{arg min}}\; g(x,u) + \alpha \hat{J}(f(x,u))
+	\]
+	
+	By combining Lemma 4.6 and \underline{one-step lookahead policy} ($\hookrightarrow$ Lemma 4.4), we can bound suboptimality of $\hat{\mu}$:
+	\[
+	\| J_{\hat{\mu}} - J^\star \| \le \frac{2\alpha}{1-\alpha} \underbrace{\| \hat{J} - J^\star \|}_{\substack{\text{estimated with Lemma 4.6,}\\\text{because } \hat{J} \text{ comes from VI}}}
+	\]
+	
+	\subsubsection*{3) Policy Iteration (PI)}
+	In VI, the policy $\mu$ does not play any role in the algorithm. It is only estimated at the end to approximate the desired optimal policy.
+	In PI, we instead construct a sequence of policies:
+	\[
+	\{\mu^k\} \leftarrow \text{iteration counter is in the superscript}
+	\]
+	PI has 2 steps. We start with $\mu_0$ admissible.
+	
+	\begin{enumerate}[label=\boxed{\arabic*}]
+		\item \textbf{Policy evaluation} (input $\mu_k \to J_{\mu^n}$)
+		\[
+		J_{\mu^n} = T_{\mu^n} J_{\mu^n}
+		\]
+		given a policy $\mu^n$, we determine ``its value'' i.e. the cost associated with it.
+		
+		\item \textbf{Policy improvement} (input: $J_{\mu^n}$, output: $\mu^{n+1}$)
+		\[
+		T_{\mu^{n+1}} J_{\mu^n} = T J_{\mu^n}
+		\]
+		we pretend that $J_{\mu^n}$ is $J^\star$ and compute $\mu^{n+1} \in \text{arg min} \dots J_{\mu^n}$.
+	\end{enumerate}
+	
+	\begin{lemmabox}[Properties of PI]
+		Assume monotonicity and contraction of DP operators.
+		Let $\{\mu^k\}$ sequence generated by PI.
+		
+		Then
+		\begin{itemize}
+			\item $\lim_{k \to \infty} \| J_{\mu^k} - J^\star \| = 0$
+			\item and precisely $\| J_{\mu^{k+1}} - J^\star \| \le \alpha \| J_{\mu^k} - J^\star \|$
+		\end{itemize}
+	\end{lemmabox}
+	That is $J_{\mu^{n+1}} \le J_{\mu^n}$, with equality ($=$) only when $J_{\mu^n} = J^\star$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, scale=1.0, font=\small]
+			% --- Achsen ---
+			\draw[->, thick] (0,0) -- (5,0) node[right] {$k$ (Iterations)};
+			\draw[->, thick] (0,-0.5) -- (0,4) node[left] {$J$};
+			
+			% --- J* Linie (Asymptote) ---
+			\draw[black, thick] (0, 1.0) -- (5, 1.0) node[right] {$J^\star$};
+			
+			% --- Punkte und Kurve ---
+			% Koordinaten definieren
+			\coordinate (P0) at (0.5, 3.5);
+			\coordinate (P1) at (1.5, 2.0);
+			\coordinate (P2) at (2.5, 1.4);
+			\coordinate (P3) at (3.5, 1.15);
+			
+			% Kurve durch die Punkte
+			\draw[blue, thick] (0.5, 3.5) to[out=-70, in=170] (1.5, 2.0) 
+			to[out=-10, in=175] (2.5, 1.4)
+			to[out=-5, in=178] (3.5, 1.15);
+			
+			% Punkte zeichnen
+			\filldraw[purple] (P1) circle (2.5pt);
+			\filldraw[purple] (P2) circle (2.5pt);
+			
+			% Labels an den Punkten
+			\node[purple, above right] at (P1) {\Large $J_{\mu^n}$};
+			\node[purple, above right] at (P2) {\Large $J_{\mu^{n+1}}$};
+			
+			% Ticks an der Achse (angedeutet)
+			\draw (1.5, 0.1) -- (1.5, -0.1);
+			\draw (2.5, 0.1) -- (2.5, -0.1);
+			
+			% --- Text/Erklärung ---
+			% Der Text aus der Skizze kann direkt daneben oder darunter im LaTeX Text stehen, 
+			% aber hier visualisieren wir die Ungleichung
+			
+			%\node[anchor=west] at (5.5, 2.5) {$\| J_{\mu^{n+1}} - J^\star \| \le \alpha \| J_{\mu^n} - J^\star \|$};
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{itemize}
+		\item If $M$ is finite (set of policies is finite; \autoref{sec:chapter4.1}, MDP etc.) then $\exists \bar{n}$ s.t. $J_{\mu^{\bar{n}}} = J^\star$.
+		$\to$ PI converges in finite steps.
+	\end{itemize}
+	
+	VI and PI are examples of \underline{ADP} (Approximate DP) techniques. Are widely used in RL and applications (robotics) $\to$ many open questions \& research directions.
+	
+	\subsubsection*{4.3.4 Closing example: infinite horizon LQR}
+	
+	\[
+	\min_{\pi \in \Pi} J_\pi(x_0) := \lim_{N \to \infty} \sum_{k=0}^{N-1} x_k^T Q x_k + u_k^T R u_k, \quad Q \succeq 0, R \succ 0
+	\]
+	\[
+	\text{s.t. } x_{k+1} = A x_k + B u_k, \quad u_k = \mu_k(x_k), \ x_0 \text{ given}
+	\]
+	\[
+	u_k \in \mathbb{R}^{n_u}
+	\]
+	
+	\fbox{LQR} specializes \fbox{DP-P3} to the case of linear dynamics, quadratic convex costs. $\alpha=1$ because we have that $(A,B)$ stabilizable and this guarantees existence of limit.
+	
+	We make the Ansatz $J^\star = x^T P^\star x, \quad P^\star \succeq 0$.
+	
+	\begin{itemize}
+		\item Bellman eq.
+		\item VI
+		\item PI
+	\end{itemize}
+	
+	% 19.01.2026 Lecture 18
+	
+	What is the Bellman equation for our problem?
+	\[
+	J^\star(x) = \inf_{u \in \mathbb{R}^{n_u}} x^T Q x + u^T R u + J^\star(Ax + Bu), \quad \forall x
+	\]
+	Now we replace our guess (Ansatz) for $J^\star$:
+	\[
+	x^T P^\star x = \inf_u \underbrace{x^T Q x + u^T R u + (Ax + Bu)^T P^\star (Ax + Bu)}_{f(u)}, \quad \forall x
+	\]
+	
+	\paragraph{Find $\inf_u f(u)$?}
+	\[
+	f(u) = x^T Q x + x^T A^T P^\star A x + 2 u^T B^T P^\star A x + u^T (R + B^T P^\star B) u
+	\]
+	\[
+	\nabla_u f = 2(R + B^T P^\star B) \succ 0 \qquad \text{strongly convex, unique minimizer}
+	\]
+	To find $u^\star$ it is enough to set $\nabla f = 0$.
+	\[
+	\nabla f(u^\star) = 0 \quad\Leftrightarrow\quad 2(R + B^T P^\star B)u^\star + 2 B^T P^\star A x = 0
+	\]
+	\[
+	u^\star = -\underbrace{(R + B^T P^\star B)^{-1} B^T P^\star A}_{K^\star} x = K^\star x
+	\]
+	$(R + B^T P^\star B)$ has an inverse because $(\cdot) \succ 0$.
+	
+	How do we find $P^\star$: BF (Bellman Function). We replace the expression of $u^\star$ and remove the $\inf$.
+	\[
+	x^T P x = x^T Q x + (K^\star x)^T R K^\star x + x^T \left[ (A+BK^\star)^T P^\star (A+BK^\star) \right] x \quad , \forall x
+	\]
+	\[
+	x^T P^\star x = x^T [\dots] x \quad , \forall x
+	\]
+	\[
+	P^\star = [\dots] = Q + A^T P^\star A - A^T P^\star B (R + B^T P^\star B)^{-1} B^T P^\star A
+	\]
+	\begin{flushright}
+		Discrete Algebraic Riccati Equation (DARE)
+	\end{flushright}
+	
+	\paragraph{Under standard assumptions}
+	$(A,B)$ stabilizable, $Q \succeq 0$, $R \succ 0$, DARE has unique solution.
+	This shows that our ansatz was correct $\to J^\star$ is quadratic, $u^\star$ is linear in $x$.
+	
+	We can use VI and PI to find $P^\star$ (or approximate versions) at cheaper comp. cost.
+	
+	\paragraph{Value Iteration (VI) $\{P_n\}$}
+	\[
+	J_{n+1} = T J_n \qquad n=0,1,2
+	\]
+	\[
+	x^T P_{n+1} x = \inf_{u \in \mathbb{R}^{n_u}} x^T Q x + u^T R u + (Ax + Bu)^T P_n (Ax + Bu)
+	\]
+	$\to$ same as before, except that we have $P_n$ instead of $P^\star$. We know the solution.
+	
+	At each $n$, VI consists of:
+	\[
+	P_{n+1} = Q + A^T P_n A - A^T P_n B (R + B^T P_n B)^{-1} B^T P_n A
+	\]
+	initialized with $P_0 \succeq 0$.
+	
+	It can be shown that $\lim_{n \to \infty} P_n = P^\star$.
+	(Note: $T$ here is NOT contractive).
+	
+	\paragraph{Policy iteration (PI) $\{\mu_n\} \Leftrightarrow \{K^n\}$}
+	Sequence of gains $K$.
+	
+	\begin{enumerate}[label=\textcircled{\arabic*}]
+		\item \textbf{Policy evaluation:} $J_{\mu^n}$ (given $\mu^n$).
+		\[
+		J_{\mu^n} = T_{\mu^n} J_{\mu^n}
+		\]
+		in LQR: $\mu^n = K^n x$. This step computes the cost of $\mu^n$.
+		\[
+		x^T P_n x = x^T Q x + (K^n x)^T R (K^n x) + x^T (A + B K^n)^T P_n (A + B K^n) x
+		\]
+		\[
+		\downarrow
+		\]
+		\[
+		P_n = Q + {K^n}^T R K^n + (A + B K^n)^T P_n (A + B K^n) \quad \text{Lyap. equation}
+		\]
+		$J^n(x) = x^T P_n x$: Cost of gain $K^n$.
+		
+		\item \textbf{Policy improvement:} $J^n \to \mu^{n+1}$
+		\[
+		K^{n+1} = -(R + B^T P_n B)^{-1} B^T P_n A
+		\]
+		Same structure of $K^\star$ but with $P_n$ instead of $P^\star$.
+	\end{enumerate}
+	
+	PI must be initialized with stabilizing gain $K^0 \to \rho(A + B K^0) < 1$.
+	In this case, it holds that $\lim_{n \to \infty} K^n = K^\star$.
+	
+	\section{Numerical Methods for Optimal Control}
+	\label{sec:chapter5}
+	
+	Methods to compute solutions to open-loop optimal controllers.
+	
+	2 categories:
+	\begin{itemize}
+		\item \textbf{Indirect methods:} find solutions to necessary (and sufficient) conditions discussed in \autoref{sec:chapter3}.
+		``Optimize and then discretize''.
+		\item \textbf{Direct methods:}
+		``Discretize and then optimize''.
+	\end{itemize}
+	
+	\subsection{Indirect methods}
+	
+	They apply to ELE, PMP in all their forms.
+	Here we focus on 1 instance of PMP:
+	\[
+	\min_{u(\cdot) \in \hat{\mathcal{C}}[t_0, t_f]} \quad \int_{t_0}^{t_f} l(x,u)\, dt + \varphi(x(t_f))\hspace*{2cm}(\text{time-invariant})
+	\]
+	\[
+	\dot{x} = f(x,u), \quad x(t_0) = x_0\hspace*{4cm}t_0 = 0
+	\]
+	\[
+	t_f \text{ fixed }, \quad x(t_f) \text{ free}\hspace*{4.75cm}t_f = T
+	\]
+	
+	\paragraph{Recap:} Necessary conditions are the existence of $(x^\star, \lambda^\star, u^\star)$ s.t.
+	\[
+	\dot{x}^\star = \mathcal{H}_\lambda(x^\star, u^\star, \lambda^\star), \qquad x^\star(0) = x_0
+	\]
+	\[
+	\dot{\lambda}^\star = -\mathcal{H}_x(x^\star, u^\star, \lambda^\star), \qquad \lambda^\star(T) = -\varphi_x(x^\star(T))
+	\]
+	\[
+	u^\star(t) \in \underset{u \in \mathbb{R}^{n_u}}{\text{argmax}}\; \mathcal{H}(x^\star(t), u, \lambda^\star(t))
+	\]
+	\[
+	\text{where } \mathcal{H}(x,u,\lambda) \coloneqq -l(x,u) + f(x,u)^T \lambda
+	\]
+	
+	\paragraph{Note}
+	\begin{itemize}
+		\item $\lambda_0 \neq 0$ in free end-point problems, so we set $\lambda_0 = -1$.
+		\item $\mathcal{H} = \text{const.} \neq 0$ because final time is fixed.
+	\end{itemize}
+	
+	These conditions consist of:
+	\begin{itemize}
+		\item $2n_x$ ODEs with B.C. at $t=0, t=T$ (Two point boundary value problem).
+		\item $n_u$ algebraic equations (maximization condition).
+	\end{itemize}
+	
+	The first step is typically to replace ``$\max \mathcal{H}$'' with ``$\mathcal{H}_u (=\nabla_u \mathcal{H}) = 0$''.\\
+	Note: $\mathcal{H}_u = 0$ is only a necessary condition for maximization of $\mathcal{H}$.
+	
+	In this way we have:
+	\[
+	\left[
+	\begin{array}{l}
+		\dot{x} = \mathcal{H}_\lambda \\
+		\dot{\lambda} = -\mathcal{H}_x + \text{B.C.} \\
+		0 = \mathcal{H}_u
+	\end{array}
+	\right\}
+	\begin{array}{l}
+		\text{Differential} \\
+		\text{Algebraic} \\
+		\text{Equations (DAE)}
+	\end{array}
+	\]
+	
+	\textbf{Challenge \textcircled{1}:} solving DAE.\\
+	\textbf{Challenge \textcircled{2}:} TPBVP.
+	
+	For challenge \textcircled{1} we make the assumption that we have an \underline{explicit relationship} $u(x, \lambda)$ such that $0 = \mathcal{H}_u(x, u(x, \lambda), \lambda)$.
+	In other words:
+	\[0 = \mathcal{H}_u \leftrightarrow u = u(x, \lambda)\]
+	(We have this function).
+	
+	This allows us to replace $u$ in the first 2 equations by $u(x, \lambda)$.
+	This decouples the solution strategy:
+	\begin{itemize}
+		\item Step 1: Solve TPBVP in $(x, \lambda)$ only.
+		\item Step 2: Replace $(x, \lambda)$ from 1 into $u(x, \lambda)$ and find $u$.
+	\end{itemize}
+	
+	We will focus here on ``challenge 2'' only $\to$ solve TPBVP.
+	
+	$u$ has disappeared from our unknowns and we are left with $2n_x$ ODEs.
+	\[
+	\underbrace{
+		\begin{bmatrix}
+			\dot{x} \\ \dot{\lambda}
+		\end{bmatrix}
+	}_{\dot{y}}
+	= 
+	\underbrace{
+		\begin{bmatrix}
+			\mathcal{H}_\lambda(x, u(x, \lambda), \lambda) \\
+			-\mathcal{H}_x(x, u(x, \lambda), \lambda)
+		\end{bmatrix}
+	}_{g(y)}
+	, \quad t \in [0, T], \quad y \coloneqq \begin{bmatrix} x \\ \lambda \end{bmatrix}
+	\]
+	
+	\[
+	\underbrace{x(0) - x_0}_{r_0(y(0), x_0)} = 0, \quad \underbrace{\lambda(T) + \varphi_x(x(T))}_{r_T(y(T))} = 0
+	\]
+	\[
+	b(y(0), y(T), x_0) \coloneqq \begin{bmatrix}
+		r_0(y(0), x_0) \\
+		r_T(y(T))
+	\end{bmatrix}
+	\]
+	We want to solve the following system of equations:
+	\[
+	\dot{y}(t) = g(y(t)), \quad t \in [0, T]
+	\]
+	\[
+	b(y(0), y(T), x_0) = 0
+	\]
+	
+	\subsubsection{Single shooting}
+	
+	\textbf{Idea:} Given $x_0$, if we guess the initial value $\lambda_0 := \lambda(0)$, we can use a standard numerical integration routine (Euler, R-K) to obtain $y(t, \lambda_0), t \in [0, T]$ by simulating $\dot{y} = g(y)$.
+	($\to$ the response depends on $\lambda_0$).
+	
+	In general this will give $r_0 = 0$, but $r_T \neq 0$ because we do not enforce\\$\lambda(T) + \varphi_x(x(T)) = 0$.
+	
+	The goal is to update $\lambda_0$ iteratively so that the following residual is zero:
+	\[
+	R_{ss}(\lambda_0) \coloneqq r_T(y(T, \lambda_0)) \in \mathbb{R}^{n_x}
+	\]
+	
+	How do we find the ``right'' $\lambda_0$ s.t. $R_{ss}(\lambda_0) = 0$?
+	
+	Root finding problem $\to$ Newton's method.
+	
+	Short recap:
+	\[
+	h: \mathbb{R}^n \to \mathbb{R}^n
+	\]
+	\[
+		\text{Find $z$ s.t. $h(z) = 0$}
+	\]
+	Newton's method builds a sequence $\{z_k\}$ by setting to 0 the $1^{st}$ order Taylor expansion at the current iterate:
+	\[
+	h(z_{k+1}) \approx h(z_k) + \frac{\partial h}{\partial z}(z_k) (z_{k+1} - z_k) = 0
+	\]
+	\[
+	\Leftrightarrow z_{k+1} = z_k - \left( \frac{\partial h}{\partial z}(z_k) \right)^{-1} h(z_k)
+	\]
+	assuming differentiability of $h$ and invertability of $\left(\frac{\partial h}{\partial z}\right)$.
+	
+	Single shooting = Newton's method applied to $R_{ss}$.
+	\[
+	\lambda_0^{i+1} = \lambda_0^i + \gamma_i \left( \nabla R_{ss}(\lambda_0^i) \right)^{-1} R_{ss}, \quad i=0, 1, \dots
+	\]
+	\[
+	\gamma_i \in (0, 1] \text{ step-size}
+	\]
+	
+	% 26.01.2026 Lecture 19
+	
+	At each iteration of Single Shooting (SS), we require the computation of the residual:
+	\[
+	R_{SS}(\lambda_0^i) \to \text{can be done by forward simulation of } \dot{y} = g(y) \to y(T, \lambda_0^i)
+	\]
+	\textbf{Note:} Forward simulation of Hamiltonian dynamics is numerically ill-posed\\($\lambda$ might increase very fast during simulation).
+	
+	We also need the gradient:
+	\[
+	\nabla R_{SS}: \text{ ODE sensitivity } \to \nabla_{\lambda_0} y(T, \lambda_0)
+	\]
+	There are by now efficient tools to compute both.
+	
+	However, the reason why SS often fails is that Newton methods fail on highly nonlinear functions, and $R_{SS}(\lambda_0)$ is generally very nonlinear.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, scale=1.2]
+			\draw[->] (-0.5,0) -- (4,0) node[right] {$\lambda_0$};
+			\draw[->] (0,-0.5) -- (3,0) -- (3,2.5) node[right] {$R_{SS}$};
+			
+			% Highly nonlinear function
+			\draw[blue, thick] (0.2, 0.2) to[out=10, in=260] (3.5, 2.2);
+			
+			% Newton step tangent
+			\def\tangentpoint{2.5}
+			\def\tangenty{1.2} % Approx y at 2.5
+			\draw[dashed] (\tangentpoint, 0) node[below] {$x_i$} -- (\tangentpoint, \tangenty);
+			\filldraw[red] (\tangentpoint, \tangenty) circle (1.5pt);
+			
+			% Tangent line hitting x-axis far away or wrong direction locally
+			\draw[red, thick] (1.0, -0.2) -- (3.5, 2.13); 
+			
+			\node[below] at (1.2, 0) {$x_{i+1}$};
+			\node[below] at (0.5, 0) {$x_{i+2}$};
+			
+			\node[align=right] at (5, 1.5) {Newton method\\works well when:\\ $\bullet$ the function is\\ "mildly nonlinear"\\ $\bullet$ we start close to the\\ zero of the function};
+		\end{tikzpicture}
+	\end{center}
+	
+	\paragraph{What about $R_{SS}$?}
+	Let's look at a concrete example.
+	\[
+	P: \left\{
+	\begin{aligned}
+		\dot{x}_1 &= x_1 x_2 + u & x_1(0) &= 0 \\
+		\dot{x}_2 &= x_1 & x_2(0) &= 1
+	\end{aligned}
+	\right.
+	\]
+	\[
+	l(x,u) = x_1^2 + 10x_2^2 + u^2, \quad \varphi(x) = 0, \quad T=5
+	\]
+	\[
+	\to \lambda(T) = 0
+	\]
+	
+	$R_{SS}$ for this problem.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{groupplot}[
+				group style={
+					group size=2 by 1,
+					horizontal sep=1.5cm,
+				},
+				width=7cm,
+				height=6cm,
+				xmin=3.17, xmax=3.27,
+				ymin=8.44, ymax=8.535,
+				xlabel={$\lambda_{0,1}$},
+				ylabel={$\lambda_{0,2}$},
+				yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+				xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+				title style={font=\small},
+				samples=100,
+				]
+				
+				% --- Plot Links: lambda_1 ---
+				\nextgroupplot[title={$\lambda_1(T, \lambda_0, \bar{x}_0)$}]
+				
+				% 1. Linke Seite (Wand): x(t) = const + curve(t)
+				% Wir nutzen t für die y-Achse (8.44 bis 8.535)
+				\pgfplotsinvokeforeach{0,1,...,12} {
+					% Parametrischer Plot: ({x-Formel}, t)
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.17 + #1*0.005 + 0.6*(t - 8.44)^2}, t);
+				}
+				
+				% 2. Rechte Seite oben (Bananen): y(x) = ... (Standard Plot)
+				% Hier ist x die Variable, da die Kurven "liegen"
+				\pgfplotsinvokeforeach{0,1,...,3} {
+					\addplot[domain=3.23:3.27, variable=x, black, thin] 
+					{8.51 + 180*(x - 3.26)^2 - #1*0.015};
+				}
+				
+				% Orange Hervorhebung
+				\addplot[domain=3.235:3.27, variable=x, orange!40, line width=4pt, opacity=0.8] 
+				{8.51 + 180*(x - 3.26)^2 + 0.01};
+				
+				% Marker
+				\draw[red, thick, dashed] (axis cs:3.17, 8.485) -- (axis cs:3.222, 8.485);
+				\draw[red, thick, dashed] (axis cs:3.222, 8.44) -- (axis cs:3.222, 8.485);
+				\draw[red, very thick] (axis cs:3.222, 8.485) circle (3pt);
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+				
+				% --- Plot Rechts: lambda_2 ---
+				\nextgroupplot[title={$\lambda_2(T, \lambda_0, \bar{x}_0)$}]
+				
+				% Linke Seite: Kurven biegen nach links
+				% Parametrisch: ({x(t)}, t)
+				\pgfplotsinvokeforeach{0,1,...,5} {
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.222 - #1*0.015 - 10*(t-8.485)^2}, t);
+				}
+				
+				% Rechte Seite: Kurven biegen nach rechts
+				\pgfplotsinvokeforeach{0,1,...,4} {
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.222 + #1*0.015 + 8*(t-8.485)^2}, t);
+				}
+				
+				% Unten Rechts (Sog):
+				\pgfplotsinvokeforeach{1,2,...,5} {
+					\addplot[domain=8.44:8.48, variable=t, black, thin] 
+					({3.26 + #1*0.005 - 50*(t-8.44)^2}, t);
+				}
+				
+				% Marker
+				\draw[red, thick, dashed] (axis cs:3.17, 8.485) -- (axis cs:3.222, 8.485);
+				\draw[red, thick, dashed] (axis cs:3.222, 8.44) -- (axis cs:3.222, 8.485);
+				\draw[red, very thick] (axis cs:3.222, 8.485) circle (3pt);
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+			\end{groupplot}
+		\end{tikzpicture}
+	\end{center}
+	
+	\textbf{Question:} How would the level sets of $R_{SS}$ look like if we plot it for smaller values of $T$?
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% Annotationen für T=3 und T=4 am linken Rand
+			\node[anchor=east, font=\large\bfseries] at (-1.5, 4.5) {$T=3$};
+			\node[anchor=east, font=\large\bfseries] at (-1.5, -1.5) {$T=4$};
+			
+			\begin{groupplot}[
+				group style={
+					group size=2 by 2,
+					horizontal sep=1.8cm,
+					vertical sep=1.8cm,
+				},
+				width=7cm,
+				height=5.5cm,
+				xmin=3.17, xmax=3.27,
+				ymin=8.44, ymax=8.535,
+				xlabel={$\lambda_{0,1}$},
+				ylabel={$\lambda_{0,2}$},
+				yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+				xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+				title style={font=\small, yshift=-0.2cm},
+				samples=50,
+				]
+				
+				% ---------------------------------------------------------
+				% OBERE REIHE (T=3) - Lineares Verhalten
+				% ---------------------------------------------------------
+				
+				% --- Plot Oben Links: lambda_1 (T=3) ---
+				\nextgroupplot[title={$\lambda_1(3, \lambda_0, \bar{x}_0)$}]
+				% Lineare, parallele Linien
+				\pgfplotsinvokeforeach{-6,-5,...,6} {
+					% Parametrischer Plot für stabile Linien: x(t) = t + offset, y(t) = t
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.22 + (t-8.485)*0.3 + #1*0.006}, t);
+				}
+				% Mittelpunkt
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+				
+				% --- Plot Oben Rechts: lambda_2 (T=3) ---
+				\nextgroupplot[title={$\lambda_2(3, \lambda_0, \bar{x}_0)$}]
+				% Lineare Linien, leicht andere Steigung
+				\pgfplotsinvokeforeach{-6,-5,...,6} {
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.22 + (t-8.485)*0.8 + #1*0.008}, t);
+				}
+				% Mittelpunkt
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+				
+				% ---------------------------------------------------------
+				% UNTERE REIHE (T=4) - Beginnende Nichtlinearität
+				% ---------------------------------------------------------
+				
+				% --- Plot Unten Links: lambda_1 (T=4) ---
+				\nextgroupplot[title={$\lambda_1(4, \lambda_0, \bar{x}_0)$}]
+				% Noch fast linear
+				\pgfplotsinvokeforeach{-6,-5,...,6} {
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.22 + (t-8.485)*0.35 + #1*0.006}, t);
+				}
+				% Mittelpunkt
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+				
+				% --- Plot Unten Rechts: lambda_2 (T=4) ---
+				\nextgroupplot[title={$\lambda_2(4, \lambda_0, \bar{x}_0)$}]
+				% Gekrümmte Linien (Nichtlinearität sichtbar)
+				\pgfplotsinvokeforeach{-5,-4,...,6} {
+					% Parabelartige Krümmung: x = a*y^2 + b*y + c
+					\addplot[domain=8.44:8.535, variable=t, black, thin] 
+					({3.222 + 8*(t-8.56)^2 - 0.04 + #1*0.007}, t);
+				}
+				% Mittelpunkt
+				\filldraw[black] (axis cs:3.222, 8.485) circle (1.5pt);
+				
+			\end{groupplot}
+		\end{tikzpicture}
+	\end{center}
+	
+	\[
+	\to \text{more linear.}
+	\]
+	
+	\paragraph{Take-away message:} To linearize $R_{SS}$ we should not integrate the solution to $\dot{y}=g$ over long horizons. This idea inspires the multiple shooting method.
+	
+	\subsubsection{Multiple Shooting}
+	\label{sec:5.1.2}
+	
+	\textbf{Idea:} Break down the time interval $[0, T]$ in $N$ shooting intervals.
+	\[
+	[t_k, t_{k+1}] \subset [0, T], \quad k=0, \dots, N-1
+	\]
+	For example $t_k = k \frac{T}{N}, \ k=0,1,\dots,N \quad (t_0=0, t_N=T)$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			\draw (0.5,0) -- (6.5,0);
+			\foreach \x/\label in {0.5/0, 1.5/t_1, 2.5/t_2, 5.5/t_{N-1}, 6.5/T=t_N}
+			\draw (\x, 0.1) -- (\x, -0.1) node[below] {$\label$};
+			\draw[dashed] (3.0,0) -- (5.0,0);
+		\end{tikzpicture}
+	\end{center}
+	
+	For a generic interval, we define
+	\[
+	\Phi_k(s_k) := y(t_{k+1})
+	\]
+	where $\dot{y}(t) = g(y(t)), \ y(t_k) = s_k$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=1.2]
+			% --- Achsen ---
+			\draw[->] (-0.5,0) -- (6,0) node[below right] {$t$};
+			\draw[->] (0,-0.5) -- (0,3.5); % y-Achse
+			
+			% --- Ticks an der x-Achse ---
+			\draw (1.5, 0.15) -- (1.5, -0.15) node[below] {\large $t_k$};
+			\draw (4.5, 0.15) -- (4.5, -0.15) node[below] {\large $t_{k+1}$};
+			
+			% --- Startwert s_k (Blau) ---
+			% Punkt auf der y-Achse (wie in der Skizze)
+			\filldraw[blue] (0, 1.2) circle (2pt);
+			% Punkt bei t_k
+			\filldraw[blue] (1.5, 1.2) circle (2pt);
+			% Gestrichelte Verbindung
+			\draw[dashed, blue] (0, 1.2) -- (1.5, 1.2);
+			% Label s_k
+			\node[blue, left] at (0, 0.9) {\large $s_k$};
+			
+			% --- Trajektorie y(t) (Rot) ---
+			% Kurve von t_k nach t_k+1
+			\draw[red!80!black, very thick] (1.5, 1.2) to[out=60, in=190] (4.5, 2.8);
+			% Label y(t) unter der Kurve
+			\node[red!80!black] at (3.2, 1.8) {\large $y(t)$};
+			
+			% --- Endwert Phi_k (Rot gestrichelt) ---
+			% Horizontale Linie auf Höhe des Endwerts
+			\draw[dashed, red!80!black] (0, 2.8) -- (4.5, 2.8);
+			% Label Phi_k(s_k) an der y-Achse
+			\node[red!80!black, left] at (0, 2.8) {\large $\Phi_k(s_k)$};
+			% Kleiner Strich auf der y-Achse zur Markierung
+			\draw[red!80!black] (-0.1, 2.8) -- (0.1, 2.8);
+			
+			% --- Intervall Text ---
+			\node at (5.5, 2.2) {\large $t \in [t_k, t_{k+1}]$};
+			
+		\end{tikzpicture}
+	\end{center}
+	Integrators: examples Euler / Runge-Kutta; Matlab: \texttt{odexy}.
+	
+	The multiple shooting (MS) method enforces the following conditions:
+	\begin{itemize}
+		\item $\Phi_k(s_k) - s_{k+1} = 0, \quad k=0, 1, \dots, N-1$ \\
+		$\to$ Continuity across shooting intervals
+		\item $b(s_0, s_N, x_0) = 0$ \\
+		$\to$ Boundary conditions
+	\end{itemize}
+	(For $N=1$ we recover SS).
+	
+	These conditions can be compactly written as this root finding problem:
+	\[
+	R_{MS}(s) := \begin{bmatrix}
+		\Phi_0(s_0) - s_1 \\
+		\Phi_1(s_1) - s_2 \\
+		\vdots \\
+		b(s_0, s_N, x_0)
+	\end{bmatrix} = 0, \quad s = \begin{bmatrix}
+		s_0 \\ s_1 \\ \vdots \\ s_N
+	\end{bmatrix}, \quad R_{MS}(s) \in \mathbb{R}^{2n_x(N+1)}
+	\]
+	\[
+	s_0 = \begin{bmatrix} x(0) \\ \lambda(0) \end{bmatrix}
+	\]
+	
+	We apply Newton method to $R_{MS}(s)$:
+	\[
+	s^{i+1} = s^i - \gamma_i (\nabla R_{MS}(s^i))^{-1} R_{MS}(s^i), \quad i=0, 1, 2, \dots
+	\]
+	
+	\textbf{Advantage:} The functions ``$\Phi_k(s_k) - s_{k+1}$'' are less nonlinear.
+	\[
+	\to \text{higher } N \Leftrightarrow \text{less nonlinear}
+	\]
+	Newton method works even for bad initialization.
+	
+	\textbf{Disadvantage:} Higher computational cost because $s$ is bigger than $\lambda_0$.
+	
+	However, the problem has structure that can be exploited in the computation of the sensitivities $\nabla R_{MS}$. With so-called ``condensing techniques'', the per-iteration cost of Newton method is comparable to SS.
+	
+	The only true disadvantage of the MS is the ill-posed integration of Hamiltonian dynamics.
+	
+	\subsubsection{Collocation methods}
+	\label{sec:5.1.3}
+	
+	Overview of ``orthogonal collocation method'' to solve ODEs.
+	\[
+	\dot{x} = f(x,t), \quad x(0)=x_0
+	\]
+	\begin{itemize}
+		\item Collocation intervals $[t_k, t_{k+1}] \subset [0, T], \quad k=0, \dots, N-1$.
+		\item Inside each collocation interval, we approximate the solution $x(t)$ with a polynomial $p_k(t, v_k) \approx x(t), \quad t \in [t_k, t_{k+1}]$ of degree $d$.
+		\item $v_k \in \mathbb{R}^{n x(d+1)}$ vector of coefficients to be determined.
+	\end{itemize}
+	
+	\paragraph{Typical choice: Lagrange polynomials:}
+	For each interval $[t_k, t_{k+1}]$, give $d+1$ collocation times $t_{k,0}, t_{k,1}, \dots, t_{k,d}$:
+	\[
+	p_k(t, v_k) = \sum_{i=0}^d v_{k,i} l_{k,i}(t)
+	\]
+	\[
+	\mathbb{R} \ni l_{k,i}(t) := \prod_{j=0, j\neq i}^d \frac{t - t_{k,j}}{t_{k,i} - t_{k,j}}, \quad \text{basis polynomials}
+	\]
+	\[
+	v_k = \begin{bmatrix} v_{k,0} \\ v_{k,1} \\ \vdots \\ v_{k,d} \end{bmatrix}. \quad \text{Why such a funny choice of } l_{k,i}?
+	\]
+	\[
+	l_{k,i}(t) = \frac{t-t_{k,0}}{t_{k,i}-t_{k,0}} \cdot \frac{t-t_{k,1}}{t_{k,i}-t_{k,1}} \cdots
+	\]
+	\[
+	\to l_{k,i}(t_{k,j}) = \begin{cases} 0 & i \neq j \\ 1 & i = j \end{cases}
+	\]
+	Therefore:
+	\[
+	p_k(t_{k,i}, v_k) = v_{k,i}, \quad \forall i=0, 1, 2, \dots, d
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=1.3]
+			% --- Achsen ---
+			\draw[->] (-0.5,0) -- (7.5,0) node[right] {$t$};
+			\draw[->] (0,-0.5) -- (0,3.5); % y-Achse
+			
+			% --- Koordinaten definieren (Polynom-Form) ---
+			\coordinate (P0) at (1.5, 1.5); % start point (tk,0)
+			\coordinate (P1) at (3.0, 2.2); % tk,1
+			\coordinate (P2) at (4.5, 2.8); % tk,2 (peak)
+			\coordinate (P3) at (5.8, 1.8); % tk,3
+			\coordinate (Pend) at (6.8, 2.2); % end of interval
+			
+			% --- Das Polynom p_k (Blau) ---
+			% Wir nutzen 'smooth' tension, um eine schöne Kurve zu erhalten
+			\draw[blue, very thick] plot [smooth, tension=0.7] coordinates {(P0) (P1) (P2) (P3) (Pend)};
+			
+			% Label für die Kurve
+			\node[blue, above left] at (1.5, 2.5) {\large $p_k$};
+			
+			% --- Ticks an der x-Achse ---
+			% tk
+			\draw (1.5, 0.15) -- (1.5, -0.15);
+			\node[below, align=center] at (1.5, -0.15) {\Large $t_k$};
+			
+			% tk+1
+			\draw (6.8, 0.15) -- (6.8, -0.15) node[below] {\Large $t_{k+1}$};
+			
+			% --- Kollokationspunkte und Linien (Rot) ---
+			
+			% 1. Punkt: s_k = v_k,0 bei t_k,0
+			\draw[dashed, red!80!black, thick] (P0) -- (1.5, 0); % vertikal
+			\draw[dashed, red!80!black, thick] (P0) -- (0, 1.5); % horizontal
+			\filldraw[red!80!black] (P0) circle (2.5pt);
+			\node[left, red!80!black] at (0, 1.5) {\large $s_k = v_{k,0}$};
+			
+			% 2. Punkt: v_k,1 bei t_k,1
+			\draw[dashed, red!80!black, thick] (P1) -- (3.0, 0); % vertikal
+			\draw[dashed, red!80!black, thick] (P1) -- (0, 2.2); % horizontal
+			\filldraw[red!80!black] (P1) circle (2.5pt);
+			\node[left, red!80!black] at (0, 2.2) {\large $v_{k,1}$};
+			\filldraw[black] (3.0, 0) circle (1.5pt) node[below] {$t_{k,1}$};
+			
+			% 3. Punkt: v_k,2 bei t_k,2
+			\draw[dashed, red!80!black, thick] (P2) -- (4.5, 0);
+			\filldraw[red!80!black] (P2) circle (2.5pt);
+			\node[above, red!80!black] at (P2) {\large $v_{k,2}$};
+			\filldraw[black] (4.5, 0) circle (1.5pt) node[below] {$t_{k,2}$};
+			
+			% Weitere Punkte auf der Zeitachse
+			\filldraw[black] (5.8, 0) circle (1.5pt) node[below] {$t_{k,3}$};
+			
+			% --- Annotation unten (wie in Skizze) ---
+			\node[red!80!black, below] at (1.5, -0.7) {\large \bfseries $=t_{k,0}$};
+			\node[anchor=west, align=left, red!80!black] at (2.2, -1.0) 
+			{standard choice for the\\first collocation time};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\textbf{Note:} For each class of polynomials, there are ways of choosing collocation times ``$t_{k,i}$'' (NOT equispaced in general).
+	
+	Collocation methods (C) recast the integration of an ODE as the solution of a system of equations.
+	Given $s_k$ at time $t_k$, the collocation equation enforces these conditions:
+	
+	\[
+	p_k(t_k, v_k) = s_k \quad \text{initial condition}
+	\]
+	\[
+	t_k = t_{k,0} \dots t_{k+1}
+	\]
+	In this case, this means that \boxed{v_{k,0} = s_k}.
+	
+	\begin{itemize}
+		\item $\dot{p}_k(t_{k,i}, v_k) = f(p_k(t_{k,i}, v_k), t_{k,i})$
+		\[
+		= f(v_{k,i}, t_{k,i}), \quad i=1, 2, \dots, d
+		\]
+	\end{itemize}
+	
+	\textbf{Note:} $\dot{p}_k(t, v_k) = \sum_{i=0}^d v_{k,i} \dot{l}_{k,i}(t)$.
+	
+	This can be written in compact form over one collocation interval:
+	\[
+	C_k(v_k, t_{k,i}, s_k) = \begin{bmatrix}
+		v_{k,0} - s_k \\
+		\dot{p}_k(t_{k,1}, v_k) - f(v_{k,1}, t_{k,1}) \\
+		\vdots \\
+		\dot{p}_k(t_{k,d}, v_k) - f(v_{k,d}, t_{k,d})
+	\end{bmatrix} = 0
+	\]
+	Given $s_k$ we solve for $v_k \to p_k(t, v_k) \approx x(t)$ in $t \in [t_k, t_{k+1}]$.
+	
+	To find a solution over the whole interval $[0, T]$, we need to ``glue'' these solutions $v_k$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=1.3]
+			% --- Achsen ---
+			\draw[->] (-0.5,0) -- (8.5,0) node[right] {$t$};
+			\draw[->] (0,-0.5) -- (0,3.5); % y-Achse
+			
+			% --- Ticks und Labels ---
+			\foreach \x/\label in {0/0, 2/t_1, 4/t_2, 6/t_3}
+			\draw (\x, 0.1) -- (\x, -0.1) node[below] {$\label$};
+			
+			\node[below] at (7, 0) {$\dots$};
+			\draw (8, 0.1) -- (8, -0.1) node[below] {$T$};
+			
+			% --- Die Kurvensegmente (Polynome) ---
+			% Wir zeichnen sie "stückweise", um zu zeigen, dass es separate v_k sind,
+			% die an den Knotenpunkten "zusammengeklebt" werden.
+			
+			% Segment 0 (v0)
+			\draw[blue, very thick] (0, 0.5) .. controls (0.8, 1.5) .. (2, 1.2);
+			\filldraw[black] (2, 1.2) circle (1pt); % Klebepunkt
+			
+			% Segment 1 (v1)
+			\draw[blue, very thick] (2, 1.2) .. controls (3, 0.8) .. (4, 1.8);
+			\filldraw[black] (4, 1.8) circle (1pt); % Klebepunkt
+			
+			% Segment 2 (v2)
+			\draw[blue, very thick] (4, 1.8) .. controls (5, 2.8) .. (6, 2.2);
+			\filldraw[black] (6, 2.2) circle (1pt); % Klebepunkt
+			
+			% --- Beschriftungen v_k (abwechselnd oben/unten wie im Bild) ---
+			
+			% v0 (von oben)
+			\node[blue, font=\large] (v0) at (1, 2.5) {$v_0$};
+			\draw[->, blue, thick] (v0) to[out=-90, in=90] (1, 1.6); % Zeigt auf die Kurve
+			
+			% v1 (von unten)
+			\node[blue, font=\large] (v1) at (3, -0.8) {$v_1$};
+			\draw[->, blue, thick] (v1) to[out=90, in=-90] (3, 0.8); % Zeigt auf die Kurve
+			
+			% v2 (von oben)
+			\node[blue, font=\large] (v2) at (5, 3.2) {$v_2$};
+			\draw[->, blue, thick] (v2) to[out=-90, in=90] (5, 2.5); % Zeigt auf die Kurve
+			
+			% --- Zusatzinfo (optional, für Verständnis) ---
+			% Zeigt Intervallbereiche leicht an
+			\draw[gray, dotted] (2,0) -- (2,1.2);
+			\draw[gray, dotted] (4,0) -- (4,1.8);
+			\draw[gray, dotted] (6,0) -- (6,2.2);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	% 29.01.2026 Lecture 20
+	
+	Let's go now to our TPBVP:
+	\[
+	\dot{y} = g(y), \ t \in [0, T]
+	\]
+	\[
+	b(y(0), y(T), x_0) = 0
+	\]
+	
+	The corresponding equations to implement the collocation method are:
+	\begin{align*}
+		v_{k,0} - s_k &= 0, \quad k=0,1,\dots,N-1 \quad \text{internal init. condition} \\
+		p_k(t_{k+1}, v_k) - s_{k+1} &= 0, \quad k=0,1,\dots,N-1 \quad \text{continuity across intervals} \\
+		\dot{p}_k(t_{k,i}, v_k) - g(v_{k,i}, t_{k,i}) &= 0, \quad k=0,1,\dots,N-1 \quad \text{"integration"} \\
+		b(s_0, s_N, x_0) &= 0, \quad \text{boundary conditions}
+	\end{align*}
+	
+	\[
+	v_k \in \mathbb{R}^{2n_x(d+1)}, \quad s_k \in \mathbb{R}^{2n_x}
+	\]
+	($\left[\begin{smallmatrix} x \\ \lambda \end{smallmatrix}\right]$ degree polynomial $\to v = \left[\begin{smallmatrix} v_0 \\ \vdots \\ v_{N-1} \end{smallmatrix}\right] \in \mathbb{R}^{N 2n_x(d+1)}$).
+	
+	Clearly, there is a relationship between them:
+	\begin{itemize}
+		\item $s_k = v_{k,0}, \quad k=1, \dots, N-1$
+		\item $s_N = p_{N-1}(t_N, v_{N-1})$
+	\end{itemize}
+	So only $v$ is an independent variable. Once we determine $v$, we have our solution $y(t)$.
+	
+	Collocation equations are a set of nonlinear equations.
+	We can use again Newton method, applied to the residual $R_c(v)$.
+	\[
+	R_c(v) = \left[
+	\begin{array}{c}
+		R_k(t_{k,1}, v_k, v_{k+1,0}) \\
+		\vdots \\
+		\dot{P}_k(t_{z,i}, v_k) \cdot s - g(v_{k,i}, t_{k,i}) \\
+		\vdots \\
+		b(v_{0,0}, P_{N-1}(t_N, v_{N-1}, x_0))
+	\end{array}
+	\right]
+	\begin{array}{l}
+		\to \text{continuity} \\[1.0em]
+		\to \text{integration} \\[0.5em]
+		= 0 \\[1.0em]
+		\to \text{boundary condition}
+	\end{array}
+	\]
+	
+	Newton method: $v^{j+1} = v^j - \gamma_j (\nabla R_c(v^j))^{-1} R_c(v^j), \quad j=0,1,2,\dots \text{ iteration counter}$
+	
+	\paragraph{Advantages:}
+	\begin{itemize}
+		\item it avoids direct integration of Hamiltonian dynamics.
+	\end{itemize}
+	
+	\paragraph{Disadvantages:}
+	\begin{itemize}
+		\item large-scale problems (factor $d$ compared to Multiple Shooting). There are smart techniques that leverage the structure of the problem to reduce complexity.
+		\item discretization due to collocation (dynamics are not simulated exactly). This can be controlled by increasing $N$ and $d$.
+	\end{itemize}
+	
+	Main drawbacks of indirect methods:
+	\begin{enumerate}[label=\textcircled{\arabic*}]
+		\item It must be possible to ``elimnate'' $u$ from Ham. dynamics. What if a function $u(x,\lambda)$ satisfying the maximization condition does not exist?
+		\item Even if it exists, $u(x,\lambda)$ can be discontinuous, e.g. bang-bang.\\ $\to$ This leads to discontinuous dynamics $\dot{x}=g(x)$.
+		\item Ham. dynamics sometimes difficult to simulate forward in time (like it is done in Single Shooting, Multiple Shooting).
+		\item Sensitivity to initializations (because Newton's method is solved to find the solution).
+	\end{enumerate}
+	
+	\paragraph{Big advantage:}
+	\begin{itemize}
+		\item They find the ``exact solution'' of the OC problem because they follow the paradigm ``optimize then discretize''.
+	\end{itemize}
+	
+	\subsection{Direct methods}
+	
+	Basic idea: Assume a fixed shape for $u$ (e.g. piecewise constant, poly, sinusoidal) with some free parameters.
+	
+	By using the integrator, the OC problem becomes an NLP in the space of parameters parametrizing the input $u$.
+	It is not anymore an optimization problem in function space because the expression of $u$ is fixed, but in finite dim. space.
+	
+	\paragraph{Advantages:} more flexible in the
+	\begin{itemize}
+		\item problems we can consider (e.g. constraints).
+		\item solution strategies $\to$ wide variety of NLP solvers.
+	\end{itemize}
+	
+	\paragraph{Drawback:}
+	In general, we only get suboptimal solutions (with no quantifiable suboptimality) because of fixing the control input shape.
+	
+	``Discretize, then optimize''.
+	
+	time discretization: $\quad$ the shape of $u$: $\quad u(t) \approx \sum_{i=1}^N q_i u_i(t)$
+	
+	General problem statement (common to the 3 methods we present).
+	
+	\[
+	\min_{u(\cdot)\in \hat{\mathcal{C}}[0,T]} \quad \int_{0}^{T} l(x,u) + \varphi(x(T))
+	\]
+	\[
+	\text{s.t.} \quad \dot{x} = f(x,u),\ x(0)=x_0,\ T \text{ fixed},\ x(T) \text{ free}.
+	\]
+	\[
+	h(x(t), u(t)) \leq 0 \quad \forall t \quad \text{path constraints}
+	\]
+	\[
+	r(x(T)) \leq 0 \quad \text{terminal constraint}
+	\]
+	
+	The first step of any direct method is the parametrization of $u(\cdot)$.
+	\[
+	u(t) \approx u(t,q), \quad q \in \mathbb{R}^{n_q}
+	\]
+	The most common is piecewise constant controls.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			% Axes
+			\draw[->] (0,0) -- (6,0) node[right] {$t$};
+			\draw[->] (0,0) -- (0,3) node[above] {$u$};
+			
+			% Ticks
+			\draw (0.5, 0.1) -- (0.5, -0.1) node[below] {$t_1$};
+			\draw (1.5, 0.1) -- (1.5, -0.1) node[below] {$t_2$};
+			\draw (4.5, 0.1) -- (4.5, -0.1) node[below] {$t_{N-1}$};
+			\draw (5.5, 0.1) -- (5.5, -0.1) node[below] {$T$};
+			\node[below] at (0,0) {$0$};
+			
+			% Step function
+			\draw[blue, thick] (0, 1.0) -- (0.5, 1.0);
+			\draw[blue, thick] (0.5, 1.0) -- (0.5, 1.8);
+			\draw[blue, thick] (0.5, 1.8) -- (1.5, 1.8);
+			\draw[blue, thick] (1.5, 1.8) -- (1.5, 1.2);
+			\draw[blue, thick] (1.5, 1.2) -- (2.5, 1.2);
+			\draw[blue, thick] (2.5, 1.2) -- (2.5, 2.5); % q4
+			\draw[blue, thick] (2.5, 2.5) -- (3.5, 2.5);
+			\draw[blue, thick] (3.5, 2.5) -- (3.5, 1.6);
+			\draw[blue, thick] (3.5, 1.6) -- (4.5, 1.6);
+			\draw[blue, thick] (4.5, 1.6) -- (4.5, 2.0);
+			\draw[blue, thick] (4.5, 2.0) -- (5.5, 2.0);
+			\draw[dashed] (5.5, 2.0) -- (5.5, 0);
+			
+			% Labels
+			\node[blue, above] at (0.25, 1.0) {$q_1$};
+			\node[blue, above] at (1.0, 1.8) {$q_2$};
+			\node[blue, above] at (2.0, 1.2) {$q_3$};
+			\node[blue, above] at (3.0, 2.5) {$q_4 \dots$};
+		\end{tikzpicture}
+	\end{center}
+	
+	Time-grid:
+	\begin{itemize}
+		\item $0 = t_0 < t_1 < \dots < t_N = T$
+		\item $N$ intervals $[t_k, t_{k+1}], \quad k=0,1,\dots,N-1$
+		\item $N$ vectors $q_k \in \mathbb{R}^{n_u}$
+		\[
+		u(t,q) = q_k, \ t \in [t_k, t_{k+1}]
+		\]
+		\[
+		q = \begin{bmatrix} q_0 \\ q_1 \\ \vdots \\ q_{N-1} \end{bmatrix} \in \mathbb{R}^{N n_u = n_q}
+		\]
+	\end{itemize}
+	
+	The 3 methods (SS, MS, C) only differ in the methodology on how the OC problem is discretized into an NLP.
+	
+	\subsubsection{Single shooting}
+	
+	We see the state trajectory $x(t), t \in [0,T]$ as a dependent variable of $u$ (that is of $q$).
+	We use an integrator (only ONE) that provides the map
+	\[
+	x_0, q \to x(t), \ t \in [0,T]
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth]
+			\draw[->] (0,0) -- (5,0) node[right] {$t$};
+			\draw[->] (0,0) -- (0,2.5) node[below left] {$x_0$};
+			\draw (4,0.1) -- (4,-0.1) node[below] {$T$};
+			\node[below] at (0,0) {$0$};
+			
+			% Continuous state trajectory
+			\draw[blue, thick, smooth] (0, 2.2) to[out=-10, in=170] (1, 1.8) to[out=-10, in=180] (2.5, 2.2) to[out=0, in=190] (4, 2.0);
+			\node[blue, above] at (3, 2.1) {$x(t)$};
+			
+			% Step control input
+			\draw[gray, thick] (0, 0.8) -- (0.5, 0.8) -- (0.5, 1.2) -- (1.2, 1.2) -- (1.2, 0.6) -- (2.0, 0.6) -- (2.0, 1.0) -- (2.8, 1.0) -- (2.8, 0.4) -- (3.5, 0.4) -- (3.5, 1.4) -- (4, 1.4);
+			\node[gray, right] at (4, 1.4) {$u(t)$};
+		\end{tikzpicture}
+	\end{center}
+	
+	Let's denote $x(t)$ by $x(t,q)$ to emphasize that $x(t)$ depends on the choice of $q$. The OC problem becomes:
+	\[
+	\min_{q \in \mathbb{R}^{n_q}} \quad \int_{0}^{T} l(x(t,q), u(t,q)) + \varphi(x(T,q))
+	\]
+	\[
+	\text{s.t.} \quad h(x(t_k, q), u(t_k, q)) \leq 0 \quad k=0,1,\dots,N-1
+	\]
+	\[
+	\hspace*{1cm} r(x(T,q)) \leq 0
+	\]
+	
+	The associated NLP looks as follows:
+	\[
+	\begin{aligned}
+		\min_q \quad & J^{SS}(q) \\
+		\text{s.t.} \quad & h^{SS}(q) \leq 0
+	\end{aligned}
+	\]
+	where
+	\[
+	J^{SS}(q) := \sum_{k=0}^{N-1} \underset{\substack{\downarrow \\ \text{integrated cost in}\\\text{each interval}}}{\underbrace{l_k(q)}} + \varphi(x(T,q))
+	\]
+	\[
+	\rotatebox[origin=c]{180}{$\Lsh$} \int_{t_k}^{t_{k+1}} l(x(t,q), u(t,q)) dt
+	\]
+	\[
+	h^{SS}(q) := \left[ \begin{array}{c} h_0(q) \\ \vdots \\ h_{N-1}(q) \\ r(x(T,q)) \end{array} \right] \leq 0, \quad \to h_k(q) := h(x(t_k, q), u(t_k, q))
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			box/.style={draw, rectangle, minimum height=1.5cm, minimum width=2.5cm, align=left},
+			arrow/.style={->, >=stealth}
+			]
+			\node[box] (integrator) {$\dot{x} = f(x,u)$ \\ $u=u(t,q)$ \\ $x(0)=x_0$};
+			
+			\draw[arrow] (-2.5, 0.3) node[left] {$x_0$} -- ([yshift=0.3cm]integrator.west);
+			\draw[arrow] (-2.5, -0.3) node[left] {$q$} -- ([yshift=-0.3cm]integrator.west);
+			
+			\draw[arrow] (integrator.east) -- (2.5, 0) node[right] {$x(t,q), \quad t \in ()0,T]$};
+		\end{tikzpicture}
+	\end{center}
+	
+	This block is inside the NLP, NLP solvers typically seek solutions to KKT conditions.
+	$\to$ Gradients of $J^{SS}, h^{SS}$.
+	
+	Sensitivities: how obj and constraints change when I modify $q$ (input).
+	Through automatic differentiation (AD), see e.g. CASADI.
+	
+	Second issue is that the map $(x_0, q) \to (x,q)$ is highly nonlinear.
+	
+	\underline{Example}
+	\[
+	\begin{aligned}
+		\dot{x}_1 &= 10(x_2 - x_1) \\
+		\dot{x}_2 &= x_1(u - x_3) - x_2 \\
+		\dot{x}_3 &= x_2 x_1 - 3 x_3
+	\end{aligned}
+	\qquad x(0)=0
+	\]
+	\[
+	u \in \mathbb{R}, \ u(t,q)=q, \ \forall t, \ \text{Constant input}
+	\]
+	
+	\begin{tikzpicture}
+		% Define a style for the yellow highlighted titles
+		\tikzstyle{highlighted title}=[fill=yellow!50, draw=none, inner sep=2pt, rounded corners=2pt]
+		
+		\begin{groupplot}[
+			group style={
+				group size=3 by 4,
+				horizontal sep=1.5cm,
+				vertical sep=1.5cm,
+				xlabels at=edge bottom,
+				ylabels at=edge left,
+			},
+			width=5.5cm, height=4cm,
+			xmin=18, xmax=38,
+			xlabel={$q$},
+			every axis title/.style={at={(0.5,1.1)},anchor=south}, % Position titles
+			domain=18:38,
+			samples=100, % Higher samples for smooth curves
+			no markers,
+			]
+			
+			% --- ROW 1: t = 0.25 (Smooth Linear/Parabolic) ---
+			
+			% Plot (1,1) - x1
+			\nextgroupplot[ylabel={$x_1$}, title={$q \to x_1(t)$}]
+			\addplot[black] {0.6*(x-18) + 4};
+			
+			% Plot (1,2) - x2 - Title with highlight
+			\nextgroupplot[ylabel={$x_2$}, title={\colorbox{yellow!50}{Integration time $t=0.25$}}]
+			% Note: I put the column label "q -> x2(t)" as a node above to keep the title slot for the time
+			\node[anchor=south] at (axis description cs:0.5, 1.15) {$q \to x_2(t)$};
+			\addplot[black] {1.3*(x-18) + 8};
+			
+			% Plot (1,3) - x3
+			\nextgroupplot[ylabel={$x_3$}, title={$q \to x_3(t)$}]
+			\addplot[black] {0.04*(x-18)^2 + 2};
+			
+			
+			% --- ROW 2: t = 1.33 (One Spike) ---
+			
+			% Plot (2,1)
+			\nextgroupplot[ylabel={$x_1$}]
+			\addplot[black, samples=150] {-8 + 5*sin(deg(x/2)) + 30*exp(-0.5*(x-34)^2)*sin(deg((x-34)*10))};
+			
+			% Plot (2,2)
+			\nextgroupplot[ylabel={$x_2$}, title={\colorbox{yellow!50}{Integration time $t=1.33$}}]
+			\addplot[black, samples=150] {-5 + 5*sin(deg(x/3)) + 40*exp(-2*(x-34)^2)*sin(deg((x-34)*20))};
+			
+			% Plot (2,3)
+			\nextgroupplot[ylabel={$x_3$}]
+			\addplot[black, samples=150] {20 + 0.5*(x-18) + 40*exp(-1*(x-33)^2)};
+			
+			
+			% --- ROW 3: t = 2.41 (Multiple Spikes) ---
+			
+			% Plot (3,1)
+			\nextgroupplot[ylabel={$x_1$}]
+			\addplot[black, samples=200] {-5 + 8*sin(deg(x)) + (x>30)*15*sin(deg((x)*5))};
+			
+			% Plot (3,2)
+			\nextgroupplot[ylabel={$x_2$}, title={\colorbox{yellow!50}{Integration time $t=2.41$}}]
+			\addplot[black, samples=200] {-5 + 10*sin(deg(x/2)) + (x>28)*20*sin(deg((x)*8))};
+			
+			% Plot (3,3)
+			\nextgroupplot[ylabel={$x_3$}]
+			\addplot[black, samples=200] {20 + 10*sin(deg(x/3)) + (x>25)*30*sin(deg((x)*15))};
+			
+			
+			% --- ROW 4: t = 3.5 (Chaos/Noise) ---
+			
+			% Plot (4,1)
+			\nextgroupplot[ylabel={$x_1$}]
+			\addplot[black, samples=300] {-5 + 5*sin(deg(x)) + (x>28)*rand*20};
+			
+			% Plot (4,2)
+			\nextgroupplot[ylabel={$x_2$}, title={\colorbox{yellow!50}{Integration time $t=3.5$}}]
+			\addplot[black, samples=300] {-5 + (x>25)*rand*25};
+			
+			% Plot (4,3)
+			\nextgroupplot[ylabel={$x_3$}]
+			\addplot[black, samples=300] {25 + (x>22)*rand*40};
+			
+		\end{groupplot}
+		
+	\end{tikzpicture}
+	
+	The function $x(t,q)$ is highly NL in general for large $t$.
+	This makes the SS (direct) not very competitive.
+	
+	\subsubsection{Multiple shooting}
+	
+	Integration is limited to short intervals $[t_k, t_{k+1}]$.
+	
+	Key difference: we use a bank of integrators simulating the dynamics in parallel in each interval starting from arbitrary initial conditions $s_k$.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick, scale=1.2]
+			% Achsen
+			\draw[->] (-0.5,0) -- (6.5,0) node[below right] {$t$};
+			\draw[->] (0,-0.5) -- (0,4.5); % y-Achse
+			
+			% Beschriftungen Achsen
+			\node[below left] at (0,0) {$0$};
+			\draw[thick] (6, 0.1) -- (6, -0.1) node[below] {$T$};
+			
+			% Vertikale gestrichelte Linien (Zeitintervalle)
+			\foreach \x in {1.5, 3.0, 4.5, 6.0} {
+				\draw[dashed, blue!60] (\x, 0) -- (\x, 4.2);
+			}
+			
+			% --- ZUSTANDSTRAJEKTORIEN (x/s) - Blau ---
+			% Segment 1 (Start bei x0)
+			\draw[blue, very thick] (0, 2.2) to[out=20, in=200] (1.5, 2.8);
+			\fill[blue] (0, 2.2) circle (2pt);
+			\node[left, blue] at (0, 2.2) {$x_0$};
+			
+			% Segment 2 (Start bei s1)
+			\draw[blue, very thick] (1.5, 1.2) to[out=10, in=220] (3.0, 1.8);
+			\fill[blue] (1.5, 1.2) circle (2pt);
+			\draw[dashed, blue!40] (0, 1.2) -- (1.5, 1.2); % Hilfslinie zur y-Achse
+			\node[left, blue] at (0, 1.2) {$s_1$};
+			
+			% Segment 3 (Start bei s2)
+			\draw[blue, very thick] (3.0, 3.2) to[out=-10, in=190] (4.5, 3.5);
+			\fill[blue] (3.0, 3.2) circle (2pt);
+			\draw[dashed, blue!40] (0, 3.2) -- (3.0, 3.2); % Hilfslinie zur y-Achse
+			\node[left, blue] at (0, 3.2) {$s_2$};
+			
+			% Segment 4
+			\draw[blue, very thick] (4.5, 2.5) to[out=30, in=180] (6.0, 3.2);
+			\fill[blue] (4.5, 2.5) circle (2pt);
+			
+			% --- STEUERUNG (u) - Violett ---
+			% Stückweise konstant
+			\draw[violet, thick] (0, 0.8) -- (1.5, 0.8); % u0
+			\draw[violet, thick] (1.5, 0.8) -- (1.5, 0.5); % Sprung
+			\draw[violet, thick] (1.5, 0.5) -- (3.0, 0.5); % u1
+			\draw[violet, thick] (3.0, 0.5) -- (3.0, 1.0); % Sprung
+			\draw[violet, thick] (3.0, 1.0) -- (4.5, 1.0); % u2
+			\draw[violet, thick] (4.5, 1.0) -- (4.5, 0.7); % Sprung
+			\draw[violet, thick] (4.5, 0.7) -- (6.0, 0.7); % u3
+			
+			\node[violet, above] at (0.75, 0.8) {$u$};
+			
+			% --- ANMERKUNGEN (Integratoren) ---
+			% Integrator 1
+			\draw[->, bend right] (0.5, -0.6) node[below left, align=center, font=\small] {integrator 1} to (0.75, -0.1);
+			
+			% Integrator 2
+			\draw[->] (2.25, -0.6) node[below, align=center, font=\small] {integrator 2} to (2.25, -0.1);
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	The NLP will take care of enforcing that the initial conditions used by each integrator equals the state at the last interval.
+	
+	Each integrator solves the following problem:
+	\[
+	\dot{x}_k(t; s_k, q_k) = f(x_k(t; s_k, q_k), q_k), \quad t \in [t_k, t_{k+1}]
+	\]
+	\[
+	x_k(t_k; s_k, q_k) = s_k \qquad \text{initial condition}
+	\]
+	The NLP will have to enforce:
+	\[
+	\underbrace{s_{k+1} = x_k(t_{k+1}, s_k, q_k)}_{\text{variables of the NLP}}
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[
+			box/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.5cm, align=left},
+			arrow/.style={->, >=stealth}
+			]
+			
+			% Block 1
+			\node[box] (b1) at (0, 0) {$\dot{x}=f(x,u)$ \\ $u=u(t,q)$ \\ $x(t_0)=s_0 \ [t_0, t_1]$};
+			\draw[arrow] (-2.5, 0.3) node[left] {$s_0$} -- ([yshift=0.3cm]b1.west);
+			\draw[arrow] (-2.5, -0.3) node[left] {$q_0$} -- ([yshift=-0.3cm]b1.west);
+			\draw[arrow] ([yshift=-0.3cm]b1.east) -- (2.5, -0.3) node[right] {$x_0(t, s_0, q_0)$};
+			\draw[arrow] ([yshift=0.3cm]b1.east) -- (2.5, 0.3) node[right] {$x_0(t_1, s_0, q_0)$};
+			
+			% Block 2
+			\node[box] (b2) at (0, -2.5) {};
+			\draw[arrow] (-2, -2.2) node[left] {$s_1$} -- ([yshift=0.3cm]b2.west);
+			\draw[arrow] (-2, -2.8) node[left] {$q_1$} -- ([yshift=-0.3cm]b2.west);
+			\draw[arrow] ([yshift=-0.3cm]b2.east) -- (2, -2.8) node[right] {$x_1(t, s_1, q_1)$};
+			\draw[arrow] ([yshift=0.3cm]b2.east) -- (2, -2.2) node[right] {$x_1(t_2, s_1, q_1)$};
+			
+			% Block 3
+			\node[box] (b3) at (0, -4.5) {};
+			\draw[arrow] (-2, -4.2) node[left] {$s_2$} -- ([yshift=0.3cm]b3.west);
+			\draw[arrow] (-2, -4.8) node[left] {$q_2$} -- ([yshift=-0.3cm]b3.west);
+			\draw[arrow] ([yshift=-0.3cm]b3.east) -- (2, -4.8) node[right] {$x_2(t, s_1, q_1)$};
+			\draw[arrow] ([yshift=0.3cm]b3.east) -- (2, -4.2) node[right] {$x_2(t_3, s_1, q_1)$};
+			
+			% Feedback line (conceptual matching) - approximated from drawing
+			\draw[arrow, blue, very thick] (2.0, 0.3) -- (2.0, -1.5) -- (-1.5, -1.5) -- (-1.5, -2.2);
+			\draw[arrow, blue, very thick] (1.5, -2.2) -- (1.5, -3.5) -- (-1.5, -3.5) -- (-1.5, -4.2);
+			
+			\node at (0, -5.5) {$\vdots$};
+		\end{tikzpicture}
+	\end{center}
+	
+	% 02.02.2026 Lecture 21
+	
+	\[
+	(*) \begin{cases}
+		\min\limits_{u(\cdot) \in \hat{C}[0,T]} & \displaystyle \int_{0}^{T} L(x,u)\, dt + \varphi(x(T)) \\[1em]
+		& \dot{x} = f(x,u), \quad x(0)=x_0, \quad T \text{ fixed}, \ x(T) \text{ free} \\
+		& h(x(t), u(t)) \le 0 \quad \forall t \quad (\text{path constraints}) \\
+		& r(x(T)) \le 0
+	\end{cases}
+	\]
+	
+	The first step of any direct method is the parametrization of $u$:
+	\[
+	u = u(t,q)
+	\]
+	 depends on $q \in \mathbb{R}^{n_q}$ that we will determine by solving an NLP associated with the discretization of $(*)$.
+	
+	We have seen in L20 2 discretizations: SS (Single Shooting), MS (Multiple Shooting).
+	
+	``Simultaneous'' integration $\to$ ODE is integrated on $N$ intervals and continuity across intervals is enforced as an equality constraint.
+	
+	\paragraph{NLP associated with MS}
+	
+	\[
+	s = \begin{bmatrix} s_0 \\ s_1 \\ s_2 \\ \vdots \\ s_{N-1} \end{bmatrix} \in \mathbb{R}^{N \cdot n_x}, \quad q \in \mathbb{R}^{n_q}
+	\]
+	
+	\[
+	\begin{aligned}
+		\min_{q,s} \quad & \mathcal{J}^{MS}(q,s) \\
+		\text{s.t.} \quad & x_0 = s_0 \\
+		& s_{k+1} = x_n(t_{k+1}, q_k, s_k) \quad k=0, 1, 2, \dots, N-2 \\
+		& h^{MS}(q,s) \le 0
+	\end{aligned}
+	\]
+	
+	$\mathcal{J}^{MS}, h^{MS}$ conceptually the same as SS.
+	\[
+	\mathcal{J}^{MS}(q,s) = \sum_{k=0}^{N-1} l_k(q,s) + \varphi(x(T, q, s))
+	\]
+	
+	\[
+	h^{MS}(q,s) = \begin{bmatrix} h_0(q,s) \\ h_1(q,s) \\ \vdots \\ h_{N-1}(q,s) \\ r(x(T, q, s)) \end{bmatrix} \qquad h_k(q,s) \coloneqq h(x(t_k, q, s), u(t_k, q, s))
+	\]
+	
+	The problem has larger dimension ($n_q + N \cdot n_x$ variables) compared to SS ($n_q$ variables), but the functions in the NLP are given by the integrators $(s,q) \to x(t)$ are much less nonlinear. The problem is numerically better conditioned.
+	
+	\subsubsection{Collocation Methods}
+	
+	\begin{itemize}
+		\item We have $N$ collocation intervals $[t_k, t_{k+1}], \ k=0, \dots, N-1$.
+		\item We approximate $x(t)$ on each interval with a given polynomial $p_k(t, v_k)$, $v_k \in \mathbb{R}^{n_x(d+1)}$ of order $d$.
+		\item For each interval we have the collocation equations:
+		\[
+		c_k(v_k, s_k, q_k) \coloneqq \begin{bmatrix}
+			v_{k,0} - s_k \\
+			\dot{p}_k(t_{k,1}, v_k) - f(v_{k,1}, t_{k,1}, q_k) \\
+			\vdots \\
+			\dot{p}_k(t_{k,d}, v_k) - f(v_{k,d}, t_{k,d}, q_k)
+		\end{bmatrix} = 0
+		\]
+	\end{itemize}
+	
+	Same equations we saw in the indirect, here we do not just ``simulate'' the dynamics. We want to optimize over $u$, that is $q$. So we use $q$ inside the NLP.
+	
+	\[
+	\begin{aligned}
+		\min_{q,s,V} \quad & \mathcal{J}^C(q,s,V) \\
+		\text{s.t.} \quad & x_0 = s_0 \\
+		& p_k(t_{k+1}, v_k) - s_{k+1} = 0, \quad k=0, 1, 2, \dots, N-2 \quad \text{(CONTINUITY)} \\
+		& c_k(v_k, s_k, q_k) = 0, \quad k=0, 1, 2, \dots, N-2 \quad \text{(COLLOCATION EQUATIONS)} \\
+		& h^C(q,s,V) \le 0
+	\end{aligned}
+	\]
+	
+	$\mathcal{J}^C, h^C$ contains the integrated cost and evaluated constraints at $t_k$ or at collocation times (finer grid).
+	
+	\# variables:
+	\begin{itemize}
+		\item $q \in \mathbb{R}^{n_q}$
+		\item $\left(s \in \mathbb{R}^{n_x \cdot N} \quad (\to \text{can be written as a function of } V)\right)$
+		\item $V \in \mathbb{R}^{n_u(d+1)N}$
+	\end{itemize}
+	
+	\paragraph{Advantages}
+	\begin{itemize}
+		\item Flexibility in the problem you can solve (constraints, ...)
+		\item Less sensitive to initializations
+	\end{itemize}
+	
+	\paragraph{Disadvantage}
+	\begin{itemize}
+		\item No guarantee of optimality of $u$ because the shape of $u$ must be guessed.
+		
+		\begin{center}
+			\begin{tikzpicture}[scale=1.2, >=stealth]
+				% Achsen
+				\draw[->, thick] (-0.2,0) -- (4.5,0) node[right] {$t$};
+				\draw[->, thick] (0,-0.2) -- (0,2.5);
+				
+				% Definition der Koordinaten für saubereren Code
+				\coordinate (A) at (0, 0.7);
+				\coordinate (B1) at (0.6, 0.7); \coordinate (B2) at (0.6, 0.4);
+				\coordinate (C1) at (1.4, 0.4); \coordinate (C2) at (1.4, 0.9);
+				\coordinate (D1) at (2.2, 0.9); \coordinate (D2) at (2.2, 0.5);
+				\coordinate (E1) at (2.9, 0.5); \coordinate (E2) at (2.9, 1.6);
+				\coordinate (F1) at (3.7, 1.6); \coordinate (F2) at (3.7, 0.2);
+				
+				% Horizontale Linien (durchgezogen, dick)
+				\draw[violet, thick] (A) -- (B1);
+				\draw[violet, thick] (B2) -- (C1);
+				\draw[violet, thick] (C2) -- (D1);
+				\draw[violet, thick] (D2) -- (E1);
+				\draw[violet, thick] (E2) -- (F1);
+				
+				% Vertikale Sprünge (gestrichelt)
+				\draw[violet, dashed, thick] (B1) -- (B2);
+				\draw[violet, dashed, thick] (C1) -- (C2);
+				\draw[violet, dashed, thick] (D1) -- (D2);
+				\draw[violet, dashed, thick] (E1) -- (E2);
+				\draw[violet, dashed, thick] (F1) -- (3.7, 0); % Letzter Strich zur Achse (optional)
+				
+				% Ticks
+				\node[below left] at (0,0) {\large $0$};
+				\draw[thick] (3.7, 0.1) -- (3.7, -0.1) node[below] {\large $T$};
+				
+				% Label u(t,q)
+				\node[violet, above right] at (3.0, 1.8) {\large $u(t,q)$};
+			\end{tikzpicture}
+		\end{center}
+	\end{itemize}
+	
+	In general, what many people do in challenging problems is to combine them. For example, one can first apply the \underline{direct method} (because it is not so sensitive to initialization), and then initialize with its solution the \underline{indirect method} (because it will work better if we warm-start it with a good solution).
+	
+	\begin{center}
+		\begin{tikzpicture}[>=stealth, thick]
+			
+			% --- 1. Parametrization Plot (Links) ---
+			\begin{scope}[shift={(0,0)}]
+				\node[blue, align=center, above] at (1.5, 2.2) {\small parametrization};
+				\draw[->] (0,0) -- (3,0) node[below] {$t$};
+				\draw[->] (0.5,-0.5) -- (0.5,2);
+				% Gestrichelte Treppenfunktion
+				\draw[dashed, black] (0.5, 0.8) -- (1.2, 0.8) -- (1.2, 0.4) -- (1.8, 0.4) -- (1.8, 1.2);
+			\end{scope}
+			
+			% Pfeil nach rechts
+			\draw[->, thick] (3.2, 1) -- (3.8, 1);
+			
+			% --- 2. DIR Box ---
+			\node[draw, rectangle, minimum height=1.5cm, minimum width=2cm, thick] (DIR) at (5, 1) {DIR};
+			
+			% Pfeil nach rechts
+			\draw[->, thick] (6.2, 1) -- (6.8, 1);
+			
+			% --- 3. Direct Solution Plot (Mitte) ---
+			\begin{scope}[shift={(7.5,0)}]
+				\node[blue, align=center, above] at (1.5, 2.2) {\small direct solution};
+				\draw[->] (0,0) -- (3,0) node[below] {$t$};
+				\draw[->] (0,-0.5) -- (0,2);
+				% Ergebnis Treppenfunktion (Violett)
+				\draw[violet, thick] (0, 0.8) -- (0.8, 0.8) -- (0.8, 0.4) -- (1.6, 0.4) -- (1.6, 1.4) -- (2.4, 1.4) -- (2.4, 0.6) -- (2.8, 0.6);
+			\end{scope}
+			
+			% Pfeil nach rechts
+			\draw[->, thick] (10.8, 1) -- (11.4, 1);
+			
+			% --- 4. IND Box ---
+			\node[draw, rectangle, minimum height=1.5cm, minimum width=2cm, thick] (IND) at (12.5, 1.5) {IND};
+			
+			% Pfeil nach unten
+			\draw[->, thick] (12.5, 0.7) -- (12.5, 0.2);
+			
+			% --- 5. Indirect Solution Plot (Rechts unten) ---
+			\begin{scope}[shift={(11,-2.5)}]
+				\node[blue, align=right, above] at (2.5, 2.2) {\small indirect solution};
+				\draw[->] (0,0) -- (3,0) node[right] {$t$};
+				\draw[->] (0,-0.5) -- (0,2);
+				% Glatte Kurve (Violett)
+				\draw[violet, thick, smooth] plot coordinates {(0,1.2) (0.5, 1.4) (1.0, 0.8) (1.5, 1.6) (2.0, 0.6) (2.8, 1.2)};
+				
+				% Coordinate for Loop Start
+				\coordinate (LoopStart) at (1.5, -0.2);
+			\end{scope}
+			
+			% --- 6. Gelber Warm-Start Loop ---
+			% Startet unter dem Indirect Plot, geht nach links unten und hoch zum Parametrization Plot
+			\draw[yellow!60, line width=4pt, ->] 
+			(12.5, -3.0) 
+			-- (12.5, -3.5) 
+			-- (1.0, -3.5) 
+			-- (1.0, -0.5);
+			
+			% --- 7. Annotation Text ---
+			\node[violet, align=center, font=\small] at (7, -4.8) {
+				possibly the 2-step direct/indirect \\
+				can be repeated a few times to \\
+				refine the solution
+			};
+			
+			% Kleiner Pfeil vom Text zur gelben Linie
+			\draw[->, violet, thin] (7, -4.1) -- (7, -3.6);
+			
+		\end{tikzpicture}
+	\end{center}
+	
 \end{document}
