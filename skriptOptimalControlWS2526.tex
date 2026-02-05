@@ -84,9 +84,12 @@
 % Kopf- und Fußzeile
 \usepackage{scrlayer-scrpage}
 \clearpairofpagestyles
-\ihead{Optimal Control}
-\ohead{WS 2025/26}
-\cfoot{\pagemark}
+\automark{section} % Aktiviert die automatische Aktualisierung der Kapitelnamen
+\ihead{\headmark}  % Zeigt das aktuelle Kapitel (links)
+\ohead{Optimal Control} % Dokumententitel (rechts)
+\ifoot{Jan Fehnl}  % Optional: Name des Autors in der Fußzeile (links)
+\ofoot{\pagemark}  % Seitenzahl nach außen (rechts)
+\cfoot{}           % Mitte der Fußzeile leeren
 \pagestyle{scrheadings}
 \setcounter{section}{-1}
 
@@ -2790,10 +2793,10 @@
 		
 		Then $\exists\lambda^\star\in\mathcal{C}^1$ (called adjoint or costate) such that $(x^\star,u^\star,\lambda^\star)$ satisfies:
 		
-		\hspace*{1cm}$\left.\begin{array}{cl}
-			n_x&\dot{x}^\star=f(t,x^\star,u^\star),\quad x^\star(t_0)=x_0\\
-			n_x&\dot{\lambda}^\star=l_x(t,x^\star,u^\star)-f(t,x^\star,u^\star)\lambda^\star,\quad\lambda^\star(t_f)=0\\
-			n_u&0=-l_u(t,x^\star,u^\star)+f_u(t,x^\star,u^\star)\lambda^\star,\quad\forall t\in[t_0,t_f]
+		\hspace*{1cm}$\left.\begin{array}{l}
+			\dot{x}^\star=f(t,x^\star,u^\star),\quad x^\star(t_0)=x_0\\
+			\dot{\lambda}^\star=l_x(t,x^\star,u^\star)-f(t,x^\star,u^\star)\lambda^\star,\quad\lambda^\star(t_f)=0\\
+			0=-l_u(t,x^\star,u^\star)+f_u(t,x^\star,u^\star)\lambda^\star,\quad\forall t\in[t_0,t_f]
 		\end{array}\right\}\begin{array}{l}
 		\text{Euler Lagrange}\\\text{equations (ELE)}
 		\end{array}$
@@ -2874,12 +2877,12 @@
 				(5.5, 3.8)  % Dip
 				(7.5, 6.2)  % Rise again
 				(8.5, 6.8)  % End
-			} node[right] {$w$};
+			} node[right] {$\nu$};
 			
 			% --- Side Text (Mapping) ---
 			% Placing the text to the left of the axis
 			\node[blue, anchor=west] at (-2, 6) {$u \to x$};
-			\node[violet, anchor=west] at (-2, 5) {$v \to y$};
+			\node[violet, anchor=west] at (-2, 5) {$\nu \to y$};
 			
 		\end{tikzpicture}
 	\end{center}	
@@ -2925,7 +2928,7 @@
 	\draw[green!70!black, mystyle] (A1) -- (B1);
 	\end{tikzpicture}	
 	$$
-		+\tikzmarknode{textToUnderlineBlue}{\lambda^T(t_f) y_\eta(t_f; \eta)} - \underbrace{\lambda^T(t_0) y_\eta(t_0; \eta)}_{= 0\text{ because } y(t_0; \eta) = x_0 \; \forall \eta}
+		+\tikzmarknode{textToUnderlineBlue}{\lambda(t_f)^T y_\eta(t_f; \eta)} - \underbrace{\lambda(t_0)^T y_\eta(t_0; \eta)}_{= 0\text{ because } y(t_0; \eta) = x_0 \; \forall \eta}
 	$$
 	\begin{tikzpicture}[overlay, remember picture]
 	% Stil für die Linien
@@ -2941,7 +2944,7 @@
 	Take $\eta\to0$:
 	$$
 		\delta J(u;\omega) = \int\limits_{t_0}^{t_f}\tikzmarknode{textToUnderlineRed}{
-		[ l_u(t, x, u) - f_u(t, x, u) \lambda ]^T \omega} + \tikzmarknode{textToUnderlineGreen}{[ l_x(t, x, u) - f_x(t, x, u) \lambda - \dot{\lambda} ]^T y_\eta} \, dt
+		[ l_u(t, x, u) - f_u(t, x, u) \lambda ]^T \omega} + \tikzmarknode{textToUnderlineGreen}{[ l_x(t, x, u) - f_x(t, x, u)^T \lambda - \dot{\lambda} ]^T y_\eta} \, dt
 	$$
 	\begin{tikzpicture}[overlay, remember picture]
 		% Stil für die Linien
@@ -2986,7 +2989,7 @@
 	\begin{enumerate}
 		\item We can choose $\lambda$ as follows:
 		$$
-			\dot{\lambda} = -l_x - f_x^T \lambda \quad \text{with BC } \lambda(t_f) = 0 \quad \textcolor{red}{\text{2nd ELE + BC}}
+			\dot{\lambda} = -l_x + f_x^T \lambda \quad \text{with BC } \lambda(t_f) = 0 \quad \textcolor{red}{\text{2nd ELE + BC}}
 		$$
 		This eliminates the \textcolor{green!70!black}{green} and \textcolor{blue!70}{blue} terms.
 		
@@ -3281,7 +3284,7 @@
 		
 		Suppose $u^\star\in\hat{\mathcal{C}}$ with corner points $\{c_k\}_{k=1}^N$ is a weak minimum with state response $x^\star\in\hat{\mathcal{C}}^1$.
 		
-		Then $\exists \lambda\in\hat{\mathcal{C}}^1$ such that
+		Then $\exists \lambda^\star\in\hat{\mathcal{C}}^1$ such that
 		\begin{enumerate}
 			\item $(x^\star, u^\star, \lambda^\star)$ solves ELE inside the intervals $(c_k, c_{k+1}),\ k=0,\dots,N$ with $c_0=t_0,\ c_{N+1}=t_f$.
 			\item At every corner point of $u^\star$, the following continuity conditions must hold:
@@ -3296,33 +3299,33 @@
 	
 	A is a generalization of the $1^{st}$ WE conditions (where $p$ had to be cont.).
 	
-	B is a generalization of the $2^{nd}$ WE conditions (where $H$ had to be cont.).
+	B is a generalization of the $2^{nd}$ WE conditions (where $\mathcal{H}$ had to be cont.).
 	
-	Same result holds for $\mathcal{S}=\{t_f\}\times\{x_f\}$.
+	Same result holds for $S=\{t_f\}\times\{x_f\}$.
 	
 	\subsubsection{Continuous control with general target set}
 	
 	$$
-	\mathcal{S} = \{(t,x) \in (t_0, \infty) \times \mathbb{R}^{n_x} \mid \Psi_k(t,x)=0,\ k=1\dots n_\Psi\}
+	S = \{(t,x) \in (t_0, \infty) \times \mathbb{R}^{n_x} \mid \psi_k(t,x)=0,\ k=1,\dots, n_\psi\}
 	$$
 	$$
-	\to t_f \times x(t_f) \in \mathcal{S} \qquad \Psi = \begin{bmatrix}
-		\Psi_1 \\ \Psi_2 \\ \vdots \\ \Psi_{n_\Psi}
+	\to t_f \times x(t_f) \in S \qquad \psi = \begin{bmatrix}
+		\psi_1 \\ \psi_2 \\ \vdots \\ \psi_{n_\psi}
 	\end{bmatrix} = 0
 	$$
 	
 	\begin{align*}
 		[OC-P2]\quad \min_{t_f, u(\cdot)} \quad & J(u) \coloneqq \int_{t_0}^{t_f} l(t,x,u)\,dt + \varphi(t_f, x(t_f)) \\
 		\text{s.t.} \quad & \dot{x} = f(t,x,u),\ x(t_0)=x_0 \\
-		& (t_f, x(t_f)) \in \mathcal{S} \\
+		& (t_f, x(t_f)) \in S \\
 		& u \in \mathcal{C}([t_0, t_f])
 	\end{align*}
 	
-	\textbf{Assumption:} $\varphi, \Psi \in \mathcal{C}^1$.
+	\textbf{Assumption:} $\varphi, \psi \in \mathcal{C}^1$.
 	
-		$[OC-P1]$ special case of $[OC-P2]$ by defining $\Psi$ to recover
+		$[OC-P1]$ special case of $[OC-P2]$ by defining $\psi$ to recover
 	$$
-	\mathcal{S} = \{t_f\} \times \mathbb{R}^{n_x} \quad \text{or} \quad \mathcal{S} = \{t_f\} \times \{x_f\}.
+	S = \{t_f\} \times \mathbb{R}^{n_x} \quad \text{or} \quad S = \{t_f\} \times \{x_f\}.
 	$$
 	
 	Normed vector space $V = \underbrace{\mathcal{C}[t_0, t_f]}_{u} \times \underbrace{(t_0, \infty)}_{t_f}$.
@@ -3337,9 +3340,9 @@
 	$$
 	
 	Recall what we did in Chapter 2 when $s_2$ was free.
-	Let's define functionals associated with the eq. constraints $\Psi=0$.
+	Let's define functionals associated with the eq. constraints $\psi=0$.
 	$$
-	P_k(\underline{u}, t_f) \coloneqq \Psi_k(t_f, \underline{x(t_f)}) \qquad k=1,\dots,n_\Psi
+	P_k(\underline{u}, t_f) \coloneqq \psi_k(t_f, \underline{x(t_f)}) \qquad k=1,\dots,n_\psi
 	$$
 	
 	\begin{center}
@@ -3361,27 +3364,27 @@
 	We can now state the main result which again consists of:
 	\begin{itemize}
 		\item ELE
-		\item Boundary conditions taking into account $\varphi$ and $\Psi$.
+		\item Boundary conditions taking into account $\varphi$ and $\psi$.
 	\end{itemize}
 	
-	For this we require some Regularity conditions as typical in constrained problems.
+	For this, we require some regularity conditions as typical in constrained problems.
 	
 	\begin{lemmabox}[First-order necessary cond. for weak minimizers and general terminal problems]
 		Consider $[OC-P2]$, standing regularity assumptions, $u \in \mathcal{C}$. Suppose $u^\star \in \mathcal{C}$ is a weak minimizer with optimal time $t_f^\star$ and state response $x^\star$. Assume that
 		$$
-		\text{Det}(P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\Psi})) \neq 0
+		\text{Det}(P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\psi})) \neq 0
 		$$
 		$$
-		P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\Psi}) = \begin{bmatrix}
-			\delta P_1(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_1(u^\star, t_f^\star; \bar{\omega}_{n_\Psi}, \bar{\tau}_{n_\Psi}) \\
+		P(\{\bar{\omega}_i, \bar{\tau}_i\}_{i=1}^{n_\psi}) = \begin{bmatrix}
+			\delta P_1(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_1(u^\star, t_f^\star; \bar{\omega}_{n_\psi}, \bar{\tau}_{n_\psi}) \\
 			\vdots & \ddots & \vdots \\
-			\delta P_{n_\Psi}(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_{n_\Psi}(u^\star, t_f^\star; \bar{\omega}_{n_\Psi}, \bar{\tau}_{n_\Psi})
+			\delta P_{n_\psi}(u^\star, t_f^\star; \bar{\omega}_1, \bar{\tau}_1) & \cdots & \delta P_{n_\psi}(u^\star, t_f^\star; \bar{\omega}_{n_\psi}, \bar{\tau}_{n_\psi})
 		\end{bmatrix}
 		$$
-		for $n_\Psi$ independent perturbations $\{\bar{\omega}_k, \bar{\tau}_k\}_{k=1}^{n_\Psi}$.
-		$\to$ regularity condition on eq. constraints $\Psi=0$ (similar to isoperimetric constraints in CV).
+		for $n_\psi$ independent perturbations $\{\bar{\omega}_k, \bar{\tau}_k\}_{k=1}^{n_\psi}$.
+		$\to$ regularity condition on eq. constraints $\psi=0$ (similar to isoperimetric constraints in CV).
 		
-		Then $\exists \lambda^\star \in \mathcal{C}^1$ and a vector $\nu^\star \in \mathbb{R}^{n_\Psi}$ such that $(u^\star, x^\star, \lambda^\star, \nu^\star, t_f^\star)$ satisfy:
+		Then $\exists \lambda^\star \in \mathcal{C}^1$ and a vector $\nu^\star \in \mathbb{R}^{n_\psi}$ such that $(u^\star, x^\star, \lambda^\star, \nu^\star, t_f^\star)$ satisfy:
 		
 		\begin{itemize}
 			\item \textbf{Differential-Algebraic eq.} (Hamiltonian dynamics):
@@ -3395,7 +3398,7 @@
 			
 			\item \textbf{Enforcing terminal set:}
 			$$
-			0 = \Psi(t_f^\star, x^\star(t_f^\star))
+			0 = \psi(t_f^\star, x^\star(t_f^\star))
 			$$
 			
 			\item \textbf{Equation closing the problem by producing an extra scalar equation for $t_f$:}
@@ -3404,7 +3407,7 @@
 			$$
 		\end{itemize}
 		$$
-		\Phi(t, x, \nu) \coloneqq \varphi(t,x) + \nu^T \Psi(t,x)
+		\Phi(t, x, \nu) \coloneqq \varphi(t,x) + \nu^T \psi(t,x)
 		$$
 	\end{lemmabox}
 	
@@ -3414,36 +3417,36 @@
 		\item BC on $\lambda(t_f)$ also called transversal condition.
 		\item Can we interpret this condition?
 		\begin{enumerate}
-			\item $\Psi_x = \nabla_x \Psi = [\nabla \Psi_1 \dots \nabla \Psi_{n_\Psi}] \in \mathbb{R}^{x \times n_\Psi}$
+			\item $\psi_x = \nabla_x \psi = [\nabla \psi_1 \dots \nabla \psi_{n_\psi}] \in \mathbb{R}^{x \times n_\psi}$
 			$$
-			\lambda(t_f) = -\nu^T \Psi_x, \quad \nu \in \mathbb{R}^{n_\Psi}
+			\lambda(t_f) = -\nu^T \psi_x, \quad \nu \in \mathbb{R}^{n_\psi}
 			$$
 			$$
-			= \sum \nu_i \nabla \Psi_i
+			= \sum \nu_i \nabla \psi_i
 			$$
-			If $\Psi = x(t_f) - x_f = 0 \to \nabla_x \Psi$ has full rank. Thus, $\lambda$ is unconstrained $\to$ we retrieve the case we already knew for $\mathcal{S}=\{t_f\}\times\{x_f\}$.
+			If $\psi = x(t_f) - x_f = 0 \to \nabla_x \psi$ has full rank. Thus, $\lambda$ is unconstrained $\to$ we retrieve the case we already knew for $S=\{t_f\}\times\{x_f\}$.
 			
 			\item We always have
 			$$
 			\begin{array}{lcll}
 				n_x \text{ BC at } t=t_0 & \to & n_x \text{ on } x & x(t_0)=x_0 \\
-				n_x \text{ BC at } t=t_f & \to & n_\Psi \text{ on } x & \text{assuming } t_f \text{ free} \\
-				& & n_x - n_\Psi \text{ on } \lambda &
+				n_x \text{ BC at } t=t_f & \to & n_\psi \text{ on } x & \text{assuming } t_f \text{ free} \\
+				& & n_x - n_\psi \text{ on } \lambda &
 			\end{array}
 			$$
-			When $\Psi \neq 0$ then we have constraints on $\lambda$.
+			When $\psi \neq 0$ then we have constraints on $\lambda$.
 		\end{enumerate}
 	\end{itemize}
 	
-	What if $\mathcal{S} = \{(t,x) \mid \Psi(t,x) \leq 0\}$? What changes?
+	What if $S = \{(t,x) \mid \psi(t,x) \leq 0\}$? What changes?
 	\begin{enumerate}
 		\item Regularity conditions must be checked \underline{only} on the active inequality constraints.
-		\item In the conditions of the previous Lemma, replace $\Psi=0$ with
+		\item In the conditions of the previous Lemma, replace $\psi=0$ with
 		$$
 		\left[ \begin{array}{l}
-			\Psi(t_f, x(t_f)) \leq 0 \\
+			\psi(t_f, x(t_f)) \leq 0 \\
 			\nu \geq 0 \\
-			\nu^T \Psi(t_f, x(t_f)) = 0
+			\nu^T \psi(t_f, x(t_f)) = 0
 		\end{array} \right.
 		$$
 	\end{enumerate}
@@ -3457,7 +3460,7 @@
 	\dot{x} = A(t)x + B(t)u \quad x(t_0)=x_0
 	$$
 	$$
-	\mathcal{S} = \{t_f\} \times \mathbb{R}^{n_x}
+	S = \{t_f\} \times \mathbb{R}^{n_x}
 	$$
 	$$
 	\underbrace{R(t) \succ 0, Q(t) \succeq 0 \quad \forall t \in [t_0, t_f], \quad Q_f \succeq 0}_{\text{running cost and terminal cost are convex}}
@@ -3496,11 +3499,12 @@
 	$$
 	u^\star = R^{-1} B^T \lambda^\star \quad (0 = \mathcal{H}_u)
 	$$
-	LQR solution consists of a TPBVP in $(x, \lambda)$ and plugging its solution in $u^\star = R^{-1} B^T \lambda$.
+	LQR solution consists of a TPBVP in $(x, \lambda)$ and plugging its solution in
+	\[u^\star = R^{-1} B^T \lambda^\star.\]
 	
 	How do we solve TPBVP? Not easy in general. Computational approaches in Chapter 5.
 	
-	\textbf{Ansatz:} The TPBVP is homogeneous in $x_0$ ($\to$ if $x_0=0$ then $x=\lambda=u\equiv0$ is the solution).
+	\textbf{Ansatz:} The TPBVP is homogeneous in $x_0$ ($\to$ if $x_0=0$ then $x^\star=\lambda^\star=u^\star\equiv0$ is the solution).
 	
 	Therefore, we can assume a solution on $\lambda$ of the form
 	\begin{itemize}
@@ -3516,7 +3520,7 @@
 	\dot{P} = -PA - A^T P + P B R^{-1} B^T P - Q, \quad P(t_f)=Q_f \quad \text{(Riccati differential equation)}
 	$$
 	
-	ODE with final value condition $\xrightarrow{P} Q_f$.
+	ODE with final value condition.
 	Its solution gives us the Optimal Control $u^\star$.
 	
 	\begin{center}
@@ -3567,9 +3571,7 @@
 	
 	\subsection{Pontryagin Maximum Principle (PMP)}
 	
-	\subsubsection{Limitations of the variational approach}
-	
-	ELE equations.
+	\subsubsection{Limitations of the variational approach (ELE equations)}
 	
 	\begin{enumerate}[label=\textcircled{\arabic*}]
 		\item \textbf{Constraints on $u$:}
@@ -3714,7 +3716,7 @@
 	\|u - (u+\eta w)\|_1 \neq 0
 	\]
 	\[
-	\|x - y\| \to 0
+	\|x - y\|_1 \to 0
 	\]
 	($y$: perturbed $x$ where $(u+\eta w)$ acts).
 	
@@ -3723,10 +3725,10 @@
 	\subsubsection{Statements of PMP}
 	
 	\[
-	[OC-P3] \quad \min_{u(\cdot), t_f} \int_{t_0}^{t_f} l(x,u) \, dt
+	\min_{u(\cdot), t_f} \int_{t_0}^{t_f} l(x,u) \, dt
 	\]
 	\[
-	\text{s.t. } \dot{x} = f(x,u), \quad x(t_0) = x_0
+	[OC-P3] \hspace*{2cm} \text{s.t. } \dot{x} = f(x,u), \quad x(t_0) = x_0
 	\]
 	\[
 	(t, x(t_f)) \in (t_0, \infty) \times S_f
@@ -3793,9 +3795,9 @@
 		\label{theorem:3.1}
 		\begin{itemize}
 			\item Problem $[OC-P3]$
-			\item $\mathcal{S} = (t_0, \infty) \times \{x_f\}$
+			\item $S = (t_0, \infty) \times \{x_f\}$
 		\end{itemize}
-		Suppose $u^\star \in \hat{\mathcal{C}}$ is a strong minimizer with associated final time $t_f^\star$ and $x^\star \in \hat{\mathcal{C}}_n^1$. Then $\exists \lambda \in \hat{\mathcal{C}}^1$ and a constant $\lambda_0^\star \leq 0$ satisfying $(\lambda_0^\star, \lambda^\star(t)) \neq (0,0) \ \forall t \in [t_0, t_f^\star]$ s.t.:
+		Suppose $u^\star \in \hat{\mathcal{C}}$ is a strong minimizer with associated final time $t_f^\star$ and $x^\star \in \hat{\mathcal{C}}^1$. Then $\exists \lambda \in \hat{\mathcal{C}}^1$ and a constant $\lambda_0^\star \leq 0$ satisfying $(\lambda_0^\star, \lambda^\star(t)) \neq (0,0) \ \forall t \in [t_0, t_f^\star]$ s.t.:
 		
 		\begin{enumerate}
 			\item $(x^\star, \lambda^\star)$ satisfy Hamiltonian dynamics
@@ -3833,7 +3835,7 @@
 	
 	\underline{Proof:} Liberzon's book Ch. 4, Sect 4.2 is on the proof of PMP.
 	
-	Second statement: $\mathcal{S}_f = \{x \mid h_i(x)=0, i=1,\dots,n_h\}$.
+	Second statement: $S_f = \{x \mid h_i(x)=0, i=1,\dots,n_h\}$.
 	
 	We expect changes on the boundary conditions.
 	
@@ -3841,7 +3843,7 @@
 		\label{theorem:3.2}
 		Same conditions as \autoref{theorem:3.1} except
 		\[
-		\mathcal{S} = (t_0, \infty) \times \{x \mid h_i(x)=0\} \quad (\text{with regular } x).
+		S = (t_0, \infty) \times \{x \mid h_i(x)=0\} \quad (\text{with regular } x).
 		\]
 		If ...
 		
@@ -3855,16 +3857,16 @@
 		\end{array} \right\} n_x + n_h \text{ conditions}
 		\]
 		\[
-		\langle \lambda^\star(t_f^\star), d \rangle = 0 \quad \forall d \in \mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star)) \quad \Big\} n_x - n_h \text{ conditions}
+		\langle \lambda^\star(t_f^\star), d \rangle = 0 \quad \forall d \in \mathcal{T}_{S_f}(x^\star(t_f^\star)) \quad \Big\} n_x - n_h \text{ conditions}
 		\]
-		or equivalently $\lambda^\star(t_f^\star) \perp \mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star))$
-		($\mathcal{T}_{\mathcal{S}_f}$ tangent cone to $\mathcal{S}_f$ at $x^\star(t_f^\star)$, see \autoref{sec:chapter1}).
+		or equivalently $\lambda^\star(t_f^\star) \perp \mathcal{T}_{S_f}(x^\star(t_f^\star))$
+		($\mathcal{T}_{S_f}$ tangent cone to $S_f$ at $x^\star(t_f^\star)$, see \autoref{sec:chapter1}).
 		
 		$\to$ in total $n_x + n_x$ BC:
 		\[
 		\begin{array}{l}
 			n_x \text{ at } t_0 \\
-			n_x \text{ at } t_f
+			n_x \text{ at } t_f \\\\
 		\end{array}
 		\begin{cases}
 			n_h \text{ on } x \\
@@ -3879,8 +3881,8 @@
 	\[
 	\mathcal{T}_{\mathcal{S}_f}(x^\star(t_f^\star)) = \{d \in \mathbb{R}^{n_x} : \langle \nabla h_k(x^\star(t_f^\star)), d \rangle = 0, \ k=1,\dots,n_h\}
 	\]
-	The B.C. prescribes that $\lambda^\star(t_f^\star)$ belongs to the orthogonal complement of $\mathcal{T}_{\mathcal{S}_f}$.
-	That is, by definition of $\mathcal{T}_{\mathcal{S}_f}$: $\lambda^\star(t_f^\star)$ a linear combination of $\nabla h_k, \ k=1,\dots,n_h$.
+	The BC prescribes that $\lambda^\star(t_f^\star)$ belongs to the orthogonal complement of $\mathcal{T}_{S_f}$.
+	That is, by definition of $\mathcal{T}_{S_f}$: $\lambda^\star(t_f^\star)$ a linear combination of $\nabla h_k, \ k=1,\dots,n_h$.
 	
 	We had a similar interpretation for the transversality condition of ELE.
 	More on this in T5.
@@ -3933,7 +3935,7 @@
 		&\dot{x} = f(x,u) && x(t_0)=x_0 \\
 		&\dot{x}_{n+1} = 1 && x_{n+1}(t_0)=t_0 \\
 		&t_f \in (t_0, \infty) && \text{"free final time": final time will be fixed through } x_{n+1} \\
-		&(x, x_{n+1}) \in \mathcal{S}_f \times \{t_f\} && \text{target set for the "state"}
+		&(x, x_{n+1}) \in S_f \times \{t_f\} && \text{target set for the "state"}
 	\end{aligned}
 	\right.
 	\]
@@ -3975,13 +3977,13 @@
 	
 	Again we augment the dynamic with a fictitious state representing time.
 	\[
-	\tilde{x} = \begin{bmatrix} x \\ x_{nx+1} \end{bmatrix} \qquad
+	\tilde{x} = \begin{bmatrix} x \\ x_{n_x+1} \end{bmatrix} \qquad
 	\begin{aligned}
-		&\dot{x} = f(x_{nx+1},x,u) & x(t_0)=x_0 \\
-		&\dot{x}_{nx+1} = 1 & x_{nx+1}(t_0)=t_0 \\
-		&l(x_{nx+1}, x, u) & \left\{\begin{aligned}
-		&x_{nx+1}(t_f) = t_f \quad \text{if } t_f \text{ fixed} \\
-		&x_{nx+1}(t_f) \in \mathbb{R} \quad \text{if } t_f \text{ free}
+		&\dot{x} = f(x_{n_x+1},x,u) & x(t_0)=x_0 \\
+		&\dot{x}_{n_x+1} = 1 & x_{n_x+1}(t_0)=t_0 \\
+		&l(x_{n_x+1}, x, u) & \left\{\begin{aligned}
+		&x_{n_x+1}(t_f) = t_f \quad \text{if } t_f \text{ fixed} \\
+		&x_{n_x+1}(t_f) \in \mathbb{R} \quad \text{if } t_f \text{ free}
 	\end{aligned}\right.
 	\end{aligned}
 	\]
@@ -3989,31 +3991,31 @@
 	
 	\textcircled{1}-\textcircled{2} do not change.
 	
-	\textcircled{3} $\bar{H} = 0$ because augmented system, the problem is time-invariant.
+	\textcircled{3} $\bar{\mathcal{H}} = 0$ because augmented system, the problem is time-invariant.
 	
-	$\bar{H}:$ Hamiltonian for the augmented system with state $\tilde{x}$.
+	$\bar{\mathcal{H}}:$ Hamiltonian for the augmented system with state $\tilde{x}$.
 	\[
-	\bar{H} = H + \lambda_{nx+1} \quad (\text{Like in extension \textcircled{1}})
+	\bar{\mathcal{H}} = \mathcal{H} + \lambda_{n_x+1} \quad (\text{Like in extension \textcircled{1}})
 	\]
-	$\to H(t,x,u,\lambda_0,\lambda)$ Hamiltonian of the original problem.
+	$\to \mathcal{H}(t,x,u,\lambda_0,\lambda)$ Hamiltonian of the original problem.
 	
-	Thus: $\dot{\lambda}_{nx+1} = -H_t \neq 0$ because $H$ depends on time.
+	Thus: $\dot{\lambda}_{nx+1} = -\mathcal{H}_t \neq 0$ because $\mathcal{H}$ depends on time.
 	
-	If $t_f$ is fixed, then we just solve \textcircled{1}+\textcircled{2} and keep in mind that $H$ is now time-varying.
+	If $t_f$ is fixed, then we just solve \textcircled{1}+\textcircled{2} and keep in mind that $\mathcal{H}$ is now time-varying.
 	
-	If $t_f$ is free, we need an equation to determine it. We need to obtain a value for $H$ to have a condition \textcircled{3}.
+	If $t_f$ is free, we need an equation to determine it. We need to obtain a value for $\mathcal{H}$ to have a condition \textcircled{3}.
 	\[
-	\frac{d}{dt} H = H_t, \quad (H(t_f) = -\lambda_{nx+1}(t_f))
+	\frac{d}{dt} \mathcal{H} = \mathcal{H}_t, \quad (\mathcal{H}(t_f) = -\lambda_{n_x+1}(t_f))
 	\]
-	When $t_f$ is free, what is $\lambda_{nx+1}(t_f)$?
+	When $t_f$ is free, what is $\lambda_{n_x+1}(t_f)$?
 	
 	Remember: When $x(t_f)$ is free, $\lambda(t_f)=0$.
 	
-	Here: $\underbrace{x_{nx+1}(t_f)}_{t_f \text{ free}}$ is free, thus $\lambda_{nx+1}(t_f)=0$.
+	Here: $\underbrace{x_{n_x+1}(t_f)}_{t_f \text{ free}}$ is free, thus $\lambda_{nx+1}(t_f)=0$.
 	
-	Therefore we have $\frac{d}{dt}H = H_t$ and $H(t_f) = 0$.
+	Therefore we have $\frac{d}{dt}\mathcal{H} = \mathcal{H}_t$ and $\mathcal{H}(t_f) = 0$.
 	\[
-	H(t) = -\int_{t}^{t_f} H_t(s,x,u,\lambda_0,\lambda)\, ds
+	\mathcal{H}(t) = -\int_{t}^{t_f} \mathcal{H}_t(s,x,u,\lambda_0,\lambda)\, ds
 	\]
 	This term depends on $u,x,\lambda$ which are obtained from \textcircled{1}-\textcircled{2}.
 	
@@ -4021,7 +4023,7 @@
 	\begin{enumerate}
 		\item Ham. dynamics\quad\textcolor{blue}{$(x,\lambda)$}
 		\item Ham. maximization\quad\textcolor{blue}{$(u)$}
-		\item $H(t) = -\int_{t}^{t_f} H_t$ B.C. $H(t_f)=0$\quad\textcolor{blue}{$(t_f)$}
+		\item $\mathcal{H}(t) = -\int_{t}^{t_f} \mathcal{H}_t$ BC $\mathcal{H}(t_f)=0$\quad\textcolor{blue}{$(t_f)$}
 	\end{enumerate}
 	
 	\bigskip
@@ -4029,9 +4031,9 @@
 	
 	W.l.o.g we assume $l=0$, $\varphi(x_f) \neq 0 \to J(u) = \varphi(x_f)$.
 	
-	$t_f, x(t_f)$ are free $\to H = u^T \dots$
+	$t_f, x(t_f)$ are free $\to \mathcal{H} = \lambda^T f$
 	
-	The difference to ``standard PMP'' is that in \autoref{theorem:3.1}, \autoref{theorem:3.2} we consider Lagrangian functionals $J = \int l$. Now we have Mayer functionals $J=\varphi$.
+	The difference to ``standard PMP'' is that in \autoref{theorem:3.1}, \autoref{theorem:3.2}, we consider Lagrangian functionals $J = \int l$. Now we have Mayer functionals $J=\varphi$.
 	
 	The strategy to solve this problem is then to write our Mayer form in Lagrangian form ($M \Rightarrow L$).
 	\[
@@ -4042,13 +4044,13 @@
 	\]
 	$\to$ We have an equivalent problem in $L$ form.
 	\[
-	\bar{H} = \bar{\lambda}_0 \bar{l} + \bar{\lambda}^T f = (\bar{\lambda} + \bar{\lambda}_0 \varphi_x)^T f
+	\bar{\mathcal{H}} = \bar{\lambda}_0 \bar{l} + \bar{\lambda}^T f = (\bar{\lambda} + \bar{\lambda}_0 \varphi_x)^T f
 	\]
 	Both the original ($M$) problem and the reformulated ($L$) problem are time-invariant and $t_f$ free.
 	\[
-	\to \bar{H} = H = 0
+	\to \bar{\mathcal{H}} = \mathcal{H} = 0
 	\]
-	So we can relate the variables of the two problems by setting $\bar{H} = H$.
+	So we can relate the variables of the two problems by setting $\bar{\mathcal{H}} = \mathcal{H}$.
 	\[
 	(\bar{\lambda} + \bar{\lambda}_0 \varphi_x)^T f = \lambda^T f
 	\]
@@ -4061,9 +4063,9 @@
 	$\bar{\lambda}_0 \neq 0$, otherwise we have
 	
 	\[
-		\underset{\text{non-triviality condition would not be satisfied}}{\begin{Bmatrix}
+		\underset{\text{non-triviality condition would not be satisfied}}{\begin{pmatrix}
 			\bar{\lambda}(t_f) \\ \bar{\lambda}_0
-		\end{Bmatrix} = 0}
+		\end{pmatrix} = 0}
 	\]
 	
 	Thus we set $\bar{\lambda}_0 = -1$.
@@ -4079,7 +4081,7 @@
 	\]
 	$\to$ Summary:
 	\begin{itemize}
-		\item All stays the same except for the B.C. on $\lambda$.
+		\item All stays the same except for the BC on $\lambda$.
 		\item Without terminal cost, we would have $\lambda(t_f)=0$.
 		\item With terminal cost, $\lambda(t_f) = -\varphi_x(x(t_f))$.
 	\end{itemize}
@@ -4088,7 +4090,7 @@
 	
 	\subsubsection{Time-optimal control problems \& bang-bang principle}
 	
-	Exercises on t-opt in Tutorial and HW.
+	(Exercises on t-opt in Tutorial and HW.)
 	
 	Here, we consider LTI systems:
 	\[
@@ -4169,17 +4171,17 @@
 		B = [b_1 | b_2 | \dots | b_{n_u}]
 	\]
 	
-	If ? is satisfied on a non-zero interval $t \in [t_1, t_2]$, then we call this int a \underline{SINGULAR ARC}.
-	OC problems with singular arcs are called \underline{SINGULAR OPTIMAL CONTROL PROBLEMS}.
+	If ? is satisfied on a non-zero interval $t \in [t_1, t_2]$, then we call this interval a \underline{SINGULAR ARC}.
+	OC problems with singular arcs are called \underline{SINGULAR OPTIMAL} \underline{CONTROL PROBLEMS}.
 	$\to$ problems in which condition \textcircled{2} of PMP does not provide any information $u^\star$ for a non-zero time-interval.
 	
-	Tutorial 6 (next Thursday) is on this topic.
+	(Tutorial 6 (next Thursday) is on this topic.)
 	
 	Let's try to understand when we can rule out that $\lambda^\star(t)^T b_i = 0$ for $t \in [t_1, t_2]$.
 	
 	For this we need to study $\lambda^\star(t)$ which satisfy
 	\[
-	\dot{\lambda}^\star = -A^T \lambda^\star \quad (\dot{\lambda} = -H_x)
+	\dot{\lambda}^\star = -A^T \lambda^\star \quad (\dot{\lambda} = -\mathcal{H}_x)
 	\]
 	\[
 	\to \lambda^\star(t) = e^{A^T(t_f^\star - t)} \lambda^\star(t_f^\star)
