@@ -114,6 +114,7 @@
 		
 		% Hier den Namen deines Kumpels eintragen
 		{\large Freundliche Unterstützung: Alexander Schütz \& Gemini}\par
+		{\large Credits gehen raus an: \\ Gabriel Schneider \& Luka Radenovi\'{c} \& Patrick Böpple}\par
 		\vfill
 		{\today}
 	\end{titlepage}
@@ -1644,7 +1645,7 @@
 	
 	solution $x(s):\;s\in[s_1,s_2]$
 	
-	also called ``stationaty solutions'' of the corresponding CV problem. Why?
+	also called ``stationary solutions'' of the corresponding CV problem. Why?
 	\[
 		\text{Because }\delta J(x^\star;\xi)=0\quad\forall\xi\;\mathcal{D}\text{-admissible}
 	\]
@@ -1831,6 +1832,8 @@
 	\begin{lemmabox}[First-order sufficient condition for global minimizers]
 		Assume that $l(s, x, \dot{x})$ is \underline{jointly convex} in $x$ and $\dot{x}$. \\
 		If $x^\star \in \mathcal{D}$ satisfies the EE, then $x^\star$ is a global minimizer.
+		
+		\textcolor{orange}{Every global minimizer is a strong local minimizer.}
 	\end{lemmabox}
 	
 	\textbf{Free end-point problems}
@@ -2795,7 +2798,7 @@
 		
 		\hspace*{1cm}$\left.\begin{array}{l}
 			\dot{x}^\star=f(t,x^\star,u^\star),\quad x^\star(t_0)=x_0\\
-			\dot{\lambda}^\star=l_x(t,x^\star,u^\star)-f(t,x^\star,u^\star)\lambda^\star,\quad\lambda^\star(t_f)=0\\
+			\dot{\lambda}^\star=l_x(t,x^\star,u^\star)-f_x(t,x^\star,u^\star)\lambda^\star,\quad\underset{\substack{\text{\textcolor{blue}{$\uparrow$}} \\ \text{\textcolor{blue}{not if $x(t_f)$ given}}}}{\lambda^\star(t_f)=0}\\
 			0=-l_u(t,x^\star,u^\star)+f_u(t,x^\star,u^\star)\lambda^\star,\quad\forall t\in[t_0,t_f]
 		\end{array}\right\}\begin{array}{l}
 		\text{Euler Lagrange}\\\text{equations (ELE)}
@@ -3150,7 +3153,7 @@
 		If
 		\begin{itemize}
 			\item $(u^\star,x^\star,\lambda^\star)$ satisfies ELE,
-			\item $\lambda^\star(t)\leq0\quad\forall t\in[t_0,t_f]$.
+			\item $\lambda^\star(t)\leq0\quad\forall t\in[t_0,t_f]$. \textcolor{blue}{ $\leftarrow$ if $f$ linear not needed}
 		\end{itemize}
 		Then $u^\star$ is a global minimizer.
 	\end{lemmabox}
