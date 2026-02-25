@@ -1333,7 +1333,9 @@
 	Admissible sets:
 	
 	\begin{itemize}
-		\item Free problems $\to$ only endpoints are constrained. Example:
+		\item Free problems $\to$ only endpoints are constrained.
+		
+		\textbf{Example:}
 		\[
 			\mathcal{D}=\{x\in V\mid x(s_1)=x_1,\; x(s_2)=x_2\},\qquad x_1,x_2\text{ fixed vectors}
 		\]
@@ -1344,30 +1346,30 @@
 		\[
 			\Lambda_i(k_i)\coloneqq\{x\in V\mid\int_{s_1}^{s_2}g_i(s,x(s),\dot{x}(s))ds=k_i\}
 		\]
-	\end{itemize}
 	
-	\textbf{Example:}
-	\[
-		\underset{x}{\min}\; J(x)
-	\]
-	
-	\[
-	\begin{aligned}
-		&\text{s.t.}\quad
-		\left.
+		\textbf{Example:}
+		\[
+			\underset{x}{\min}\; J(x)
+		\]
+		
+		\[
 		\begin{aligned}
-			&\displaystyle \int_{s_1}^{s_2} x^2(s)\,ds = 1\\[0.4em]
-			&\displaystyle \int_{s_1}^{s_2} x(s)\,ds = 0
+			&\text{s.t.}\quad
+			\left.
+			\begin{aligned}
+				&\displaystyle \int_{s_1}^{s_2} x^2(s)\,ds = 1\\[0.4em]
+				&\displaystyle \int_{s_1}^{s_2} x(s)\,ds = 0
+			\end{aligned}
+			\right\}
+			\quad
+			\begin{array}{l}
+				n_g = 2,\\[0.2em]
+				g_1(s)=x^2(s),\\[0.2em]
+				g_2(s)=x(s)
+			\end{array}
 		\end{aligned}
-		\right\}
-		\quad
-		\begin{array}{l}
-			n_g = 2,\\[0.2em]
-			g_1(s)=x^2(s),\\[0.2em]
-			g_2(s)=x(s)
-		\end{array}
-	\end{aligned}
-	\]
+		\]
+	\end{itemize}
 	
 	\subsubsection*{Minimizers for CV problems}
 	
@@ -5275,7 +5277,7 @@
 	
 	% 15.01.2026 Lecture 17
 	
-	\begin{lemmabox}[Lemma 4.4]
+	\begin{lemmabox}[]
 		Assume $T, T_\mu$ contractive, $\hat{\mu}$ is a one-step look-ahead policy associated with $\hat{J}$. Then
 		\[
 		\| \underset{\substack{\text{Cost achieved}\\\text{by }\hat{\mu}}}{\underbracket{J_{\hat{\mu}}}} - \underset{\text{Value fcn}}{\underbracket{J^\star}} \| \le \frac{2\alpha}{1-\alpha} \| \underset{\substack{\text{approximate value function}\\\text{might be diff to compute if we don't know }J^\star}}{\underbracket{\hat{J}}} - J^\star \|
