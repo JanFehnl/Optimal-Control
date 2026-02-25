@@ -408,7 +408,7 @@
 		\begin{itemize}
 			\item A set $C \subseteq \mathbb{R}^n$ is \underline{convex} (cvx) if $\forall x, y \in C$
 			\[
-			\{ z \mid z = \lambda x + (1-\lambda)\lambda, \, \lambda \in [0,1]\}\subseteq C
+			\{ z \mid z = \lambda x + (1-\lambda) y, \, \lambda \in [0,1]\}\subseteq C
 			\]
 			\begin{center}
 				\begin{tikzpicture}[>=Latex]
@@ -1054,7 +1054,7 @@
 		\end{itemize}
 	\end{lemmabox}
 	
-	\begin{lemmabox}[Second order suffiecient conditions for local minimizer]
+	\begin{lemmabox}[Second order sufficient conditions for local minimizer]
 		If $(x^\star,\lambda^\star,\nu^\star)$ is a KKT point with
 		
 		\[
@@ -4824,7 +4824,7 @@
 		
 		$\zeta \in \mathbb{R}^{n_x}$ is a \underline{super-differential} of $v$ at $x$ if
 		\[
-		v(y) \le v(x) + \langle \zeta, y-x \rangle +\underset{\text{higher order term ($2^{nd}$ or higher}}{ o(\|y-x\|)} \quad \forall y \in \mathbb{R}^n
+		v(y) \le v(x) + \langle \zeta, y-x \rangle +\underset{\text{higher order term ($2^{nd}$ or higher)}}{ o(\|y-x\|)} \quad \forall y \in \mathbb{R}^n
 		\]
 		
 		$\dots$ is a \underline{sub-differential} of $v$ at $x$ if
